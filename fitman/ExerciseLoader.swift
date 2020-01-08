@@ -30,10 +30,8 @@ func loadExerciseFile() -> Array<Exercise> {
             let decoder = JSONDecoder()
             do {
                 let ex = try decoder.decode([Exercise].self, from: data)
-                print(ex)
                 return ex
             } catch {
-                print(error)
                 exerciseErrorDialog(text: "JSON decode of exercise.json failed")
             }
             
@@ -41,7 +39,6 @@ func loadExerciseFile() -> Array<Exercise> {
             exerciseErrorDialog(text: "JSON read of file exercise.json failed")
         }
     } else {
-        print("file not found")
         exerciseErrorDialog(text: "JSON file exercise.json not found")
     }
     return []

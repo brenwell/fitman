@@ -10,15 +10,6 @@ import SwiftUI
 import Foundation
 import AVFoundation
 
-struct Exercise: Decodable {
-        private enum CodingKeys : String, CodingKey {
-            case label = "label"
-            case duration = "duration"
-        }
-    var label: String
-    var duration: Int
-}
-
 //var x : Exercise = Exercise(label:"This is a label", duration: 32)
 //var y : Array<Exercise> = [
 //    Exercise(label:"Push Ups, set of 5", duration: 40),
@@ -32,7 +23,7 @@ class ExerciseController {
     init() {
         let ex: Array<Exercise> = loadExercises(path: "")
         self.model = ExerciseModel(exercises: ex)
-        self.model.go()
+//        self.model.go()
     }
 }
 

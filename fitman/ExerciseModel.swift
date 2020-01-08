@@ -10,19 +10,33 @@ import SwiftUI
 import Foundation
 import AVFoundation
 
+struct Exercise: Identifiable, Decodable {
+        private enum CodingKeys : String, CodingKey {
+            case label = "label"
+            case duration = "duration"
+            
+        }
+    var label: String
+    var duration: Int
+    var id: Int?
+}
+
 
 class ExerciseModel {
     var nbrExercises: Int
     var currentExerciseIndex: Int
-    var pausedFlag: Bool
+    var isPaused: Bool
+    var isRunning: Bool
     var exercises: Array<Exercise>
     var stateMachine: StateMachine?
     var timer: Timer?
+    var contentView: ContentView?
     
     init (exercises: Array<Exercise>) {
         self.exercises = exercises
         self.nbrExercises = exercises.count
-        self.pausedFlag = false
+        self.isPaused = false
+        self.isRunning = false
         self.currentExerciseIndex = 0
     }
 
@@ -37,20 +51,28 @@ class ExerciseModel {
     }
     
     func togglePause() {
-        self.pausedFlag = !self.pausedFlag
+        if !self.isRunning {
+            self.go()
+            return
+        }
+        self.isPaused = !self.isPaused
     }
     
     func go() {
         let ex: Exercise = self.exercises[self.currentExerciseIndex]
+        self.contentView?.state = self
+        self.contentView?.current = self.currentExerciseIndex
         self.stateMachine = StateMachine(exercise: ex)
         self.timer?.invalidate()
         self.timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: true)
-
+        
+        self.isRunning = true
+        self.isPaused = false
     }
     
     @objc func handleTimer() throws {
         // pause simple stops the state machine ticking
-        if (!self.pausedFlag) {
+        if (!self.isPaused) {
             if (SM_State.done == self.stateMachine?.tick()) {
                 if (self.currentExerciseIndex + 1 < self.nbrExercises) {
                     self.next()
