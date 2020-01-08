@@ -5,9 +5,24 @@
 //  Created by Robert BLACKWELL on 1/8/20.
 //  Copyright © 2020 Robert Blackwell. All rights reserved.
 //
-
+import Cocoa
+import SwiftUI
 import Foundation
 import AVFoundation
+
+struct Exercise {
+    var label: String,
+    duration: Int
+}
+
+var x : Exercise = Exercise(label:"This is a label", duration: 32)
+var y : Array<Exercise> = [
+    Exercise(label:"Push Ups, set of 5,  30 seconds", duration: 10),
+    Exercise(label:"This is a label", duration: 32),
+    Exercise(label:"This is a label", duration: 32),
+    Exercise(label:"This is a label", duration: 32),
+]
+
 
 enum SM_State {
     case idle
@@ -30,7 +45,15 @@ struct FitmanError: Error {
     }
 }
 
-class Controller {
+class ExerciseController {
+    var model: ExerciseModel
+    init() {
+        self.model = ExerciseModel(exercises: y)
+        self.model.go()
+    }
+}
+
+class ExerciseModel {
     var nbrExercises: Int
     var currentExerciseIndex: Int
     var pausedFlag: Bool
@@ -78,15 +101,70 @@ class Controller {
         }
     }
 }
+class Speaker: NSObject, AVSpeechSynthesizerDelegate {
+    override init() {
+        super.init()
+//        let speechVoices = AVSpeechSynthesisVoice.speechVoices()
+//        speechVoices.forEach { (voice) in
+//          print("**********************************")
+//          print("Voice identifier: \(voice.identifier)")
+//          print("Voice language: \(voice.language)")
+//          print("Voice name: \(voice.name)")
+//          print("Voice quality: \(voice.quality.rawValue)") // Compact: 1 ; Enhanced: 2
+//        }
+    }
+    func announce(_ exercise: Exercise) {
+        let avSpeechSynthesizer: AVSpeechSynthesizer = AVSpeechSynthesizer()
+        avSpeechSynthesizer.delegate = self
+        let utterance = AVSpeechUtterance(string: exercise.label)
+        utterance.rate = 0.4
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
+        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
+        avSpeechSynthesizer.speak(utterance)
+    }
+    func say(_ text: String) {
+        let avSpeechSynthesizer: AVSpeechSynthesizer = AVSpeechSynthesizer()
+        avSpeechSynthesizer.delegate = self
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.rate = 0.4
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
+        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
+        avSpeechSynthesizer.speak(utterance)
+    }
 
-class StateMachine: Speaker {
-    var state: SM_State = SM_State.idle
+    func playTinkSound() {
+        NSSound(named: "Tink")?.play()
+    }
+    func playPurrSound() {
+        NSSound(named: "Purr")?.play()
+    }
+    func playPopSound() {
+        NSSound(named: "Pop")?.play()
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        print("didFinish")
+    }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
+        print("didStart")
+    }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) { }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didContinue utterance: AVSpeechUtterance) {}
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) { }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) { }
+}
+
+
+class StateMachine {
+    var state: SM_State = SM_State.announcement
     var exercise: Exercise
     var counter: Int = 0
     var exerciseCounter: Int = 0
     var preludeCount = 10
+    var speaker: Speaker
     
     init(exercise: Exercise) {
+    self.speaker = Speaker()
         self.exercise = exercise
     }
     
@@ -104,10 +182,12 @@ class StateMachine: Speaker {
         case .idle:
             print("here")
         case .announcement:
-            self.announce(self.exercise)
+            let speaker: Speaker = Speaker()
+            speaker.announce(self.exercise)
+            self.state = SM_State.idle
         case .prelude:
             self.counter -= 1;
-            self.playPopSound()
+            self.speaker.playPopSound()
             if (self.counter <= 0) {
                 self.state = SM_State.exercise
                 self.counter = 0
@@ -117,7 +197,7 @@ class StateMachine: Speaker {
             self.exerciseCounter -= 1
             self.counter += 1
             if (self.counter % 10 == 0) {
-                self.say(String(self.counter))
+                self.speaker.say(String(self.counter))
             }
             if (self.exerciseCounter <= 0) {
                 self.state = SM_State.postlude
@@ -127,7 +207,7 @@ class StateMachine: Speaker {
             print("here")
         case .postlude:
             self.counter -= 1;
-            self.playPopSound()
+            self.speaker.playPopSound()
             if (self.counter <= 0) {
                 self.state = SM_State.idle
                 self.counter = 0
@@ -137,11 +217,11 @@ class StateMachine: Speaker {
     
     }
     
-    override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        print("speaking all done")
-        self.state = SM_State.prelude
-        self.counter = self.preludeCount
-    }
+//    override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+//        print("speaking all done")
+//        self.state = SM_State.prelude
+//        self.counter = self.preludeCount
+//    }
 
     
 }
