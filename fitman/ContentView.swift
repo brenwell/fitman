@@ -10,13 +10,13 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var state: ExerciseModel
+    @ObservedObject var state: ExerciseModel
     @State var current: Int
     @State var playPauseLabel: String = "Play"
-    
     var body: some View {
-        
-        VStack(alignment: HorizontalAlignment.center, spacing: 20) {
+            
+        print("elapsed: \(self.state.elapsed) duration: \(self.state.duration) % \(self.state.elapsed/self.state.duration*100.0)")
+        return VStack(alignment: HorizontalAlignment.center, spacing: 20) {
             Spacer()
             HStack(alignment: .center, spacing: 20)
             {
@@ -28,7 +28,9 @@ struct ContentView: View {
                 Spacer()
             }
 
-            SessionView(session: self.state, current: self.current)
+            SessionView(session: self.state, current: self.state.currentExerciseIndex)
+            
+            ProgressBar(session: self.state)
 
             HStack(alignment: .center, spacing: 20) {
                     Button(action: {
@@ -56,7 +58,6 @@ struct ContentView: View {
     }
 }
 
-
 struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
@@ -69,32 +70,22 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-//
-//struct Session1View: View {
-//
-//    @Binding var session: ExerciseModel
-//    @Binding var current: Int
-//
-//    var body: some View {
-////        List(session.exercises) { exercise in
-////            Row(excercise: exercise, currentIndex: self.session.currentExerciseIndex)
-////        }
-//        List {
-//            ForEach(0 ..< session.exercises.count) { index -> Row in
-////                let isCurrent = self.session.currentExerciseIndex == index
-//                let isCurrent = self.current == index
-//                return Row(exercise: self.session.exercises[index], isCurrent: isCurrent)
-//            }
-//        }
-//    }
-//
-//}
+struct ProgressBar: View {
+
+    @ObservedObject var session: ExerciseModel
+    
+    var body: some View {
+//        var pdone: Double = self.state.elapsed / self.state.duration
+//        print("elapsed:: \($state.elapsed) duration::  \(self.state.duration)")
+        return Slider(value: $session.elapsed, in: 0.0...self.session.duration)
+    }
+}
+
 
 struct SessionView: View {
 
-    @Binding var session: ExerciseModel
-    @Binding var current: Int
-    @State var isCurrent: Bool
+    @ObservedObject var session: ExerciseModel
+    var current: Int
     
     var body: some View {
 //        List(session.exercises) { exercise in
@@ -103,8 +94,8 @@ struct SessionView: View {
         List {
             ForEach(0 ..< session.exercises.count) { index -> Row in
 //                let isCurrent = self.session.currentExerciseIndex == index
-                self.isCurrent = self.current == index
-                return Row(exercise: self.$session.exercises[index], isCurrent: self.$isCurrent)
+                let isCurrent = self.current == index
+                return Row(exercise: self.session.exercises[index], isCurrent: isCurrent)
                 
             }
         }
@@ -113,8 +104,8 @@ struct SessionView: View {
 }
 
 struct Row: View {
-    @Binding var exercise: Exercise
-    @Binding var isCurrent: Bool
+    var exercise: Exercise
+    var isCurrent: Bool
 
     var body: some View {
     

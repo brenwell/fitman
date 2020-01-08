@@ -16,14 +16,14 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
     override init() {
         self.avSpeechSynthesizer = AVSpeechSynthesizer()
         super.init()
-        let speechVoices = AVSpeechSynthesisVoice.speechVoices()
-        speechVoices.forEach { (voice) in
-          print("**********************************")
-          print("Voice identifier: \(voice.identifier)")
-          print("Voice language: \(voice.language)")
-          print("Voice name: \(voice.name)")
-          print("Voice quality: \(voice.quality.rawValue)") // Compact: 1 ; Enhanced: 2
-        }
+//        let speechVoices = AVSpeechSynthesisVoice.speechVoices()
+//        speechVoices.forEach { (voice) in
+//          print("**********************************")
+//          print("Voice identifier: \(voice.identifier)")
+//          print("Voice language: \(voice.language)")
+//          print("Voice name: \(voice.name)")
+//          print("Voice quality: \(voice.quality.rawValue)") // Compact: 1 ; Enhanced: 2
+//        }
     }
     func announce(_ exercise: Exercise) {
         self.avSpeechSynthesizer = AVSpeechSynthesizer()
@@ -32,7 +32,7 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
         utterance.rate = 0.4
         utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
         utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
-        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.Zarvox")
+//        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.Zarvox")
         self.avSpeechSynthesizer.speak(utterance)
     }
     func say(_ text: String) {

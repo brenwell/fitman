@@ -22,11 +22,14 @@ struct Exercise: Identifiable, Decodable {
 }
 
 
-class ExerciseModel {
+class ExerciseModel: ObservableObject {
     var nbrExercises: Int
-    var currentExerciseIndex: Int
-    var isPaused: Bool
-    var isRunning: Bool
+    @Published var currentExerciseIndex: Int
+    @Published var isPaused: Bool
+    @Published var isRunning: Bool
+    @Published var duration: Double
+    @Published var elapsed: Double
+
     var exercises: Array<Exercise>
     var stateMachine: StateMachine?
     var timer: Timer?
@@ -38,6 +41,8 @@ class ExerciseModel {
         self.isPaused = false
         self.isRunning = false
         self.currentExerciseIndex = 0
+        self.duration = 0.0
+        self.elapsed = 0.0
     }
 
     func previous() {
@@ -81,6 +86,15 @@ class ExerciseModel {
                     self.next()
                 }
             }
+            if(self.stateMachine!.state == SM_State.exercise) {
+                self.duration = Double(self.exercises[self.currentExerciseIndex].duration)
+                self.elapsed = self.duration - Double(self.stateMachine!.exerciseCounter)
+            } else {
+                self.duration = 0.0
+                self.elapsed = 0.0
+            }
+            print("elapsed: \(self.elapsed)")
+            print("duration: \(self.duration)")
         }
     }
 }
