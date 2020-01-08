@@ -17,10 +17,10 @@ struct Exercise {
 
 var x : Exercise = Exercise(label:"This is a label", duration: 32)
 var y : Array<Exercise> = [
-    Exercise(label:"Push Ups, set of 5,  30 seconds", duration: 10),
-    Exercise(label:"This is a label", duration: 32),
-    Exercise(label:"This is a label", duration: 32),
-    Exercise(label:"This is a label", duration: 32),
+    Exercise(label:"Push Ups, set of 5", duration: 40),
+    Exercise(label:"Door stretch", duration: 30),
+    Exercise(label:"FReverse plank", duration: 50),
+    Exercise(label:"Wall stand", duration: 60),
 ]
 
 
@@ -31,6 +31,7 @@ enum SM_State {
     case exercise
     case progressAnnounement
     case postlude
+    case done
 }
 
 struct FitmanError: Error {
@@ -93,16 +94,21 @@ class ExerciseModel {
     @objc func handleTimer() throws {
         // pause simple stops the state machine ticking
         if (!self.pausedFlag) {
-            do {
-                try self.stateMachine?.tick()
-            } catch {
-                print("got an error") // do something more usefull
+            if (SM_State.done == self.stateMachine?.tick()) {
+                if (self.currentExerciseIndex + 1 < self.nbrExercises) {
+                    self.next()
+                } else {
+                    print("we are done")
+                    self.next()
+                }
             }
         }
     }
 }
 class Speaker: NSObject, AVSpeechSynthesizerDelegate {
+    var avSpeechSynthesizer: AVSpeechSynthesizer
     override init() {
+        self.avSpeechSynthesizer = AVSpeechSynthesizer()
         super.init()
 //        let speechVoices = AVSpeechSynthesisVoice.speechVoices()
 //        speechVoices.forEach { (voice) in
@@ -114,22 +120,22 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
 //        }
     }
     func announce(_ exercise: Exercise) {
-        let avSpeechSynthesizer: AVSpeechSynthesizer = AVSpeechSynthesizer()
-        avSpeechSynthesizer.delegate = self
-        let utterance = AVSpeechUtterance(string: exercise.label)
+        self.avSpeechSynthesizer = AVSpeechSynthesizer()
+        self.avSpeechSynthesizer.delegate = self
+        let utterance = AVSpeechUtterance(string: exercise.label + " for \(exercise.duration) seconds")
         utterance.rate = 0.4
         utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
         utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
-        avSpeechSynthesizer.speak(utterance)
+        self.avSpeechSynthesizer.speak(utterance)
     }
     func say(_ text: String) {
-        let avSpeechSynthesizer: AVSpeechSynthesizer = AVSpeechSynthesizer()
-        avSpeechSynthesizer.delegate = self
+        self.avSpeechSynthesizer = AVSpeechSynthesizer()
+        self.avSpeechSynthesizer.delegate = self
         let utterance = AVSpeechUtterance(string: text)
         utterance.rate = 0.4
         utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
         utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
-        avSpeechSynthesizer.speak(utterance)
+        self.avSpeechSynthesizer.speak(utterance)
     }
 
     func playTinkSound() {
@@ -155,16 +161,14 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
 }
 
 
-class StateMachine {
+class StateMachine: Speaker {
     var state: SM_State = SM_State.announcement
     var exercise: Exercise
     var counter: Int = 0
     var exerciseCounter: Int = 0
     var preludeCount = 10
-    var speaker: Speaker
     
     init(exercise: Exercise) {
-    self.speaker = Speaker()
         self.exercise = exercise
     }
     
@@ -177,51 +181,58 @@ class StateMachine {
     
     }
     
-    func tick() throws {
+    func tick() -> SM_State {
         switch self.state {
         case .idle:
-            print("here")
+            print("idle state")
         case .announcement:
-            let speaker: Speaker = Speaker()
-            speaker.announce(self.exercise)
+            print("state: announcement")
+            self.announce(self.exercise)
             self.state = SM_State.idle
         case .prelude:
+            print("state: prelude")
             self.counter -= 1;
-            self.speaker.playPopSound()
+            self.playPopSound()
             if (self.counter <= 0) {
                 self.state = SM_State.exercise
                 self.counter = 0
                 self.exerciseCounter = self.exercise.duration
             }
         case .exercise:
+            print("state: exercise \(self.exerciseCounter)")
             self.exerciseCounter -= 1
             self.counter += 1
             if (self.counter % 10 == 0) {
-                self.speaker.say(String(self.counter))
+                self.say(String(self.counter))
             }
             if (self.exerciseCounter <= 0) {
                 self.state = SM_State.postlude
                 self.counter = self.preludeCount
             }
         case .progressAnnounement:
-            print("here")
+            print("state: progressAnnouncement")
         case .postlude:
+            print("state: postlude")
             self.counter -= 1;
-            self.speaker.playPopSound()
+            self.playPopSound()
             if (self.counter <= 0) {
-                self.state = SM_State.idle
+                self.state = SM_State.done
                 self.counter = 0
                 self.exerciseCounter = self.exercise.duration
             }
+        case .done:
+            break
         }
-    
+        return self.state
     }
     
-//    override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-//        print("speaking all done")
-//        self.state = SM_State.prelude
-//        self.counter = self.preludeCount
-//    }
+    override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        print("speaking all done")
+        if (self.state == SM_State.idle) {
+            self.state = SM_State.prelude
+            self.counter = self.preludeCount
+        }
+    }
 
     
 }

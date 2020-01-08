@@ -30,9 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-        let speaker: Speaker = Speaker()
-        speaker.announce(y[0])
-//        self.exerciseController = ExerciseController()
+        self.exerciseController = ExerciseController()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
