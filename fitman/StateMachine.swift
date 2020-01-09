@@ -67,13 +67,11 @@ class StateMachine: Speaker {
     func tick() -> SM_State {
         switch self.state {
         case .idle:
-            print("idle state")
+            break
         case .announcement:
-            print("state: announcement")
             self.announce(self.exercise)
             self.state = SM_State.idle
         case .prelude:
-            print("state: prelude")
 
             self.counter -= 1;
             if ((self.counter < secondsToTicks(secs: 4)) && (self.counter > 0) && (onTheSecond(ticks: self.counter))) {
@@ -87,7 +85,6 @@ class StateMachine: Speaker {
                 self.exerciseCounter = secondsToTicks(secs: self.exercise.duration)
             }
         case .exercise:
-            print("state: exercise \(self.exerciseCounter)")
             self.exerciseCounter -= 1
             self.counter += 1
             if (self.counter % secondsToTicks(secs:10) == 0) {
@@ -103,15 +100,13 @@ class StateMachine: Speaker {
                 }
             }
             if (self.exerciseCounter <= 0) {
-//                self.state = SM_State.done
                 self.state = SM_State.postlude
                 self.counter = self.preludeCount
                 self.counter = secondsToTicks(secs:1)
             }
         case .progressAnnounement:
-            print("state: progressAnnouncement")
+            break
         case .postlude:
-            print("state: postlude")
             self.counter -= 1
             if(self.counter == 0) {
                 self.playPurrSound()
@@ -128,7 +123,6 @@ class StateMachine: Speaker {
     }
     
     override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        print("speaking all done")
         if (self.state == SM_State.idle) {
             self.state = SM_State.prelude
             self.counter = self.preludeCount

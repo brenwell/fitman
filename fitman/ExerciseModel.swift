@@ -115,8 +115,8 @@ class ExerciseModel: ObservableObject {
                 self.duration = 0.0
                 self.elapsed = 100.0
             }
-            print("elapsed: \(self.elapsed)")
-            print("duration: \(self.duration)")
+//            print("elapsed: \(self.elapsed)")
+//            print("duration: \(self.duration)")
         }
     }
 }
