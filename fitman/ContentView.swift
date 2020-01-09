@@ -15,25 +15,19 @@ struct ContentView: View {
     @State var playPauseLabel: String = "Play"
     var body: some View {
             
-        print("elapsed: \(self.state.elapsed) duration: \(self.state.duration) % \(self.state.elapsed/self.state.duration*100.0)")
+//        print("elapsed: \(self.state.elapsed) duration: \(self.state.duration) % \(self.state.elapsed/self.state.duration*100.0)")
         return VStack(alignment: HorizontalAlignment.center, spacing: 20) {
-            Spacer()
+            
             HStack(alignment: .center, spacing: 20)
             {
-                Spacer()
                 Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: Text("Excercise")) {
                     /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
                     /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
                 }
+                
                 Spacer()
-            }
-
-            SessionView(session: self.state, current: self.state.currentExerciseIndex)
-            
-            ProgressBar(session: self.state)
-
-            HStack(alignment: .center, spacing: 20) {
-                    Button(action: {
+                
+                Button(action: {
                     self.state.previous()
                 }) {
                     Text("Previous")
@@ -50,8 +44,20 @@ struct ContentView: View {
                 }) {
                     Text("Next")
                 }
-            }
+                
+            }.padding(10)
+            
             Spacer()
+
+            ZStack(alignment: .center) {
+                ProgressCircle(session: self.state)
+                CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
+
+            }
+            
+            Spacer()
+            
+            
         }
         
         
@@ -81,6 +87,53 @@ struct ProgressBar: View {
     }
 }
 
+struct ProgressCircle: View {
+
+    @ObservedObject var session: ExerciseModel
+
+    var body: some View {
+        
+        let width: CGFloat = 10.0
+        
+        return ZStack {
+            Circle()
+                .stroke(Color.init(red: 0.8, green: 0.8, blue: 0.8), lineWidth: width)
+                .frame(width:500)
+                .rotationEffect(Angle(degrees:-90))
+            Circle()
+                .trim(from: 0.0, to: CGFloat(session.elapsed / session.duration))
+                .stroke(Color.blue, lineWidth: width)
+                .frame(width:500)
+                .rotationEffect(Angle(degrees:-90))
+        }
+    }
+}
+
+extension Collection {
+
+    /// Returns the element at the specified index if it is within bounds, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+
+struct CurrentPrevNextView: View {
+    @ObservedObject var session: ExerciseModel
+    var current: Int
+    
+    var body: some View {
+    
+//        let prev = session.exercises[safe: current-1]
+        let curr = session.exercises[safe: current]
+        let next = session.exercises[safe: current+1]
+        
+        return VStack(alignment: .center, spacing: 20) {
+//            Row(exercise: prev, isCurrent: false)
+            Row(exercise: curr, isCurrent: true)
+            Row(exercise: next, isCurrent: false)
+        }
+    }
+}
 
 struct SessionView: View {
 
@@ -104,24 +157,29 @@ struct SessionView: View {
 }
 
 struct Row: View {
-    var exercise: Exercise
+    var exercise: Exercise?
     var isCurrent: Bool
 
     var body: some View {
     
-        let fontColor: Color = !isCurrent ? .black : .green
-    
+        let fontSize: CGFloat = !isCurrent ? 40 : 60
+        let fontColor: Color = !isCurrent ? .gray : .black
+        let labelStr: String = (exercise != nil) ? exercise!.label : " "
+//        let durationStr: String = (exercise != nil) ? String(exercise!.duration) : " "
+        
         return HStack(alignment: .center, spacing: 10) {
             Spacer()
             HStack(alignment: .bottom, spacing: 10, content: {
                 
-                Text("\(exercise.label)")
-                    .font(.custom("Futura", size: 20))
+                Text("\(labelStr)")
+                    .font(.custom("Futura", size: fontSize))
                     .foregroundColor(fontColor)
+                    
                 
-                Text("\(exercise.duration)s")
-                    .font(.custom("Futura", size: 13))
-                    .foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8))
+//                Text("\(durationStr)s")
+//                    .font(.custom("Futura", size: 13))
+//                    .foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8))
+//                    .baselineOffset(8)
             })
             Spacer()
         }

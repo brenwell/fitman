@@ -10,10 +10,23 @@ import SwiftUI
 import Foundation
 import AVFoundation
 
+let TICKS_PER_SEC = 50
+
+func onTheSecond(ticks: Int) -> Bool {
+    return ticks % TICKS_PER_SEC == 0
+}
+
+func ticksToSeconds(ticks: Int) -> Int {
+    return ticks % TICKS_PER_SEC
+}
+
+func secondsToTicks(secs: Int) -> Int {
+    return TICKS_PER_SEC * secs
+}
 
 enum SM_State {
-    case idle
     case announcement
+    case idle // while waiting for the announcement to complete
     case prelude
     case exercise
     case progressAnnounement
@@ -22,11 +35,13 @@ enum SM_State {
 }
 
 class StateMachine: Speaker {
+
     var state: SM_State = SM_State.announcement
     var exercise: Exercise
     var counter: Int = 0
     var exerciseCounter: Int = 0
-    var preludeCount = 10
+    var preludeCount = secondsToTicks(secs: 10)
+    
     
     init(exercise: Exercise) {
         self.exercise = exercise
@@ -51,8 +66,13 @@ class StateMachine: Speaker {
             self.state = SM_State.idle
         case .prelude:
             print("state: prelude")
-            self.counter -= 1;
-            self.playPopSound()
+
+            self.counter -= seconds 1;
+            if ((self.counter < 4) && (self.counter > 0)) {
+                self.playPopSound()
+            } else if (self.counter == 0) {
+                self.playPurrSound()
+            }
             if (self.counter <= 0) {
                 self.state = SM_State.exercise
                 self.counter = 0
@@ -62,19 +82,24 @@ class StateMachine: Speaker {
             print("state: exercise \(self.exerciseCounter)")
             self.exerciseCounter -= 1
             self.counter += 1
-            if (self.counter % 10 == 0) {
+            if ((self.counter % 10 == 0) && (self.exerciseCounter > 9)) {
                 self.say(String(self.counter))
             }
+            if (self.exerciseCounter < 3) {
+                self.playTinkSound()
+            }
             if (self.exerciseCounter <= 0) {
+//                self.state = SM_State.done
                 self.state = SM_State.postlude
                 self.counter = self.preludeCount
+                self.counter = 1
             }
         case .progressAnnounement:
             print("state: progressAnnouncement")
         case .postlude:
             print("state: postlude")
             self.counter -= 1;
-            self.playPopSound()
+            self.playPurrSound()
             if (self.counter <= 0) {
                 self.state = SM_State.done
                 self.counter = 0
