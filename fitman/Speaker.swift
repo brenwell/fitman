@@ -13,8 +13,10 @@ import AVFoundation
 
 class Speaker: NSObject, AVSpeechSynthesizerDelegate {
     var avSpeechSynthesizer: AVSpeechSynthesizer
+    var noSound: Bool
     override init() {
         self.avSpeechSynthesizer = AVSpeechSynthesizer()
+        self.noSound = true
         super.init()
 //        let speechVoices = AVSpeechSynthesisVoice.speechVoices()
 //        speechVoices.forEach { (voice) in
@@ -33,6 +35,13 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
         utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
         utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
 //        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.Zarvox")
+        if (self.noSound) {
+            print("Speaker::announce \(exercise.label) \(exercise.duration)")
+            DispatchQueue.main.async {[weak self, avSpeechSynthesizer, utterance] in
+              self.speechSynthesizer(avSpeechSynthesizer, didFinish: utterance )
+            }
+            return
+        }
         self.avSpeechSynthesizer.speak(utterance)
     }
     func say(_ text: String) {
@@ -42,21 +51,41 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
         utterance.rate = 0.4
         utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
         utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
+        if (self.noSound) {
+            print("Speaker::announce \(text)")
+            self.speechSynthesizer(avSpeechSynthesizer, didFinish: utterance )
+            return
+        }
         self.avSpeechSynthesizer.speak(utterance)
     }
 
     func playTinkSound() {
+        if self.noSound {
+            print("Speaker::playTinkSound")
+            return
+        }
         NSSound(named: "Tink")?.play()
     }
     func playPurrSound() {
+        if self.noSound {
+            print("Speaker::playPurrSound")
+            return
+        }
         NSSound(named: "Purr")?.play()
     }
     func playPopSound() {
+        if self.noSound {
+            print("Speaker::playPopSound")
+            return
+        }
         NSSound(named: "Pop")?.play()
     }
-
+    func announceCallback() {
+        print("annouceCallback")
+    }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         print("didFinish")
+        self.announceCallback()
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
     }

@@ -53,6 +53,8 @@ class StateMachine: Speaker {
     
     init(exercise: Exercise) {
         self.exercise = exercise
+        super.init()
+        self.noSound = true
     }
     
     func start(exercise: Exercise) {
@@ -121,11 +123,14 @@ class StateMachine: Speaker {
         }
         return self.state
     }
-    
-    override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+    override announceCallback() {
         if (self.state == SM_State.idle) {
             self.state = SM_State.prelude
             self.counter = self.preludeCount
+        }
+    }
+    override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        self.annouceCallback()
         }
     }   
 }
