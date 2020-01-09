@@ -95,14 +95,19 @@ struct ProgressCircle: View {
         
         let width: CGFloat = 10.0
         
+        let bgColor = NSColor(named: NSColor.Name("progressBarBg"))
+        let barColor = (session.stateMachine?.state != SM_State.prelude)
+            ? NSColor(named: NSColor.Name("exerciseProgressBar"))
+            : NSColor(named: NSColor.Name("countInProgressBar"))
+        
         return ZStack {
             Circle()
-                .stroke(Color.init(red: 0.8, green: 0.8, blue: 0.8), lineWidth: width)
+                .stroke(Color(bgColor!), lineWidth: width)
                 .frame(width:500)
                 .rotationEffect(Angle(degrees:-90))
             Circle()
                 .trim(from: 0.0, to: CGFloat(session.elapsed / session.duration))
-                .stroke(Color.blue, lineWidth: width)
+                .stroke(Color(barColor!), lineWidth: width)
                 .frame(width:500)
                 .rotationEffect(Angle(degrees:-90))
         }
@@ -161,9 +166,12 @@ struct Row: View {
     var isCurrent: Bool
 
     var body: some View {
+        
+        let currColor = NSColor(named: NSColor.Name("currentExcerciseLabel"))
+        let nextColor = NSColor(named: NSColor.Name("nextExerciseLabel"))
     
         let fontSize: CGFloat = !isCurrent ? 40 : 60
-        let fontColor: Color = !isCurrent ? .gray : .black
+        let fontColor: Color = !isCurrent ? Color(nextColor!) : Color(currColor!)
         let labelStr: String = (exercise != nil) ? exercise!.label : " "
 //        let durationStr: String = (exercise != nil) ? String(exercise!.duration) : " "
         
