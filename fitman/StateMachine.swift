@@ -10,14 +10,22 @@ import SwiftUI
 import Foundation
 import AVFoundation
 
-let TICKS_PER_SEC = 50
+let TICKS_PER_SEC = 60
+
+func doubleTicksPerSecond() -> Double {
+    return Double(TICKS_PER_SEC)
+}
+
+func intTicksPerSeconds() -> Int {
+    return TICKS_PER_SEC
+}
 
 func onTheSecond(ticks: Int) -> Bool {
     return ticks % TICKS_PER_SEC == 0
 }
 
 func ticksToSeconds(ticks: Int) -> Int {
-    return ticks % TICKS_PER_SEC
+    return ticks / TICKS_PER_SEC
 }
 
 func secondsToTicks(secs: Int) -> Int {
@@ -49,7 +57,7 @@ class StateMachine: Speaker {
     
     func start(exercise: Exercise) {
         self.exercise = exercise
-        self.exerciseCounter = exercise.duration
+        self.exerciseCounter = secondsToTicks(secs: exercise.duration)
     }
     
     func idle() {
@@ -67,8 +75,8 @@ class StateMachine: Speaker {
         case .prelude:
             print("state: prelude")
 
-            self.counter -= seconds 1;
-            if ((self.counter < 4) && (self.counter > 0)) {
+            self.counter -= 1;
+            if ((self.counter < secondsToTicks(secs: 4)) && (self.counter > 0) && (onTheSecond(ticks: self.counter))) {
                 self.playPopSound()
             } else if (self.counter == 0) {
                 self.playPurrSound()
@@ -76,30 +84,38 @@ class StateMachine: Speaker {
             if (self.counter <= 0) {
                 self.state = SM_State.exercise
                 self.counter = 0
-                self.exerciseCounter = self.exercise.duration
+                self.exerciseCounter = secondsToTicks(secs: self.exercise.duration)
             }
         case .exercise:
             print("state: exercise \(self.exerciseCounter)")
             self.exerciseCounter -= 1
             self.counter += 1
-            if ((self.counter % 10 == 0) && (self.exerciseCounter > 9)) {
-                self.say(String(self.counter))
+            if (self.counter % secondsToTicks(secs:10) == 0) {
+                if (self.exerciseCounter > secondsToTicks(secs:9)) {
+                    if (onTheSecond(ticks: self.counter)) {
+                        self.say(String( ticksToSeconds(ticks: self.counter) ))
+                    }
+                }
             }
-            if (self.exerciseCounter < 3) {
-                self.playTinkSound()
+            if (self.exerciseCounter < secondsToTicks(secs:3)) {
+                if (onTheSecond(ticks: self.exerciseCounter)){
+                    self.playTinkSound()
+                }
             }
             if (self.exerciseCounter <= 0) {
 //                self.state = SM_State.done
                 self.state = SM_State.postlude
                 self.counter = self.preludeCount
-                self.counter = 1
+                self.counter = secondsToTicks(secs:1)
             }
         case .progressAnnounement:
             print("state: progressAnnouncement")
         case .postlude:
             print("state: postlude")
-            self.counter -= 1;
-            self.playPurrSound()
+            self.counter -= 1
+            if(self.counter == 0) {
+                self.playPurrSound()
+            }
             if (self.counter <= 0) {
                 self.state = SM_State.done
                 self.counter = 0

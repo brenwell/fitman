@@ -57,11 +57,11 @@ class ExerciseModel: ObservableObject {
     
     func togglePause() {
         if !self.isRunning {
+            self.isRunning = true
             self.go()
             return
         }
         if !self.isPaused {
-            
             flagAsPauseOrStop()
         } else {
             flagAsResumeOrStart()
@@ -70,14 +70,13 @@ class ExerciseModel: ObservableObject {
     
     func flagAsPauseOrStop() {
         enableScreenSleep()
-        self.isRunning = false
+//        self.isRunning = false
         self.isPaused = true
     }
     
     func flagAsResumeOrStart() {
-        
         disableScreenSleep()
-        self.isRunning = true
+//        self.isRunning = true
         self.isPaused = false
     }
     
@@ -88,7 +87,8 @@ class ExerciseModel: ObservableObject {
         self.stateMachine = StateMachine(exercise: ex)
         
         self.timer?.invalidate()
-        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: true)
+        let ticks_per_sec: Double = 1.0 / doubleTicksPerSecond()
+        self.timer = Timer.scheduledTimer(timeInterval: ticks_per_sec, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: true)
         
         flagAsResumeOrStart()
     }
@@ -105,8 +105,8 @@ class ExerciseModel: ObservableObject {
                 }
             }
             if(self.stateMachine!.state == SM_State.exercise) {
-                self.duration = Double(self.exercises[self.currentExerciseIndex].duration)
-                self.elapsed = self.duration - Double(self.stateMachine!.exerciseCounter)
+                self.duration = Double(secondsToTicks(secs: self.exercises[self.currentExerciseIndex].duration))
+                self.elapsed =  self.duration - Double(self.stateMachine!.exerciseCounter)
             } else if ((self.stateMachine!.state == SM_State.prelude)
                     /*|| (self.stateMachine!.state == SM_State.postlude)*/) {
                 self.duration = Double(self.stateMachine!.preludeCount)
