@@ -1,18 +1,13 @@
 //
-//  Controller.swift
+//  FancyModel.swift
 //  fitman
 //
-//  Created by Robert BLACKWELL on 1/8/20.
+//  Created by Robert BLACKWELL on 1/9/20.
 //  Copyright © 2020 Robert Blackwell. All rights reserved.
 //
-import Cocoa
-import SwiftUI
+
 import Foundation
-import AVFoundation
-
-
-
-class ExerciseModel: ObservableObject {
+class FancyModel: ObservableObject {
     var nbrExercises: Int
     @Published var currentExerciseIndex: Int
     @Published var isPaused: Bool
@@ -21,9 +16,8 @@ class ExerciseModel: ObservableObject {
     @Published var elapsed: Double
 
     var exercises: Array<Exercise>
-    var stateMachine: StateMachine?
     var timer: Timer?
-    var contentView: ContentView?
+//    var contentView: ContentView?
     
     init (exercises: Array<Exercise>) {
         self.exercises = exercises
@@ -72,9 +66,8 @@ class ExerciseModel: ObservableObject {
     
     func go() {
         let ex: Exercise = self.exercises[self.currentExerciseIndex]
-        self.contentView?.state = self
-        self.contentView?.current = self.currentExerciseIndex
-        self.stateMachine = StateMachine(exercise: ex)
+//        self.contentView?.state = self
+//        self.contentView?.current = self.currentExerciseIndex
         
         self.timer?.invalidate()
         let ticks_per_sec: Double = 1.0 / doubleTicksPerSecond()
@@ -109,48 +102,4 @@ class ExerciseModel: ObservableObject {
 //            print("duration: \(self.duration)")
         }
     }
-}
-  
-class FancyTimer {
-
-    var timer: Timer?
-    var timestamp: TimeInterval
-    var handler: ((Double) -> Void)
-    
-    init(handler: @escaping (Double) -> Void) {
-        self.handler = handler
-        self.timestamp = 0.0
-        self.getFrame()
-    }
-
-    func getFrame() {
-        
-        self.timestamp = NSDate().timeIntervalSince1970
-        
-        self.timer = Timer.scheduledTimer(
-            timeInterval: 0.1,
-            target: self,
-            selector: #selector(gotFrame),
-            userInfo: nil,
-            repeats: true
-        )
-    }
-    func invalidate() {
-        self.timer!.invalidate()
-        self.timestamp = 0.0
-    }
-    
-    @objc func gotFrame() {
-        
-        let nextTimestamp = NSDate().timeIntervalSince1970
-        if (self.timestamp == 0.0) {
-            print("timestamp was zero")
-            return
-        }
-        let delta: Double = nextTimestamp - self.timestamp
-        self.timestamp = nextTimestamp
-        
-        handler(delta)
-    }
-
 }

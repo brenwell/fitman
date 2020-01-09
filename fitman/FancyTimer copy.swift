@@ -193,18 +193,17 @@ class FModel {
         self.timer?.invalidate()
         let start = NSDate().timeIntervalSince1970
         let tasks: Array<Task> = buildTasks(exercise:self.exercises[self.currentExerciseIndex] )
-        let duration: Double = durationOfTasks(tasks: tasks)
         self.runner = TaskRunner(tasks: tasks)
         Timer.scheduledTimer(withTimeInterval: self.frequency, repeats: true) { timer in
             let now = NSDate().timeIntervalSince1970
             let elapsed = now - start
-            self.handleTimer(elapsed: elapsed, duration: duration)
+            self.handleTimer(elapsed: elapsed)
         }
         flagAsResumeOrStart()
     }
-    func handleTimer(elapsed: Double, duration: Double) {
-        onProgress(elapsed: elapsed, duration: duration)
-        self.runner.handleTimer(elapsed: elapsed, duration: duration)
+    func handleTimer(elapsed: Double) {
+        onProgress(elapsed: elapsed)
+        self.runner.handleTimer(elapsed: elapsed)
     }
 
 }
@@ -213,7 +212,7 @@ class TaskRunner {
     init(tasks: Array<Task>) {
         self.tasks = tasks
     }
-    func handleTimer(elapsed: Double, duration: Double) {
+    func handleTimer(elapsed: Double) {
         self.tasks = attemptToPerformTask(tasks: self.tasks, elapsed: elapsed)
     }
 }
@@ -238,9 +237,6 @@ func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
 func fancyTimertest() {
     let frequency: Double = 0.1
     let exercises: Array<Exercise> = loadExerciseFile()
-    
-    
-    
     let tasks = buildTasks(exercise: exercises[0])
 
     perform(
