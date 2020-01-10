@@ -239,7 +239,7 @@ class SessionModel: ObservableObject {
     @Published var duration: Double
     @Published var elapsed: Double
 
-    public var contentView: ContentView?
+//    public var contentView: ContentView?
     public var progressCallback: ((Double, Double) ->())?
     public var onComplete: (()->())?
 

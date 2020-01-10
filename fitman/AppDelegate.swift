@@ -26,7 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             state: self.exerciseController!.model,
             current: self.exerciseController!.model.currentExerciseIndex)
         
-        self.exerciseController?.model.contentView = contentView
+//        self.exerciseController?.model.contentView = contentView // dont thinnk I need this anymore
         
         // Create the window and set the content view. 
         window = ResponderWindow(
