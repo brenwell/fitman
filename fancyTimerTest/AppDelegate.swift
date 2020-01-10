@@ -9,11 +9,12 @@
 import Cocoa
 import SwiftUI
 
+var suiteRunner: SessionRunner?
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
-
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.
@@ -28,7 +29,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-        fancyTimertest()
+        suiteRunner = SessionRunner()
+        suiteRunner?.onComplete = {
+            print("exercise suite complete")
+        }
+        suiteRunner!.go()
+//        myTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+//            print("timer handler")
+//        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

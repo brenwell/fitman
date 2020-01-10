@@ -35,8 +35,6 @@
 		0EF4DA3C23C7989B0004F3F9 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF4DA3B23C7989B0004F3F9 /* Exercise.swift */; };
 		0EF4DA3D23C798CD0004F3F9 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF4DA3B23C7989B0004F3F9 /* Exercise.swift */; };
 		0EF4DA3E23C7A1410004F3F9 /* exercise.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E0A4A0723C5FD5B000134B1 /* exercise.json */; };
-		0EF4DA4023C7ACDE0004F3F9 /* FancyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF4DA3F23C7ACDE0004F3F9 /* FancyModel.swift */; };
-		0EF4DA4123C7ACDE0004F3F9 /* FancyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF4DA3F23C7ACDE0004F3F9 /* FancyModel.swift */; };
 		DAC8DA0523C792B3008E996D /* FancyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC8DA0423C792B3008E996D /* FancyTimer.swift */; };
 /* End PBXBuildFile section */
 
@@ -89,7 +87,6 @@
 		0EF4DA3023C797600004F3F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EF4DA3123C797600004F3F9 /* fancyTimerTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = fancyTimerTest.entitlements; sourceTree = "<group>"; };
 		0EF4DA3B23C7989B0004F3F9 /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
-		0EF4DA3F23C7ACDE0004F3F9 /* FancyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyModel.swift; sourceTree = "<group>"; };
 		DAC8DA0423C792B3008E996D /* FancyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyTimer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,7 +155,6 @@
 				0E0A4A0523C5F4C7000134B1 /* ExerciseLoader.swift */,
 				0E0A4A0323C5F3C8000134B1 /* ExerciseModel.swift */,
 				DAC8DA0423C792B3008E996D /* FancyTimer.swift */,
-				0EF4DA3F23C7ACDE0004F3F9 /* FancyModel.swift */,
 				0E0A49FF23C5F2AF000134B1 /* StateMachine.swift */,
 				0E0A4A0023C5F2AF000134B1 /* Speaker.swift */,
 				0E0A4A0B23C68138000134B1 /* Sleeper.swift */,
@@ -389,7 +385,6 @@
 				0E0A4A0423C5F3C8000134B1 /* ExerciseModel.swift in Sources */,
 				0E0A4A0623C5F4C7000134B1 /* ExerciseLoader.swift in Sources */,
 				0E0A4A0C23C68138000134B1 /* Sleeper.swift in Sources */,
-				0EF4DA4023C7ACDE0004F3F9 /* FancyModel.swift in Sources */,
 				DAC8DA0523C792B3008E996D /* FancyTimer.swift in Sources */,
 				0EF4DA3C23C7989B0004F3F9 /* Exercise.swift in Sources */,
 				0E8EA7A323C50A5E00853440 /* ContentView.swift in Sources */,
@@ -421,7 +416,6 @@
 			files = (
 				0EF4DA3D23C798CD0004F3F9 /* Exercise.swift in Sources */,
 				0EF4DA3A23C7985D0004F3F9 /* Sleeper.swift in Sources */,
-				0EF4DA4123C7ACDE0004F3F9 /* FancyModel.swift in Sources */,
 				0EF4DA3923C798400004F3F9 /* ExerciseError.swift in Sources */,
 				0EF4DA3823C798220004F3F9 /* ExerciseLoader.swift in Sources */,
 				0EF4DA3623C797EE0004F3F9 /* Speaker.swift in Sources */,
