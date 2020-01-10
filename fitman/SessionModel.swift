@@ -216,6 +216,9 @@ class ExerciseRunner: Speaker {
     @objc func handleTimer() {
         print("timer")
     }
+    func stop() {
+        self.timer?.invalidate()
+    }
     func togglePause() {
         self.pauseFlag = !self.pauseFlag
     }
@@ -243,7 +246,7 @@ class SessionModel: ObservableObject {
     init(exercises: Array<Exercise>) {
         self.currentExerciseIndex = 0
         self.exercises = exercises
-        self.exercises = Array(self.exercises[0...2])
+//        self.exercises = Array(self.exercises[0...2])
         self.isPaused = true
         self.isRunning = false
         self.duration = 100.0
@@ -268,6 +271,11 @@ class SessionModel: ObservableObject {
 
     }
     func next() {
+        if let r = self.runner {
+            r.stop()
+            self.runner = nil
+        }
+        self.elapsed = 0.0; self.duration = 100.0
         if(self.currentExerciseIndex < self.exercises.count - 1) {
             self.currentExerciseIndex += 1
             self.go()
@@ -279,6 +287,11 @@ class SessionModel: ObservableObject {
         }
     }
     func previous() {
+        if let r = self.runner {
+            r.stop()
+            self.runner = nil
+        }
+        self.elapsed = 0.0; self.duration = 100.0
         self.currentExerciseIndex = (self.currentExerciseIndex + self.exercises.count - 1) % self.exercises.count
         self.go()
     }

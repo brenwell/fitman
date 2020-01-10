@@ -17,6 +17,7 @@ import AVFoundation
 //    Exercise(label:"Wall stand", duration: 60),
 //]
 
+
 func loadExercises(path: String) -> Array<Exercise> {
     let yyy: Array<Exercise> = loadExerciseFile()
     return yyy
@@ -29,7 +30,8 @@ func loadExerciseFile() -> Array<Exercise> {
             let data = Data(contents.utf8)
             let decoder = JSONDecoder()
             do {
-                let ex = try decoder.decode([Exercise].self, from: data)
+                let exDb = try decoder.decode([String: [Exercise]].self, from: data)
+                let ex: [Exercise] = exDb["rob"]!
                 return ex
             } catch {
                 exerciseErrorDialog(text: "JSON decode of exercise.json failed")
