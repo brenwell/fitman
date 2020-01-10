@@ -19,10 +19,12 @@ import AVFoundation
 //]
 
 class ExerciseController {
-    var model: ExerciseModel
+//    var model: ExerciseModel
+    var model: SessionModel
     init() {
         let ex: Array<Exercise> = loadExercises(path: "")
-        self.model = ExerciseModel(exercises: ex)
+//        self.model = ExerciseModel(exercises: ex)
+        self.model = SessionModel(exercises: ex)
 //        self.model.go()
     }
 }

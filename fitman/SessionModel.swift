@@ -90,7 +90,7 @@ func buildTasks(exercise: Exercise) -> Array<Task> {
     tasks.append(Task(elapsed: tmp, action: playProgressAnnoucement(text: "done")))
     var endTime: Double = exerciseStartElapsed + 10.0 * Double((exercise.duration))
     endTime = tasks.last!.elapsed
-    tasks.append(Task(elapsed: endTime + 2.0, action: playEndSound(elapsed:)))
+    tasks.append(Task(elapsed: endTime + 0.5, action: playEndSound(elapsed:)))
 
     // sort tasks - should be unnecessary
     tasks = tasks.sorted(by: { $0.elapsed < $1.elapsed })
@@ -133,25 +133,25 @@ func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
 
 
 // Executes a task stack
-func doPerform(tasks: [Task], frequency: Double, onProgress: @escaping (Double) -> Void) {
-    
-    var mutableTasks = tasks
-    let start = NSDate().timeIntervalSince1970
-    let duration: Double = durationOfTasks(tasks: tasks)
-    Timer.scheduledTimer(withTimeInterval: frequency, repeats: true) { timer in
-        let now = NSDate().timeIntervalSince1970
-        let elapsed = now - start
-        
-        mutableTasks = attemptToPerformTask(tasks: mutableTasks, elapsed: elapsed)
-        
-        if (elapsed > duration) {
-            timer.invalidate()
-            return
-        }
-        onProgress(elapsed)
-    }
-}
-
+//func doPerform(tasks: [Task], frequency: Double, onProgress: @escaping (Double) -> Void) {
+//
+//    var mutableTasks = tasks
+//    let start = NSDate().timeIntervalSince1970
+//    let duration: Double = durationOfTasks(tasks: tasks)
+//    Timer.scheduledTimer(withTimeInterval: frequency, repeats: true) { timer in
+//        let now = NSDate().timeIntervalSince1970
+//        let elapsed = now - start
+//
+//        mutableTasks = attemptToPerformTask(tasks: mutableTasks, elapsed: elapsed)
+//
+//        if (elapsed > duration) {
+//            timer.invalidate()
+//            return
+//        }
+//        onProgress(elapsed)
+//    }
+//}
+//
 
 class ExerciseRunner: Speaker {
     var frequency: Double
@@ -161,8 +161,10 @@ class ExerciseRunner: Speaker {
     public var onProgressReport: ((Double, Double)->())?
     var timer: Timer?
     var pauseFlag: Bool
+    var runningFlag: Bool
     init(exercise: Exercise) {
         self.pauseFlag = false
+        self.runningFlag = false
         self.frequency = 0.1
         self.exercise = exercise
         self.tasks = buildTasks(exercise: self.exercise)
@@ -182,6 +184,8 @@ class ExerciseRunner: Speaker {
         var lastTime = NSDate().timeIntervalSince1970
         var elapsed = 0.0
         let duration: Double = durationOfTasks(tasks: self.tasks)
+        self.runningFlag = true
+        self.pauseFlag = false
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) {timer in
             if self.pauseFlag {
                 return
@@ -191,18 +195,21 @@ class ExerciseRunner: Speaker {
             lastTime = now
             
             self.tasks = attemptToPerformTask(tasks: self.tasks, elapsed: elapsed)
-            
+
+            if let cbProgress = self.onProgressReport {
+                cbProgress(elapsed, duration)
+            }
+
             if (elapsed > duration) {
                 timer.invalidate()
+                self.timer = nil
+                self.runningFlag = false
                 if let cb = self.onComplete {
                     cb()
                     return
                 }else {
                     return
                 }
-            }
-            if let cbProgress = self.onProgressReport {
-                cbProgress(elapsed, duration)
             }
         }
     }
@@ -214,7 +221,11 @@ class ExerciseRunner: Speaker {
     }
 }
 
-
+//
+// Keeping the paused flag sync'd in the SessionModel and ExerciseRunner is untidy
+// need to look at this to figure out how to do it
+// https://stackoverflow.com/questions/59036863/add-publisher-behaviour-for-computed-property
+//
 class SessionModel: ObservableObject {
     var exercises: Array<Exercise>
     var runner: ExerciseRunner?
@@ -225,16 +236,21 @@ class SessionModel: ObservableObject {
     @Published var duration: Double
     @Published var elapsed: Double
 
+    public var contentView: ContentView?
     public var progressCallback: ((Double, Double) ->())?
     public var onComplete: (()->())?
-    init() {
+
+    init(exercises: Array<Exercise>) {
         self.currentExerciseIndex = 0
-        self.exercises = loadExerciseFile()
+        self.exercises = exercises
         self.exercises = Array(self.exercises[0...2])
-        self.isPaused = false
+        self.isPaused = true
         self.isRunning = false
         self.duration = 100.0
         self.elapsed = 0.0
+    }
+    func play(){
+        self.go()
     }
     func go() {
         self.runner = ExerciseRunner(exercise: exercises[self.currentExerciseIndex])
@@ -248,6 +264,8 @@ class SessionModel: ObservableObject {
             self.elapsed = a
         }
         self.runner!.go()
+        self.isPaused = self.runner!.pauseFlag
+
     }
     func next() {
         if(self.currentExerciseIndex < self.exercises.count - 1) {
@@ -260,38 +278,21 @@ class SessionModel: ObservableObject {
             }
         }
     }
-    func prev() {
+    func previous() {
         self.currentExerciseIndex = (self.currentExerciseIndex + self.exercises.count - 1) % self.exercises.count
         self.go()
     }
     func togglePause() {
         if let r = self.runner {
+            if (!r.runningFlag) {
+                self.go()
+            } else {
+            
+            }
             r.togglePause()
             self.isPaused = r.pauseFlag
+        } else {
+            self.go()
         }
-    }
-}
-class FancyModel: ObservableObject {
-    var nbrExercises: Int
-    @Published var currentExerciseIndex: Int
-    @Published var isPaused: Bool
-    @Published var isRunning: Bool
-    @Published var duration: Double
-    @Published var elapsed: Double
-
-    var exercises: Array<Exercise>
-    var sessionRunner: SessionModel
-    var timer: Timer?
-    var contentView: ContentView?
-    
-    init (exercises: Array<Exercise>) {
-        self.exercises = exercises
-        self.nbrExercises = exercises.count
-        self.sessionRunner = SessionModel()
-        self.isPaused = false
-        self.isRunning = false
-        self.currentExerciseIndex = 0
-        self.duration = 0.0
-        self.elapsed = 0.0
     }
 }

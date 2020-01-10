@@ -29,15 +29,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-
-        sessionModel = SessionModel()
+        
+        let exercises: Array<Exercise> = loadExerciseFile()
+        sessionModel = SessionModel(exercises: exercises)
         sessionModel?.onComplete = {
             print("exercise suite complete")
         }
         sessionModel!.go()
-//        myTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-//            print("timer handler")
-//        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

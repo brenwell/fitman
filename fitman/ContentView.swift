@@ -10,9 +10,11 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @ObservedObject var state: ExerciseModel
+//    @ObservedObject var state: ExerciseModel
+    @ObservedObject var state: SessionModel
     @State var current: Int
     @State var playPauseLabel: String = "Play"
+    
     var body: some View {
             
 //        print("elapsed: \(self.state.elapsed) duration: \(self.state.duration) % \(self.state.elapsed/self.state.duration*100.0)")
@@ -54,9 +56,8 @@ struct ContentView: View {
                 CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
 
             }
-            
+
             Spacer()
-            
             
         }
         
@@ -78,7 +79,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct ProgressBar: View {
 
-    @ObservedObject var session: ExerciseModel
+    @ObservedObject var session: SessionModel
     
     var body: some View {
 //        var pdone: Double = self.state.elapsed / self.state.duration
@@ -89,16 +90,18 @@ struct ProgressBar: View {
 
 struct ProgressCircle: View {
 
-    @ObservedObject var session: ExerciseModel
+//    @ObservedObject var session: ExerciseModel
+    @ObservedObject var session: SessionModel
 
     var body: some View {
         
         let width: CGFloat = 10.0
         
         let bgColor = NSColor(named: NSColor.Name("progressBarBg"))
-        let barColor = (session.stateMachine?.state != SM_State.prelude)
-            ? NSColor(named: NSColor.Name("exerciseProgressBar"))
-            : NSColor(named: NSColor.Name("countInProgressBar"))
+        let barColor = NSColor(named: NSColor.Name("exerciseProgressBar"))
+//        let barColor = (session.stateMachine?.state != SM_State.prelude)
+//            ? NSColor(named: NSColor.Name("exerciseProgressBar"))
+//            : NSColor(named: NSColor.Name("countInProgressBar"))
         
         return ZStack {
             Circle()
@@ -123,7 +126,7 @@ extension Collection {
 }
 
 struct CurrentPrevNextView: View {
-    @ObservedObject var session: ExerciseModel
+    @ObservedObject var session: SessionModel
     var current: Int
     
     var body: some View {
@@ -142,7 +145,7 @@ struct CurrentPrevNextView: View {
 
 struct SessionView: View {
 
-    @ObservedObject var session: ExerciseModel
+    @ObservedObject var session: SessionModel
     var current: Int
     
     var body: some View {
