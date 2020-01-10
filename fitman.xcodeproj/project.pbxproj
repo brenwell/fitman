@@ -22,6 +22,7 @@
 		0E8EA7AB23C50A6100853440 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E8EA7A923C50A6100853440 /* Main.storyboard */; };
 		0E8EA7B723C50A6100853440 /* fitmanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EA7B623C50A6100853440 /* fitmanTests.swift */; };
 		0E8EA7C223C50A6100853440 /* fitmanUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EA7C123C50A6100853440 /* fitmanUITests.swift */; };
+		DA9C3D2E23C7F79800ACCE39 /* ResponderWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */; };
 		DAC8DA0523C792B3008E996D /* FancyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC8DA0423C792B3008E996D /* FancyTimer.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		0E8EA7BD23C50A6100853440 /* fitmanUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fitmanUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E8EA7C123C50A6100853440 /* fitmanUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fitmanUITests.swift; sourceTree = "<group>"; };
 		0E8EA7C323C50A6100853440 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponderWindow.swift; sourceTree = "<group>"; };
 		DAC8DA0423C792B3008E996D /* FancyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyTimer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,6 +128,7 @@
 				0E0A49FF23C5F2AF000134B1 /* StateMachine.swift */,
 				0E0A4A0023C5F2AF000134B1 /* Speaker.swift */,
 				0E0A4A0B23C68138000134B1 /* Sleeper.swift */,
+				DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */,
 				0E8EA7A223C50A5E00853440 /* ContentView.swift */,
 				0E8EA7A423C50A6100853440 /* Assets.xcassets */,
 				0E8EA7A923C50A6100853440 /* Main.storyboard */,
@@ -298,6 +301,7 @@
 				0E52217623C59B0300479741 /* ExerciseController.swift in Sources */,
 				0E0A4A0423C5F3C8000134B1 /* ExerciseModel.swift in Sources */,
 				0E0A4A0623C5F4C7000134B1 /* ExerciseLoader.swift in Sources */,
+				DA9C3D2E23C7F79800ACCE39 /* ResponderWindow.swift in Sources */,
 				0E0A4A0C23C68138000134B1 /* Sleeper.swift in Sources */,
 				DAC8DA0523C792B3008E996D /* FancyTimer.swift in Sources */,
 				0E8EA7A323C50A5E00853440 /* ContentView.swift in Sources */,

@@ -14,7 +14,7 @@ import AVFoundation
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var window: NSWindow!
+    var window: ResponderWindow!
     var exerciseController: ExerciseController?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -25,7 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let contentView = ContentView(state: self.exerciseController!.model, current: self.exerciseController!.model.currentExerciseIndex)
         self.exerciseController?.model.contentView = contentView
         // Create the window and set the content view. 
-        window = NSWindow(
+        window = ResponderWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)
@@ -39,4 +39,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
 }
-
