@@ -246,11 +246,26 @@ class SessionModel: ObservableObject {
     init(exercises: Array<Exercise>) {
         self.currentExerciseIndex = 0
         self.exercises = exercises
-//        self.exercises = Array(self.exercises[0...2])
+        self.exercises = Array(self.exercises[0...2])
         self.isPaused = true
         self.isRunning = false
         self.duration = 100.0
         self.elapsed = 0.0
+    }
+    func changeSession(exercises: Array<Exercise>) {
+        print("SessionModel::changeSession")
+        self.currentExerciseIndex = 0
+        self.exercises = exercises
+        self.exercises = Array(self.exercises[0...2])
+        self.isPaused = true
+        self.isRunning = false
+        self.duration = 100.0
+        self.elapsed = 0.0
+        if let r = self.runner {
+            r.stop()
+            self.runner = nil
+        }
+//        self.go()
     }
     func play(){
         self.go()

@@ -19,20 +19,20 @@ import AVFoundation
 
 
 func loadExercises(path: String) -> Array<Exercise> {
-    let yyy: Array<Exercise> = loadExerciseFile()
+    let yyy: Array<Exercise> = loadExerciseFile()["rob"]!
     return yyy
 }
-func loadExerciseFile() -> Array<Exercise> {
+func loadExerciseFile() -> SessionDatabase {
     if let filepath = Bundle.main.path(forResource: "exercise", ofType: "json") {
         do {
             let contents = try String(contentsOfFile: filepath)
-            print(contents)
+//            print(contents)
             let data = Data(contents.utf8)
             let decoder = JSONDecoder()
             do {
                 let exDb = try decoder.decode([String: [Exercise]].self, from: data)
                 let ex: [Exercise] = exDb["rob"]!
-                return ex
+                return exDb
             } catch {
                 exerciseErrorDialog(text: "JSON decode of exercise.json failed")
             }
@@ -43,5 +43,5 @@ func loadExerciseFile() -> Array<Exercise> {
     } else {
         exerciseErrorDialog(text: "JSON file exercise.json not found")
     }
-    return []
+    return ["rob":[]]
 }

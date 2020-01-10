@@ -10,22 +10,35 @@ import SwiftUI
 import Foundation
 import AVFoundation
 
-//var x : Exercise = Exercise(label:"This is a label", duration: 32)
-//var y : Array<Exercise> = [
-//    Exercise(label:"Push Ups, set of 5", duration: 40),
-//    Exercise(label:"Door stretch", duration: 30),
-//    Exercise(label:"FReverse plank", duration: 50),
-//    Exercise(label:"Wall stand", duration: 60),
-//]
+class ExerciseController: ObservableObject {
+    let exLabels: [String]
+    let model: SessionModel
+    var selectedSessionIndex: Int = 0
+    var previousSessionIndex: Int = 0
 
-class ExerciseController {
-//    var model: ExerciseModel
-    var model: SessionModel
+    @Published var sessionDb: SessionDatabase
+    
     init() {
-        let ex: Array<Exercise> = loadExercises(path: "")
-//        self.model = ExerciseModel(exercises: ex)
+        let sDb: SessionDatabase = loadExerciseFile();
+        self.selectedSessionIndex = 0
+        self.sessionDb = sDb
+
+        self.exLabels = sDb.map{$0.key}
+        let k: String = self.exLabels[0]
+        let ex: Array<Exercise> = sDb[k]!
         self.model = SessionModel(exercises: ex)
-//        self.model.go()
+    }
+    func changeSession(value: Int) {
+        print("ExercizeController::changeSession \(value)")
+        if (self.selectedSessionIndex == value) {
+            return
+        }
+        self.selectedSessionIndex = value
+        let k: String = self.exLabels[self.selectedSessionIndex]
+        print("ExercizeController::changeSession \(k)")
+        let ex: Array<Exercise> = self.sessionDb[k]!
+        self.selectedSessionIndex = value
+        self.model.changeSession(exercises: ex)
     }
 }
 

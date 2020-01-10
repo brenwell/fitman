@@ -11,22 +11,31 @@ import SwiftUI
 struct ContentView: View {
     
 //    @ObservedObject var state: ExerciseModel
+    var controller: ExerciseController
+    let sessionLabels: [String]
     @ObservedObject var state: SessionModel
     @State var current: Int
     @State var playPauseLabel: String = "Play"
-    
+    @State var selectedExerciseSet = 0
+    var previousSelectedExerciseSet: Int = 0
     var body: some View {
-            
-//        print("elapsed: \(self.state.elapsed) duration: \(self.state.duration) % \(self.state.elapsed/self.state.duration*100.0)")
+//        let exLabels: [String] = self.controller.exLabels
         return VStack(alignment: HorizontalAlignment.center, spacing: 20) {
-            
+        
             HStack(alignment: .center, spacing: 20)
             {
-                Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: Text("Excercise")) {
-                    /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
-                    /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
-                }
-                
+                SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet)
+//                VStack(alignment: HorizontalAlignment.leading) {
+//                    Picker(selection: $selectedExerciseSet, label: Text("Select Exercise Set from:")) {
+//                        ForEach(0 ..< exLabels.count) {
+//                           Text(exLabels[$0]).tag($0)
+//                        }
+//                    }.onReceive([self.selectedExerciseSet].publisher.first()) { (value) in
+//                        print("onReceive selected value \(value)")
+//                        self.controller.changeSession(value: value)
+//                    }
+//                    Text(" Selected Exercise Set: \(exLabels[selectedExerciseSet])")
+//                }
                 Spacer()
                 
                 Button(action: {
@@ -54,7 +63,6 @@ struct ContentView: View {
             ZStack(alignment: .center) {
                 ProgressCircle(session: self.state)
                 CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
-
             }
 
             Spacer()
@@ -71,9 +79,37 @@ struct ContentView_Previews: PreviewProvider {
         let exerciseController = ExerciseController()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(state: exerciseController.model, current: exerciseController.model.currentExerciseIndex)
+        let contentView = ContentView(
+            controller: exerciseController,
+            sessionLabels: exerciseController.exLabels,
+            state: exerciseController.model,
+            current: exerciseController.model.currentExerciseIndex)
         
         return contentView
+    }
+}
+
+// picks the exercise session to run.
+// Made into a separate View so that it is not updated by progress reporting
+struct SessionPicker: View {
+
+    var controller: ExerciseController
+    var exLabels: [String]
+    @Binding var selectedExerciseSet: Int
+
+    var body: some View {
+        return VStack(alignment: HorizontalAlignment.leading) {
+
+            Picker(selection: $selectedExerciseSet, label: Text("Select Exercise Set from:")) {
+                ForEach(0 ..< exLabels.count) {
+                   Text(self.exLabels[$0]).tag($0)
+                }
+            }.onReceive([self.selectedExerciseSet].publisher.first()) { (value) in
+                print("onReceive selected value \(value)")
+                self.controller.changeSession(value: value)
+            }
+            Text(" Selected Exercise Set: \(exLabels[selectedExerciseSet])")
+        }
     }
 }
 

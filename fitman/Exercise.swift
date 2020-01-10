@@ -17,3 +17,5 @@ struct Exercise: Identifiable, Decodable {
     var duration: Int
     var id: Int?
 }
+
+typealias SessionDatabase = [String: [Exercise]]
