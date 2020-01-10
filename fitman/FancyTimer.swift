@@ -215,16 +215,26 @@ class ExerciseRunner: Speaker {
 }
 
 
-class SessionRunner {
+class SessionModel: ObservableObject {
     var exercises: Array<Exercise>
     var runner: ExerciseRunner?
-    var currentExerciseIndex: Int
+
+    @Published var currentExerciseIndex: Int
+    @Published var isPaused: Bool
+    @Published var isRunning: Bool
+    @Published var duration: Double
+    @Published var elapsed: Double
+
     public var progressCallback: ((Double, Double) ->())?
     public var onComplete: (()->())?
     init() {
         self.currentExerciseIndex = 0
         self.exercises = loadExerciseFile()
         self.exercises = Array(self.exercises[0...2])
+        self.isPaused = false
+        self.isRunning = false
+        self.duration = 100.0
+        self.elapsed = 0.0
     }
     func go() {
         self.runner = ExerciseRunner(exercise: exercises[self.currentExerciseIndex])
@@ -234,9 +244,8 @@ class SessionRunner {
         }
         self.runner!.onProgressReport = { (a: Double, b: Double) in
             print("progress report \(a) \(b)")
-            if let cb = self.progressCallback {
-                cb(a,b)
-            }
+            self.duration = b
+            self.elapsed = a
         }
         self.runner!.go()
     }
@@ -258,6 +267,7 @@ class SessionRunner {
     func togglePause() {
         if let r = self.runner {
             r.togglePause()
+            self.isPaused = r.pauseFlag
         }
     }
 }
@@ -270,14 +280,14 @@ class FancyModel: ObservableObject {
     @Published var elapsed: Double
 
     var exercises: Array<Exercise>
-    var sessionRunner: SessionRunner
+    var sessionRunner: SessionModel
     var timer: Timer?
     var contentView: ContentView?
     
     init (exercises: Array<Exercise>) {
         self.exercises = exercises
         self.nbrExercises = exercises.count
-        self.sessionRunner = SessionRunner()
+        self.sessionRunner = SessionModel()
         self.isPaused = false
         self.isRunning = false
         self.currentExerciseIndex = 0

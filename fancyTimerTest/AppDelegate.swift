@@ -9,7 +9,7 @@
 import Cocoa
 import SwiftUI
 
-var suiteRunner: SessionRunner?
+var sessionModel: SessionModel?
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -29,11 +29,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-        suiteRunner = SessionRunner()
-        suiteRunner?.onComplete = {
+
+        sessionModel = SessionModel()
+        sessionModel?.onComplete = {
             print("exercise suite complete")
         }
-        suiteRunner!.go()
+        sessionModel!.go()
 //        myTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
 //            print("timer handler")
 //        }
