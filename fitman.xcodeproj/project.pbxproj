@@ -37,6 +37,8 @@
 		0EF4DA3D23C798CD0004F3F9 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF4DA3B23C7989B0004F3F9 /* Exercise.swift */; };
 		0EF4DA3E23C7A1410004F3F9 /* exercise.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E0A4A0723C5FD5B000134B1 /* exercise.json */; };
 		DAC8DA0523C792B3008E996D /* SessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC8DA0423C792B3008E996D /* SessionModel.swift */; };
+		DA9C3D2E23C7F79800ACCE39 /* ResponderWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */; };
+		DAC8DA0523C792B3008E996D /* FancyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC8DA0423C792B3008E996D /* FancyTimer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +92,8 @@
 		0EF4DA3123C797600004F3F9 /* fancyTimerTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = fancyTimerTest.entitlements; sourceTree = "<group>"; };
 		0EF4DA3B23C7989B0004F3F9 /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
 		DAC8DA0423C792B3008E996D /* SessionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionModel.swift; sourceTree = "<group>"; };
+		DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponderWindow.swift; sourceTree = "<group>"; };
+		DAC8DA0423C792B3008E996D /* FancyTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyTimer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +165,7 @@
 				0E0A49FF23C5F2AF000134B1 /* StateMachineV2.swift */,
 				0E0A4A0023C5F2AF000134B1 /* Speaker.swift */,
 				0E0A4A0B23C68138000134B1 /* Sleeper.swift */,
+				DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */,
 				0E8EA7A223C50A5E00853440 /* ContentView.swift */,
 				0E8EA7A423C50A6100853440 /* Assets.xcassets */,
 				0E8EA7A923C50A6100853440 /* Main.storyboard */,
@@ -387,6 +392,7 @@
 				0E52217623C59B0300479741 /* ExerciseController.swift in Sources */,
 				0E0A4A0423C5F3C8000134B1 /* ExerciseModel.swift in Sources */,
 				0E0A4A0623C5F4C7000134B1 /* ExerciseLoader.swift in Sources */,
+				DA9C3D2E23C7F79800ACCE39 /* ResponderWindow.swift in Sources */,
 				0E0A4A0C23C68138000134B1 /* Sleeper.swift in Sources */,
 				DAC8DA0523C792B3008E996D /* SessionModel.swift in Sources */,
 				0EF4DA3C23C7989B0004F3F9 /* Exercise.swift in Sources */,
