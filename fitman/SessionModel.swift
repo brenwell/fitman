@@ -78,7 +78,8 @@ func buildTasks(exercise: Exercise) -> Array<Task> {
 
     tasks.append(Task(elapsed: exerciseStartElapsed - 3.0, action: playPop(elapsed:)))
     tasks.append(Task(elapsed: exerciseStartElapsed - 2.0, action: playPop(elapsed:)))
-    tasks.append(Task(elapsed: exerciseStartElapsed - 1.0, action: playPurr(elapsed:)))
+//    tasks.append(Task(elapsed: exerciseStartElapsed - 1.0, action: playPurr(elapsed:)))
+    tasks.append(Task(elapsed: exerciseStartElapsed - 1.0, action: playProgressAnnoucement(text: "Go")))
     for i in 0...exercise.duration - 20 {
         if(i % 10 == 0) {
             let txt: String = "\(10+i)"

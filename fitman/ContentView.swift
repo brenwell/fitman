@@ -10,59 +10,31 @@ import SwiftUI
 
 struct ContentView: View {
     
-//    @ObservedObject var state: ExerciseModel
     var controller: ExerciseController
     let sessionLabels: [String]
+    var previousSelectedExerciseSet: Int = 0
+    
     @ObservedObject var state: SessionModel
     @State var current: Int
     @State var playPauseLabel: String = "Play"
     @State var selectedExerciseSet = 0
-    var previousSelectedExerciseSet: Int = 0
+    
     var body: some View {
-//        let exLabels: [String] = self.controller.exLabels
+
         return VStack(alignment: HorizontalAlignment.center, spacing: 20) {
         
             HStack(alignment: .center, spacing: 20)
             {
                 SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet)
-//                VStack(alignment: HorizontalAlignment.leading) {
-//                    Picker(selection: $selectedExerciseSet, label: Text("Select Exercise Set from:")) {
-//                        ForEach(0 ..< exLabels.count) {
-//                           Text(exLabels[$0]).tag($0)
-//                        }
-//                    }.onReceive([self.selectedExerciseSet].publisher.first()) { (value) in
-//                        print("onReceive selected value \(value)")
-//                        self.controller.changeSession(value: value)
-//                    }
-//                    Text(" Selected Exercise Set: \(exLabels[selectedExerciseSet])")
-//                }
-                Spacer()
-                
-                Button(action: {
-                    self.state.previous()
-                }) {
-                    Text("Previous")
-                }
-                Button(action: {
-                    self.state.togglePause()
-                    self.playPauseLabel = !self.state.isPaused ? "Pause" : "Play"
-                }) {
-//                    Text(!self.state.isPaused ? "Start" : "Stop")
-                        Text(self.playPauseLabel)
-                }
-                Button(action: {
-                    self.state.next()
-                }) {
-                    Text("Next")
-                }
-                
+//                Spacer()
+                ControlButtons(state: state, playPauseLabel: playPauseLabel)
             }.padding(10)
-            
-            Spacer()
+
+            CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
+//            Spacer()
 
             ZStack(alignment: .center) {
                 ProgressCircle(session: self.state)
-                CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
             }
 
             Spacer()
@@ -89,8 +61,10 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+//
 // picks the exercise session to run.
 // Made into a separate View so that it is not updated by progress reporting
+//
 struct SessionPicker: View {
 
     var controller: ExerciseController
@@ -108,7 +82,33 @@ struct SessionPicker: View {
                 print("onReceive selected value \(value)")
                 self.controller.changeSession(value: value)
             }
-            Text(" Selected Exercise Set: \(exLabels[selectedExerciseSet])")
+//            Text(" Selected Exercise Set: \(exLabels[selectedExerciseSet])")
+        }
+    }
+}
+
+struct ControlButtons: View {
+    @ObservedObject var state: SessionModel
+    @State var playPauseLabel: String = "Play"
+
+    var body: some View {
+        return HStack(alignment: .center, spacing: 20) {
+            Button(action: {
+                self.state.previous()
+            }) {
+                Text("Previous")
+            }
+            Button(action: {
+                self.state.togglePause()
+                self.playPauseLabel = !self.state.isPaused ? "Pause" : "Play"
+            }) {
+                    Text(self.playPauseLabel)
+            }
+            Button(action: {
+                self.state.next()
+            }) {
+                Text("Next")
+            }
         }
     }
 }
@@ -131,10 +131,11 @@ struct ProgressCircle: View {
 
     var body: some View {
         
-        let width: CGFloat = 10.0
+        let width: CGFloat = 250.0
+        let frameWidth: CGFloat = 250.0
         
         let bgColor = NSColor(named: NSColor.Name("progressBarBg"))
-        let barColor = NSColor(named: NSColor.Name("exerciseProgressBar"))
+        let barColor = NSColor(named: NSColor.Name("Progressbar"))
 //        let barColor = (session.stateMachine?.state != SM_State.prelude)
 //            ? NSColor(named: NSColor.Name("exerciseProgressBar"))
 //            : NSColor(named: NSColor.Name("countInProgressBar"))
@@ -142,12 +143,12 @@ struct ProgressCircle: View {
         return ZStack {
             Circle()
                 .stroke(Color(bgColor!), lineWidth: width)
-                .frame(width:500)
+                .frame(width: frameWidth)
                 .rotationEffect(Angle(degrees:-90))
             Circle()
                 .trim(from: 0.0, to: CGFloat(session.elapsed / session.duration))
                 .stroke(Color(barColor!), lineWidth: width)
-                .frame(width:500)
+                .frame(width: frameWidth)
                 .rotationEffect(Angle(degrees:-90))
         }
     }
