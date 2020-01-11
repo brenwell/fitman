@@ -128,33 +128,14 @@ func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
         
         return attemptToPerformTask(tasks: mutableTasks, elapsed: elapsed)
     }
-//    print("attemptToPerformTask:: return nothing to do size: \(mutableTasks.count)")
     return mutableTasks
 }
 
-
-// Executes a task stack
-//func doPerform(tasks: [Task], frequency: Double, onProgress: @escaping (Double) -> Void) {
 //
-//    var mutableTasks = tasks
-//    let start = NSDate().timeIntervalSince1970
-//    let duration: Double = durationOfTasks(tasks: tasks)
-//    Timer.scheduledTimer(withTimeInterval: frequency, repeats: true) { timer in
-//        let now = NSDate().timeIntervalSince1970
-//        let elapsed = now - start
+// Plays a single Exercise allowing the play to be paused and restarted.
+// Creating another instance of this class for each new Exercise
 //
-//        mutableTasks = attemptToPerformTask(tasks: mutableTasks, elapsed: elapsed)
-//
-//        if (elapsed > duration) {
-//            timer.invalidate()
-//            return
-//        }
-//        onProgress(elapsed)
-//    }
-//}
-//
-
-class ExerciseRunner: Speaker {
+class ExercisePlayer: Speaker {
     var frequency: Double
     var exercise: Exercise
     var tasks: Array<Task>
@@ -163,6 +144,7 @@ class ExerciseRunner: Speaker {
     var timer: Timer?
     var pauseFlag: Bool
     var runningFlag: Bool
+    
     init(exercise: Exercise) {
         self.pauseFlag = false
         self.runningFlag = false
@@ -171,9 +153,16 @@ class ExerciseRunner: Speaker {
         self.tasks = buildTasks(exercise: self.exercise)
         super.init()
     }
-    func go() {
+    public func go() {
         self.announce(self.exercise)
     }
+    public func stop() {
+        self.timer?.invalidate()
+    }
+    public func togglePause() {
+        self.pauseFlag = !self.pauseFlag
+    }
+
     override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         print("didFinish")
         // note this may be executed not on the main thread
@@ -181,7 +170,7 @@ class ExerciseRunner: Speaker {
             self.doPerform()
         }
     }
-    func doPerform() {
+    private func doPerform() {
         var lastTime = NSDate().timeIntervalSince1970
         var elapsed = 0.0
         let duration: Double = durationOfTasks(tasks: self.tasks)
@@ -216,114 +205,5 @@ class ExerciseRunner: Speaker {
     }
     @objc func handleTimer() {
         print("timer")
-    }
-    func stop() {
-        self.timer?.invalidate()
-    }
-    func togglePause() {
-        self.pauseFlag = !self.pauseFlag
-    }
-}
-
-//
-// Keeping the paused flag sync'd in the SessionModel and ExerciseRunner is untidy
-// need to look at this to figure out how to do it
-// https://stackoverflow.com/questions/59036863/add-publisher-behaviour-for-computed-property
-//
-class SessionViewModel: ObservableObject {
-    var exercises: Array<Exercise>
-    var runner: ExerciseRunner?
-
-    @Published var currentExerciseIndex: Int
-    @Published var isPaused: Bool
-    @Published var isRunning: Bool
-    @Published var duration: Double
-    @Published var elapsed: Double
-
-    public var progressCallback: ((Double, Double) ->())?
-    public var onComplete: (()->())?
-
-    init(exercises: Array<Exercise>) {
-        // this is because Swift insists that all properties be initialized before
-        // I can call any methods. Hence the initialization has to happen twice.
-        // Or I make the Controllers Model property @Published
-        self.currentExerciseIndex = 0
-        self.exercises = exercises
-        self.exercises = Array(self.exercises[0...2])
-        self.isPaused = true
-        self.isRunning = false
-        self.duration = 100.0
-        self.elapsed = 0.0
-    }
-    func changeSession(exercises: Array<Exercise>) {
-        print("SessionModel::changeSession")
-        self.currentExerciseIndex = 0
-        self.exercises = exercises
-        self.exercises = Array(self.exercises[0...2])
-        self.isPaused = true
-        self.isRunning = false
-        self.duration = 100.0
-        self.elapsed = 0.0
-        if let r = self.runner {
-            r.stop()
-            self.runner = nil
-        }
-//        self.go()
-    }
-    func play(){
-        self.go()
-    }
-    func go() {
-        self.runner = ExerciseRunner(exercise: exercises[self.currentExerciseIndex])
-        self.runner!.onComplete = {
-            print("runner complete")
-            self.next()
-        }
-        self.runner!.onProgressReport = { (a: Double, b: Double) in
-            print("progress report \(a) \(b)")
-            self.duration = b
-            self.elapsed = a
-        }
-        self.runner!.go()
-        self.isPaused = self.runner!.pauseFlag
-
-    }
-    func next() {
-        if let r = self.runner {
-            r.stop()
-            self.runner = nil
-        }
-        self.elapsed = 0.0; self.duration = 100.0
-        if(self.currentExerciseIndex < self.exercises.count - 1) {
-            self.currentExerciseIndex += 1
-            self.go()
-        } else {
-            print("all exercises complete")
-            if let cb = self.onComplete {
-                cb()
-            }
-        }
-    }
-    func previous() {
-        if let r = self.runner {
-            r.stop()
-            self.runner = nil
-        }
-        self.elapsed = 0.0; self.duration = 100.0
-        self.currentExerciseIndex = (self.currentExerciseIndex + self.exercises.count - 1) % self.exercises.count
-        self.go()
-    }
-    func togglePause() {
-        if let r = self.runner {
-            if (!r.runningFlag) {
-                self.go()
-            } else {
-            
-            }
-            r.togglePause()
-            self.isPaused = r.pauseFlag
-        } else {
-            self.go()
-        }
     }
 }

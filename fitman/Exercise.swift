@@ -7,6 +7,9 @@
 //
 
 import Foundation
+
+// An exercise session consists of a list of exercise descriptions and
+// a time drutaion for which each exercise should be performed
 struct Exercise: Identifiable, Decodable {
         private enum CodingKeys : String, CodingKey {
             case label = "label"
@@ -18,4 +21,7 @@ struct Exercise: Identifiable, Decodable {
     var id: Int?
 }
 
-typealias SessionDatabase = [String: [Exercise]]
+typealias ExerciseSession = Array<Exercise>
+
+// This type holds a database of named Exercise (exercise sessions)
+typealias ExerciseSessionDatabase = [String: ExerciseSession]

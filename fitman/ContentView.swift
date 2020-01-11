@@ -36,9 +36,7 @@ struct ContentView: View {
             ZStack(alignment: .center) {
                 ProgressCircle(session: self.state)
             }
-
             Spacer()
-            
         }
         
         
@@ -82,7 +80,6 @@ struct SessionPicker: View {
                 print("onReceive selected value \(value)")
                 self.controller.changeSession(value: value)
             }
-//            Text(" Selected Exercise Set: \(exLabels[selectedExerciseSet])")
         }
     }
 }
@@ -100,9 +97,8 @@ struct ControlButtons: View {
             }
             Button(action: {
                 self.state.togglePause()
-                self.playPauseLabel = !self.state.isPaused ? "Pause" : "Play"
             }) {
-                    Text(self.playPauseLabel)
+                    Text(self.state.buttonLabel)
             }
             Button(action: {
                 self.state.next()

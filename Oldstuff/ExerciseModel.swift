@@ -20,12 +20,12 @@
 //    @Published var duration: Double
 //    @Published var elapsed: Double
 //
-//    var exercises: Array<Exercise>
+//    var exercises: ExerciseSession
 //    var stateMachine: StateMachine?
 //    var timer: Timer?
 //    var contentView: ContentView?
 //    
-//    init (exercises: Array<Exercise>) {
+//    init (exercises: ExerciseSession) {
 //        self.exercises = exercises
 //        self.nbrExercises = exercises.count
 //        self.isPaused = false

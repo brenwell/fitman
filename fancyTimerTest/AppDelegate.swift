@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         
-        let exercises: Array<Exercise> = loadExerciseFile()
+        let exercises: ExerciseSession = loadExerciseFile()
         sessionModel = SessionModel(exercises: exercises)
         sessionModel?.onComplete = {
             print("exercise suite complete")

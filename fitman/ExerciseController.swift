@@ -16,16 +16,16 @@ class ExerciseController: ObservableObject {
     var selectedSessionIndex: Int = 0
     var previousSessionIndex: Int = 0
 
-    @Published var sessionDb: SessionDatabase
+    @Published var sessionDb: ExerciseSessionDatabase
     
     init() {
-        let sDb: SessionDatabase = loadExerciseFile();
+        let sDb: ExerciseSessionDatabase = loadExerciseFile();
         self.selectedSessionIndex = 0
         self.sessionDb = sDb
 
         self.exLabels = sDb.map{$0.key}
         let k: String = self.exLabels[0]
-        let ex: Array<Exercise> = sDb[k]!
+        let ex: ExerciseSession = sDb[k]!
         self.model = SessionViewModel(exercises: ex)
     }
     func changeSession(value: Int) {
@@ -36,7 +36,7 @@ class ExerciseController: ObservableObject {
         self.selectedSessionIndex = value
         let k: String = self.exLabels[self.selectedSessionIndex]
         print("ExercizeController::changeSession \(k)")
-        let ex: Array<Exercise> = self.sessionDb[k]!
+        let ex: ExerciseSession = self.sessionDb[k]!
         self.selectedSessionIndex = value
         self.model.changeSession(exercises: ex)
     }
