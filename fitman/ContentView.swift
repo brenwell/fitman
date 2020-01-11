@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+let flag = false
+
 struct ContentView: View {
     
     var controller: ExerciseController
@@ -26,19 +28,23 @@ struct ContentView: View {
             HStack(alignment: .center, spacing: 20)
             {
                 SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet)
-//                Spacer()
+                Spacer()
                 ControlButtons(state: state, playPauseLabel: playPauseLabel)
             }.padding(10)
 
-            CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
-//            Spacer()
+            if (flag) {
+                CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
+                }
+            Spacer()
 
             ZStack(alignment: .center) {
                 ProgressCircle(session: self.state)
+                if (!flag) {
+                    CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
+                }
             }
             Spacer()
-        }.frame(width:900, height:800).background(Color(.sRGB, white: 0.8, opacity: 1))
-        
+        }.background(Color(.sRGB, white: 0.8, opacity: 1))
         
     }
 }
@@ -71,7 +77,7 @@ struct SessionPicker: View {
 
     var body: some View {
         return VStack(alignment: HorizontalAlignment.leading) {
-
+        
             Picker(selection: $selectedExerciseSet, label: Text("Select Exercise Set from:")) {
                 ForEach(0 ..< exLabels.count) {
                    Text(self.exLabels[$0]).tag($0)
@@ -122,16 +128,17 @@ struct ProgressBar: View {
 
 struct ProgressCircle: View {
 
-//    @ObservedObject var session: ExerciseModel
     @ObservedObject var session: SessionViewModel
 
     var body: some View {
-        
-        let width: CGFloat = 250.0
-        let frameWidth: CGFloat = 250.0
+
+        let width: CGFloat = (flag) ? 250.0 : 20.0
+        let frameWidth: CGFloat = (flag) ? 250.0 : 600.0
         
         let bgColor = NSColor(named: NSColor.Name("progressBarBg"))
-        let barColor = NSColor(named: NSColor.Name("Progressbar"))
+        let barColor = (flag)
+            ? NSColor(named: NSColor.Name("Progressbar"))
+            : NSColor(named: NSColor.Name("exerciseProgressBar"))
 //        let barColor = (session.stateMachine?.state != SM_State.prelude)
 //            ? NSColor(named: NSColor.Name("exerciseProgressBar"))
 //            : NSColor(named: NSColor.Name("countInProgressBar"))

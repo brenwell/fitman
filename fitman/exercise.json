@@ -1,16 +1,16 @@
 {
     "test1" :[
-       { "label": "Test 1 Door stretch", "duration": 30 },
+       { "label": "T1 Door stretch", "duration": 30 },
        { "label": "Wall stand", "duration": 20 }
     ],
     "test2" :[
-        { "label": "Test 2 Door stretch", "duration": 30 },
+        { "label": "T2 Door stretch", "duration": 30 },
         { "label": "Wall stand", "duration": 20 }
     ],
     "rob" : [
-        { "label": "Door stretch", "duration": 30 },
+        { "label": "Door stretch", "duration": 60 },
         { "label": "Wall stand", "duration": 60 },
-        { "label": "Door stretch", "duration": 20 },
+        { "label": "Door stretch", "duration": 60 },
         { "label": "Wall stand", "duration": 60 },
         { "label": "Door stretch", "duration": 60 },
         { "label": "Wall stand", "duration": 60 },
