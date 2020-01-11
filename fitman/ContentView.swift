@@ -14,7 +14,7 @@ struct ContentView: View {
     let sessionLabels: [String]
     var previousSelectedExerciseSet: Int = 0
     
-    @ObservedObject var state: SessionModel
+    @ObservedObject var state: SessionViewModel
     @State var current: Int
     @State var playPauseLabel: String = "Play"
     @State var selectedExerciseSet = 0
@@ -88,7 +88,7 @@ struct SessionPicker: View {
 }
 
 struct ControlButtons: View {
-    @ObservedObject var state: SessionModel
+    @ObservedObject var state: SessionViewModel
     @State var playPauseLabel: String = "Play"
 
     var body: some View {
@@ -115,7 +115,7 @@ struct ControlButtons: View {
 
 struct ProgressBar: View {
 
-    @ObservedObject var session: SessionModel
+    @ObservedObject var session: SessionViewModel
     
     var body: some View {
 //        var pdone: Double = self.state.elapsed / self.state.duration
@@ -127,7 +127,7 @@ struct ProgressBar: View {
 struct ProgressCircle: View {
 
 //    @ObservedObject var session: ExerciseModel
-    @ObservedObject var session: SessionModel
+    @ObservedObject var session: SessionViewModel
 
     var body: some View {
         
@@ -163,7 +163,7 @@ extension Collection {
 }
 
 struct CurrentPrevNextView: View {
-    @ObservedObject var session: SessionModel
+    @ObservedObject var session: SessionViewModel
     var current: Int
     
     var body: some View {
@@ -182,7 +182,7 @@ struct CurrentPrevNextView: View {
 
 struct SessionView: View {
 
-    @ObservedObject var session: SessionModel
+    @ObservedObject var session: SessionViewModel
     var current: Int
     
     var body: some View {

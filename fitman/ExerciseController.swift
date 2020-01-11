@@ -12,7 +12,7 @@ import AVFoundation
 
 class ExerciseController: ObservableObject {
     let exLabels: [String]
-    let model: SessionModel
+    let model: SessionViewModel
     var selectedSessionIndex: Int = 0
     var previousSessionIndex: Int = 0
 
@@ -26,7 +26,7 @@ class ExerciseController: ObservableObject {
         self.exLabels = sDb.map{$0.key}
         let k: String = self.exLabels[0]
         let ex: Array<Exercise> = sDb[k]!
-        self.model = SessionModel(exercises: ex)
+        self.model = SessionViewModel(exercises: ex)
     }
     func changeSession(value: Int) {
         print("ExercizeController::changeSession \(value)")

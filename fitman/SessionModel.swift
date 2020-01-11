@@ -230,7 +230,7 @@ class ExerciseRunner: Speaker {
 // need to look at this to figure out how to do it
 // https://stackoverflow.com/questions/59036863/add-publisher-behaviour-for-computed-property
 //
-class SessionModel: ObservableObject {
+class SessionViewModel: ObservableObject {
     var exercises: Array<Exercise>
     var runner: ExerciseRunner?
 
@@ -240,11 +240,13 @@ class SessionModel: ObservableObject {
     @Published var duration: Double
     @Published var elapsed: Double
 
-//    public var contentView: ContentView?
     public var progressCallback: ((Double, Double) ->())?
     public var onComplete: (()->())?
 
     init(exercises: Array<Exercise>) {
+        // this is because Swift insists that all properties be initialized before
+        // I can call any methods. Hence the initialization has to happen twice.
+        // Or I make the Controllers Model property @Published
         self.currentExerciseIndex = 0
         self.exercises = exercises
         self.exercises = Array(self.exercises[0...2])
