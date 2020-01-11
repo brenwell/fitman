@@ -31,13 +31,15 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "mac",
       "size" : "256x256",
+      "idiom" : "mac",
+      "filename" : "slim-fit-figure-body-round-fitness-256.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "mac",
       "size" : "256x256",
+      "idiom" : "mac",
+      "filename" : "slim-fit-figure-body-round-fitness-512.png",
       "scale" : "2x"
     },
     {

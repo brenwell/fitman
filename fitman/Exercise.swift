@@ -21,7 +21,8 @@ struct Exercise: Identifiable, Decodable {
     var id: Int?
 }
 
+// An exercise session is a list of exercises
 typealias ExerciseSession = Array<Exercise>
 
-// This type holds a database of named Exercise (exercise sessions)
+// This type holds a database of named ExerciseSession (exercise sessions)
 typealias ExerciseSessionDatabase = [String: ExerciseSession]

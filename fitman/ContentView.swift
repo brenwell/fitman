@@ -37,7 +37,7 @@ struct ContentView: View {
                 ProgressCircle(session: self.state)
             }
             Spacer()
-        }
+        }.frame(width:900, height:800).background(Color(.sRGB, white: 0.8, opacity: 1))
         
         
     }
