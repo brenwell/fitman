@@ -27,7 +27,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             controller: self.exerciseController!,
             sessionLabels: labels,
             state: self.exerciseController!.model,
-            current: self.exerciseController!.model.currentExerciseIndex)
+            current: self.exerciseController!.model.currentExerciseIndex,
+            selectedExerciseSet: self.exerciseController!.selectedSessionIndex
+            )
         
 //        self.exerciseController?.model.contentView = contentView // dont thinnk I need this anymore
         

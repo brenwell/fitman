@@ -44,7 +44,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0E0A49FF23C5F2AF000134B1 /* StateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
 		0E0A4A0023C5F2AF000134B1 /* Speaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		0E0A4A0323C5F3C8000134B1 /* ExerciseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		0E0A4A0523C5F4C7000134B1 /* ExerciseLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseLoader.swift; sourceTree = "<group>"; };
@@ -131,7 +130,6 @@
 				0E52217523C59B0300479741 /* ExerciseController.swift */,
 				0E0A4A0523C5F4C7000134B1 /* ExerciseLoader.swift */,
 				0E0A4A0323C5F3C8000134B1 /* ExerciseModel.swift */,
-				0E0A49FF23C5F2AF000134B1 /* StateMachine.swift */,
 				0E0A4A0023C5F2AF000134B1 /* Speaker.swift */,
 				0E0A4A0B23C68138000134B1 /* Sleeper.swift */,
 				DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */,

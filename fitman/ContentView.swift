@@ -19,7 +19,7 @@ struct ContentView: View {
     @ObservedObject var state: SessionViewModel
     @State var current: Int
     @State var playPauseLabel: String = "Play"
-    @State var selectedExerciseSet = 0
+    @State var selectedExerciseSet: Int
     
     var body: some View {
 
@@ -59,7 +59,9 @@ struct ContentView_Previews: PreviewProvider {
             controller: exerciseController,
             sessionLabels: exerciseController.exLabels,
             state: exerciseController.model,
-            current: exerciseController.model.currentExerciseIndex)
+            current: exerciseController.model.currentExerciseIndex,
+            selectedExerciseSet: exerciseController.selectedSessionIndex
+            )
         
         return contentView
     }
