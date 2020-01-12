@@ -20,15 +20,27 @@ struct ContentView: View {
     @State var current: Int
     @State var playPauseLabel: String = "Play"
     @State var selectedExerciseSet: Int
-    
+    @State var someNumber = "999"
     var body: some View {
 
         return VStack(alignment: HorizontalAlignment.center, spacing: 20) {
         
             HStack(alignment: .center, spacing: 20)
             {
-                SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet)
                 Spacer()
+                SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet)
+                Text("Prelude Delay: ")
+                FancyTextField(someNumber: $someNumber)
+//                TextField("Number", text: $someNumber, onEditingChanged: {
+//                    print("onEditChange \($0)")
+//
+//                }).onReceive(
+//                        someNumber.publisher.last(), perform: { ch in
+//                            print("textfield \(ch) \(self.someNumber)")
+//                })
+                Spacer()
+            }
+            HStack(alignment: .center, spacing: 20) {
                 ControlButtons(state: state, playPauseLabel: playPauseLabel)
             }.padding(10)
 
@@ -46,6 +58,45 @@ struct ContentView: View {
             Spacer()
         }.background(Color(.sRGB, white: 0.8, opacity: 1))
         
+    }
+}
+extension String  {
+    var isNumber: Bool {
+        return !isEmpty && rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+    }
+}
+extension String {
+    var digits: String {
+        return components(separatedBy: CharacterSet.decimalDigits.inverted)
+            .joined()
+    }
+}
+struct FancyTextField: View {
+    @Binding var someNumber: String
+    var body: some View {
+        var flag: Bool = false
+        var buffer: String = "\(self.someNumber)"
+        return TextField("Number", text: $someNumber, onEditingChanged: {
+            print("onEditChange \($0)")
+            flag = $0
+        }).onReceive(someNumber.publisher.last(), perform: { ch in
+            if(!self.someNumber.isNumber) {
+                let fixit = self.someNumber.digits
+                self.someNumber = fixit
+                buffer = fixit
+            }
+            print("textfield \(ch) \(buffer) \(self.someNumber) \(flag)")
+                    
+        })
+    }
+    func onStoppedEditing() {
+    
+    }
+    func onStartEditing() {
+    
+    }
+    func applyCharacter() {
+    
     }
 }
 
