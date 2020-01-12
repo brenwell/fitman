@@ -22,8 +22,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.exerciseController = ExerciseController()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(state: self.exerciseController!.model, current: self.exerciseController!.model.currentExerciseIndex)
-        self.exerciseController?.model.contentView = contentView
+        let labels: Array<String> = Array(self.exerciseController!.exLabels)
+        let contentView = ContentView(
+            controller: self.exerciseController!,
+            sessionLabels: labels,
+            state: self.exerciseController!.model,
+            current: self.exerciseController!.model.currentExerciseIndex)
+        
+//        self.exerciseController?.model.contentView = contentView // dont thinnk I need this anymore
+        
         // Create the window and set the content view. 
         window = ResponderWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
@@ -33,6 +40,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
+        window.model = self.exerciseController?.model
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
