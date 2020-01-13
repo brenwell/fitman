@@ -28,17 +28,19 @@ struct ContentView: View {
             HStack(alignment: .center, spacing: 20)
             {
                 Spacer()
-                SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet)
-                Text("Prelude Delay: ")
-                FancyTextField(someNumber: $someNumber)
-//                TextField("Number", text: $someNumber, onEditingChanged: {
-//                    print("onEditChange \($0)")
-//
-//                }).onReceive(
-//                        someNumber.publisher.last(), perform: { ch in
-//                            print("textfield \(ch) \(self.someNumber)")
-//                })
-                Spacer()
+                if ( (state.buttonState != ViewModelState.Playing)
+                    && (state.buttonState != ViewModelState.Paused)) {
+                    SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet)
+                    Text("Prelude Delay: ")
+                    FancyTextField(someNumber: $someNumber)
+                    Spacer()
+                } else {
+                    VStack() {
+                    Text("Playing Session: \(self.sessionLabels[self.selectedExerciseSet])")
+                    }
+                    Spacer()
+                    
+                }
             }
             HStack(alignment: .center, spacing: 20) {
                 ControlButtons(state: state, playPauseLabel: playPauseLabel)
@@ -71,6 +73,31 @@ extension String {
             .joined()
     }
 }
+// sample of input an integer
+struct TestView: View {
+    @State var someNumber: Int = 123
+
+    var body: some View {
+        let someNumberProxy = Binding<String>(
+            get: { String(format: "%.02f", Double(self.someNumber)) },
+            set: {
+                if let value = NumberFormatter().number(from: $0.digits) {
+                    let v = value.intValue
+                    if (v >= 0) {
+                        self.someNumber = value.intValue
+                    }
+                }
+            }
+        )
+
+        return VStack {
+            TextField("Number", text: someNumberProxy)
+
+            Text("number: \(someNumber)")
+        }
+      }
+}
+
 struct FancyTextField: View {
     @Binding var someNumber: String
     var body: some View {
