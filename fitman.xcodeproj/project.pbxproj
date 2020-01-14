@@ -12,6 +12,13 @@
 		0E0A4A0823C5FD5B000134B1 /* exercise.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E0A4A0723C5FD5B000134B1 /* exercise.json */; };
 		0E0A4A0A23C605C9000134B1 /* ExerciseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0A4A0923C605C9000134B1 /* ExerciseError.swift */; };
 		0E0A4A0C23C68138000134B1 /* Sleeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0A4A0B23C68138000134B1 /* Sleeper.swift */; };
+		0E1088D323CD121600A9F2E2 /* TabbedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088D223CD121500A9F2E2 /* TabbedContentView.swift */; };
+		0E1088D623CD138200A9F2E2 /* SingleContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088D523CD138200A9F2E2 /* SingleContentView.swift */; };
+		0E1088D923CD1E3600A9F2E2 /* ComponentViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088D723CD1E3600A9F2E2 /* ComponentViews.swift */; };
+		0E1088DD23CD1FB400A9F2E2 /* DefaultsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088DB23CD1FB400A9F2E2 /* DefaultsViews.swift */; };
+		0E1088DE23CD1FB400A9F2E2 /* RunViews copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088DC23CD1FB400A9F2E2 /* RunViews copy.swift */; };
+		0E1088E023CD23E900A9F2E2 /* NumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088DF23CD23E900A9F2E2 /* NumberTextField.swift */; };
+		0E1088E223CDEE3800A9F2E2 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088E123CDEE3800A9F2E2 /* Defaults.swift */; };
 		0E52217623C59B0300479741 /* ExerciseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52217523C59B0300479741 /* ExerciseController.swift */; };
 		0E8EA7A123C50A5E00853440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EA7A023C50A5E00853440 /* AppDelegate.swift */; };
 		0E8EA7A323C50A5E00853440 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EA7A223C50A5E00853440 /* ContentView.swift */; };
@@ -50,6 +57,13 @@
 		0E0A4A0723C5FD5B000134B1 /* exercise.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exercise.json; sourceTree = "<group>"; };
 		0E0A4A0923C605C9000134B1 /* ExerciseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseError.swift; sourceTree = "<group>"; };
 		0E0A4A0B23C68138000134B1 /* Sleeper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sleeper.swift; sourceTree = "<group>"; };
+		0E1088D223CD121500A9F2E2 /* TabbedContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabbedContentView.swift; sourceTree = "<group>"; };
+		0E1088D523CD138200A9F2E2 /* SingleContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleContentView.swift; sourceTree = "<group>"; };
+		0E1088D723CD1E3600A9F2E2 /* ComponentViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentViews.swift; sourceTree = "<group>"; };
+		0E1088DB23CD1FB400A9F2E2 /* DefaultsViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultsViews.swift; sourceTree = "<group>"; };
+		0E1088DC23CD1FB400A9F2E2 /* RunViews copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RunViews copy.swift"; sourceTree = "<group>"; };
+		0E1088DF23CD23E900A9F2E2 /* NumberTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberTextField.swift; sourceTree = "<group>"; };
+		0E1088E123CDEE3800A9F2E2 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		0E52217523C59B0300479741 /* ExerciseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseController.swift; sourceTree = "<group>"; };
 		0E8EA79D23C50A5E00853440 /* fitman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fitman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E8EA7A023C50A5E00853440 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +111,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E1088D423CD132700A9F2E2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0E1088DB23CD1FB400A9F2E2 /* DefaultsViews.swift */,
+				0E1088DC23CD1FB400A9F2E2 /* RunViews copy.swift */,
+				0E8EA7A223C50A5E00853440 /* ContentView.swift */,
+				0E1088D523CD138200A9F2E2 /* SingleContentView.swift */,
+				0E1088D723CD1E3600A9F2E2 /* ComponentViews.swift */,
+				0E1088DF23CD23E900A9F2E2 /* NumberTextField.swift */,
+				0E1088D223CD121500A9F2E2 /* TabbedContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		0E8EA79423C50A5E00853440 = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +148,7 @@
 		0E8EA79F23C50A5E00853440 /* fitman */ = {
 			isa = PBXGroup;
 			children = (
+				0E1088E123CDEE3800A9F2E2 /* Defaults.swift */,
 				0ECF97F823CB56A8004D708C /* Exercise.swift */,
 				0ECF97F723CB56A8004D708C /* ExercisePlayer.swift */,
 				0ECF97F923CB56A8004D708C /* SessionViewModel.swift */,
@@ -133,7 +162,7 @@
 				0E0A4A0023C5F2AF000134B1 /* Speaker.swift */,
 				0E0A4A0B23C68138000134B1 /* Sleeper.swift */,
 				DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */,
-				0E8EA7A223C50A5E00853440 /* ContentView.swift */,
+				0E1088D423CD132700A9F2E2 /* Views */,
 				0E8EA7A423C50A6100853440 /* Assets.xcassets */,
 				0E8EA7A923C50A6100853440 /* Main.storyboard */,
 				0E8EA7AC23C50A6100853440 /* Info.plist */,
@@ -301,17 +330,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E1088D323CD121600A9F2E2 /* TabbedContentView.swift in Sources */,
+				0E1088D623CD138200A9F2E2 /* SingleContentView.swift in Sources */,
+				0E8EA7A323C50A5E00853440 /* ContentView.swift in Sources */,
 				0E0A4A0A23C605C9000134B1 /* ExerciseError.swift in Sources */,
 				0E52217623C59B0300479741 /* ExerciseController.swift in Sources */,
 				0E0A4A0623C5F4C7000134B1 /* ExerciseLoader.swift in Sources */,
+				0E1088E023CD23E900A9F2E2 /* NumberTextField.swift in Sources */,
 				0ECF97FA23CB56A8004D708C /* ExercisePlayer.swift in Sources */,
 				DA9C3D2E23C7F79800ACCE39 /* ResponderWindow.swift in Sources */,
+				0E1088E223CDEE3800A9F2E2 /* Defaults.swift in Sources */,
 				0E0A4A0C23C68138000134B1 /* Sleeper.swift in Sources */,
-				0E8EA7A323C50A5E00853440 /* ContentView.swift in Sources */,
 				0ECF97FB23CB56A8004D708C /* Exercise.swift in Sources */,
+				0E1088D923CD1E3600A9F2E2 /* ComponentViews.swift in Sources */,
 				0E0A4A0223C5F2B0000134B1 /* Speaker.swift in Sources */,
+				0E1088DE23CD1FB400A9F2E2 /* RunViews copy.swift in Sources */,
 				0ECF97FC23CB56A8004D708C /* SessionViewModel.swift in Sources */,
 				0E8EA7A123C50A5E00853440 /* AppDelegate.swift in Sources */,
+				0E1088DD23CD1FB400A9F2E2 /* DefaultsViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

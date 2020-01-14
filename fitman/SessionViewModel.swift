@@ -56,6 +56,15 @@ func buttonLabelFromState(state: ViewModelState) -> String {
 class SessionViewModel: ObservableObject {
     var exercises: ExerciseSession
     var runner: ExercisePlayer?
+    
+    var preluDelay: Int
+    @Published var preludeDelayString: String {
+        didSet {
+            if let tmp = NumberFormatter().number(from: self.preludeDelayString) {
+                self.preluDelay = tmp.intValue
+            }
+        }
+    }
 
     @Published var currentExerciseIndex: Int
     @Published var isPaused: Bool
@@ -81,6 +90,8 @@ class SessionViewModel: ObservableObject {
         // this is because Swift insists that all properties be initialized before
         // I can call any methods. Hence the initialization has to happen twice.
         // Or I make the Controllers Model property @Published
+        self.preludeDelayString = "10"
+        self.preluDelay = 10
         self.currentExerciseIndex = 0
         self.exercises = exercises
         self.isPaused = true

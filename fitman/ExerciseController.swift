@@ -22,7 +22,6 @@ class ExerciseController: ObservableObject {
         let sDb: ExerciseSessionDatabase = loadExerciseFile();
         self.sessionDb = sDb
         self.exLabels = sDb.map{$0.key}
-
         if let tmpKey: String = UserDefaults.standard.object(forKey: "fitman_session_key") as? String {
             self.selectedSessionKey = tmpKey
             if let ix = self.exLabels.firstIndex(of: tmpKey) {
