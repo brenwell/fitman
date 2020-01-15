@@ -8,13 +8,14 @@
 
 import SwiftUI
 
-fileprivate let flag = false
+fileprivate let flag = true
 
-struct XContentView: View {
+// Structire the app as a single view
+struct ContentView: View {
     
     var controller: ExerciseController
     let sessionLabels: [String]
-    var previousSelectedExerciseSet: Int = 0 // redundant
+    var previousSelectedExerciseSet: Int = 0
     
     @ObservedObject var state: SessionViewModel
     @State var current: Int
@@ -23,42 +24,66 @@ struct XContentView: View {
     @State var someNumber = "999"
     var body: some View {
 
-        return VStack(alignment: HorizontalAlignment.center, spacing: 20) {
-        
+        return VStack(alignment: HorizontalAlignment.center, spacing: 20)
+        {
+            if ( (state.buttonState != ViewModelState.Playing)
+                && (state.buttonState != ViewModelState.Paused)) {
+                HStack(alignment: .center, spacing: 20)
+                {
+                    Spacer()
+                    DefaultsTopView(controller: controller,
+                        sessionLabels: sessionLabels,
+                        selectedExerciseSet: $selectedExerciseSet,
+                        preludeDelay: $someNumber
+                        )
+                    Spacer()
+                }
+            } else {
+                HStack(alignment: .center, spacing: 20)
+                {
+                    Spacer()
+                    RunTopView(sessionName: "\(self.sessionLabels[self.selectedExerciseSet])")
+                    Spacer()
+                }
+            }
+            ExDivider()
             HStack(alignment: .center, spacing: 20)
             {
-                Spacer()
-                if ( (state.buttonState != ViewModelState.Playing)
-                    && (state.buttonState != ViewModelState.Paused)) {
-                    SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet)
-                    Text("Prelude Delay: ")
-//                    NumberTextField(someNumber: $someNumber)
-                    Spacer()
-                } else {
-                    VStack() {
-                    Text("Playing Session: \(self.sessionLabels[self.selectedExerciseSet])")
-                    }
-                    Spacer()
-                    
-                }
-            }
-            HStack(alignment: .center, spacing: 20) {
                 ControlButtons(state: state, playPauseLabel: playPauseLabel)
             }.padding(10)
-
-            if (flag) {
-                CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
-                }
-            Spacer()
-
-            ZStack(alignment: .center) {
-                ProgressCircle(session: self.state)
-                if (!flag) {
-                    CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
-                }
-            }
-            Spacer()
+            RunBottomView(state: state, discFlag: flag)
         }.background(Color(.sRGB, white: 0.8, opacity: 1))
         
     }
 }
+// custom divider between top and bottom part of screen
+struct ExDivider: View {
+    let color: Color = .black
+    let width: CGFloat = 2
+    var body: some View {
+        Rectangle()
+            .fill(color)
+            .frame(height: width)
+            .edgesIgnoringSafeArea(.horizontal)
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        let exerciseController = ExerciseController()
+        
+        // Create the SwiftUI view that provides the window contents.
+        let contentView = ContentView(
+            controller: exerciseController,
+            sessionLabels: exerciseController.exLabels,
+            state: exerciseController.model,
+            current: exerciseController.model.currentExerciseIndex,
+            selectedExerciseSet: exerciseController.selectedSessionIndex,
+            someNumber: exerciseController.model.preludeDelayString
+            )
+        
+        return contentView
+    }
+}
+

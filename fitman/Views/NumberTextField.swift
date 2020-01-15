@@ -161,21 +161,22 @@ class HackNumber: ObservableObject {
 }
 
 struct NumberTextField: View {
+    var label: String
     @Binding var someNumber: String
     var body: some View {
-        let label: String = "Number"
-        var buffer: String = ""
-        return TextField(label, text: $someNumber, onEditingChanged: {
-            print("onEditChange \($0)")
-        }).onReceive(self.someNumber.publisher.last(), perform: { ch in
-            if(!self.someNumber.isNumber) {
-                let fixit = self.someNumber.digits
-                self.someNumber = fixit
-                buffer = fixit
-            }
-            print("textfield \(ch) \(self.someNumber)")
-                    
-        })
+        return       HStack() {
+            Text(label)
+            TextField(label, text: $someNumber, onEditingChanged: {
+                print("onEditChange \($0)")
+            }).onReceive(self.someNumber.publisher.last(), perform: { ch in
+                if(!self.someNumber.isNumber) {
+                    let fixit = self.someNumber.digits
+                    self.someNumber = fixit
+                }
+                print("textfield \(ch) \(self.someNumber)")
+                        
+            })
+        }
     }
 }
 
