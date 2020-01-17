@@ -150,8 +150,8 @@
 			children = (
 				0E1088E123CDEE3800A9F2E2 /* Defaults.swift */,
 				0ECF97F823CB56A8004D708C /* Exercise.swift */,
-				0ECF97F723CB56A8004D708C /* ExercisePlayer.swift */,
 				0ECF97F923CB56A8004D708C /* SessionViewModel.swift */,
+				0ECF97F723CB56A8004D708C /* ExercisePlayer.swift */,
 				0E0A4A0723C5FD5B000134B1 /* exercise.json */,
 				0E0A4A0923C605C9000134B1 /* ExerciseError.swift */,
 				DAC8DA0423C792B3008E996D /* FancyTimer.swift */,

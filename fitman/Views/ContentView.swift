@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-fileprivate let flag = true
+fileprivate let flag = false
 
 // Structire the app as a single view
 struct ContentView: View {

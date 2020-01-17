@@ -162,7 +162,9 @@ class ExercisePlayer: Speaker {
     public func togglePause() {
         self.pauseFlag = !self.pauseFlag
     }
-
+    public func setPause(onOff: Bool) {
+        self.pauseFlag = onOff
+    }
     override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         print("didFinish")
         // note this may be executed not on the main thread
