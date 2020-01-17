@@ -130,7 +130,11 @@ func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
     }
     return mutableTasks
 }
-
+enum PlayerState: String {
+    case annoucement_wait = "announecement_wait"
+    case paused = "paused"
+    case running = "running"
+}
 //
 // Plays a single Exercise allowing the play to be paused and restarted.
 // Creating another instance of this class for each new Exercise
@@ -144,17 +148,22 @@ class ExercisePlayer: Speaker {
     var timer: Timer?
     var pauseFlag: Bool
     var runningFlag: Bool
+    var announcementDone = false
+    var announcementPending = false
     
     init(exercise: Exercise) {
         self.pauseFlag = false
         self.runningFlag = false
+        self.announcementDone = false
+        self.announcementPending = false
+        
         self.frequency = 0.1
         self.exercise = exercise
         self.tasks = buildTasks(exercise: self.exercise)
         super.init()
     }
     public func go() {
-        self.announce(self.exercise)
+        self.doPerform()
     }
     public func stop() {
         self.timer?.invalidate()
@@ -167,19 +176,29 @@ class ExercisePlayer: Speaker {
     }
     override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         print("didFinish")
+        self.announcementPending = false
+        self.announcementDone = true
         // note this may be executed not on the main thread
-        DispatchQueue.main.async {
-            self.doPerform()
-        }
+//        DispatchQueue.main.async {
+//            self.doPerform()
+//        }
     }
     private func doPerform() {
         var lastTime = NSDate().timeIntervalSince1970
         var elapsed = 0.0
         let duration: Double = durationOfTasks(tasks: self.tasks)
         self.runningFlag = true
-        self.pauseFlag = false
+//        self.pauseFlag = false
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) {timer in
             if self.pauseFlag {
+                return
+            }
+            if (self.announcementPending == true) {
+                return
+            }
+            if (!self.announcementDone) {
+                self.announcementPending = true
+                self.announce(self.exercise)
                 return
             }
             let now = NSDate().timeIntervalSince1970

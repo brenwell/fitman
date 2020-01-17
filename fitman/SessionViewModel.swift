@@ -122,7 +122,7 @@ class SessionViewModel: ObservableObject {
     }
     
     // Start playing the exercise session
-    func go() {
+    func go(paused: Bool = false) {
         self.runner = ExercisePlayer(exercise: exercises[self.currentExerciseIndex])
         self.runner!.onComplete = {
             print("runner complete")
@@ -134,10 +134,16 @@ class SessionViewModel: ObservableObject {
             self.duration = b
             self.elapsed = a
         }
-        self.runner!.go()
-        self.buttonState = ViewModelState.Playing
-        self.isPaused = self.runner!.pauseFlag
-
+        if (paused) {
+            self.runner!.pauseFlag = true
+            self.runner!.go()
+            self.buttonState = ViewModelState.Paused
+            self.isPaused = self.runner!.pauseFlag
+        } else {
+            self.runner!.go()
+            self.buttonState = ViewModelState.Playing
+            self.isPaused = self.runner!.pauseFlag
+        }
     }
     // Move to the next exercise in the session. 
     func next() {
@@ -149,7 +155,7 @@ class SessionViewModel: ObservableObject {
         self.elapsed = 0.0; self.duration = 100.0
         if(self.currentExerciseIndex < self.exercises.count - 1) {
             self.currentExerciseIndex += 1
-            self.go()
+            self.go(paused: true)
         } else {
             print("all exercises complete")
             self.buttonState = ViewModelState.NotPlaying
@@ -167,7 +173,7 @@ class SessionViewModel: ObservableObject {
         }
         self.elapsed = 0.0; self.duration = 100.0
         self.currentExerciseIndex = (self.currentExerciseIndex + self.exercises.count - 1) % self.exercises.count
-        self.go()
+        self.go(paused: true)
     }
     func togglePause() {
         if let r = self.runner {
