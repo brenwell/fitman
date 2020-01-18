@@ -121,13 +121,14 @@ class SessionViewModel: ObservableObject {
         self.go()
     }
     
-    // Start playing the exercise session
+    // Start playing the exercise session. Start it in paused or running mode
+    // depending on the Boo argument
     func go(paused: Bool = false) {
         self.runner = ExercisePlayer(exercise: exercises[self.currentExerciseIndex])
         self.runner!.onComplete = {
             print("runner complete")
             self.buttonState = ViewModelState.NotPlaying
-            self.next()
+            self.next(byNextButton: false)
         }
         self.runner!.onProgressReport = { (a: Double, b: Double) in
             print("progress report \(a) \(b)")
@@ -145,8 +146,13 @@ class SessionViewModel: ObservableObject {
             self.isPaused = self.runner!.pauseFlag
         }
     }
-    // Move to the next exercise in the session. 
-    func next() {
+    // Move to the next exercise in the session.
+    // Called either because:
+    //  -   "Next" button was pressed in which case we want the playing to pause as well as move to the next
+    //  -   because we are moving through exercises and one has just finished in which case we do not want
+    //      playing to pause
+    //
+    func next(byNextButton: Bool = true) {
         if let r = self.runner {
             r.stop()
             self.runner = nil
@@ -155,7 +161,7 @@ class SessionViewModel: ObservableObject {
         self.elapsed = 0.0; self.duration = 100.0
         if(self.currentExerciseIndex < self.exercises.count - 1) {
             self.currentExerciseIndex += 1
-            self.go(paused: true)
+            self.go(paused: byNextButton)
         } else {
             print("all exercises complete")
             self.buttonState = ViewModelState.NotPlaying

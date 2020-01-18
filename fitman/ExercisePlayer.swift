@@ -163,7 +163,7 @@ class ExercisePlayer: Speaker {
         super.init()
     }
     public func go() {
-        self.doPerform()
+        self.announce(self.exercise)
     }
     public func stop() {
         self.timer?.invalidate()
@@ -176,29 +176,20 @@ class ExercisePlayer: Speaker {
     }
     override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         print("didFinish")
-        self.announcementPending = false
-        self.announcementDone = true
+//        self.announcementPending = false
+//        self.announcementDone = true
         // note this may be executed not on the main thread
-//        DispatchQueue.main.async {
-//            self.doPerform()
-//        }
+        DispatchQueue.main.async {
+            self.doPerform()
+        }
     }
     private func doPerform() {
         var lastTime = NSDate().timeIntervalSince1970
         var elapsed = 0.0
         let duration: Double = durationOfTasks(tasks: self.tasks)
         self.runningFlag = true
-//        self.pauseFlag = false
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) {timer in
             if self.pauseFlag {
-                return
-            }
-            if (self.announcementPending == true) {
-                return
-            }
-            if (!self.announcementDone) {
-                self.announcementPending = true
-                self.announce(self.exercise)
                 return
             }
             let now = NSDate().timeIntervalSince1970
