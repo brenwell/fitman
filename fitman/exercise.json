@@ -1,0 +1,52 @@
+{
+    "test1" :[
+       { "label": "T1 Door stretch", "duration": 30 },
+       { "label": "Wall stand", "duration": 20 }
+    ],
+    "test2" :[
+        { "label": "T2 Door stretch", "duration": 30 },
+        { "label": "Wall stand", "duration": 20 }
+    ],
+    "rob" : [
+        { "label": "Door stretch", "duration": 60 },
+        { "label": "10 Push ups", "duration": 60 },
+
+        { "label": "Wall stand", "duration": 60 },
+        { "label": "15 tricep dips", "duration": 60 },
+
+        { "label": "Door stretch", "duration": 60 },
+        { "label": "Plank", "duration": 40 },
+
+        { "label": "Wall stand", "duration": 60 },
+        { "label": "T-raises", "duration": 60 },
+
+        { "label": "Door stretch", "duration": 60 },
+        { "label": "10 Push ups", "duration": 60 },
+
+        { "label": "Wall stand", "duration": 60 },
+        { "label": "15 tricep dips", "duration": 60 },
+
+        { "label": "Touch toes", "duration": 40 },
+        { "label": "T-raises", "duration": 60 },
+    ],
+    "bren" : [
+        { "label": "Door stretch", "duration": 60 },
+        { "label": "Wall stand", "duration": 60 },
+        { "label": "Touch toes", "duration": 40 },
+        { "label": "Wall sit", "duration": 40 },
+        { "label": "Tricep dips", "duration": 40 },
+        { "label": "Lunges", "duration": 40 },
+        { "label": "Push-ups", "duration": 40 },
+        { "label": "Crunches", "duration": 40 },
+        { "label": "Reverse plank", "duration": 40 },
+        { "label": "Crouching dog", "duration": 40 },
+        { "label": "Calf raises", "duration": 40 },
+        { "label": "Hand to wall", "duration": 40 },
+        { "label": "Plank", "duration": 40 },
+        { "label": "T-Raises", "duration": 40 },
+        { "label": "Butt lift", "duration": 40 },
+        { "label": "Push-ups", "duration": 40 },
+        { "label": "Arm circles", "duration": 40 },
+        { "label": "Touch toes", "duration": 40 }
+    ]
+}
