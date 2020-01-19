@@ -44,10 +44,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         window.model = self.exerciseController?.model
-
+        disableScreenSleep()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
+        enableScreenSleep()
     }
 }
