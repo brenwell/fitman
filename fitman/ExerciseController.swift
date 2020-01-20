@@ -13,9 +13,21 @@ import AVFoundation
 class ExerciseController: ObservableObject {
     let exLabels: [String]
     let model: SessionViewModel
-    var selectedSessionIndex: Int = 0
-    var selectedSessionKey: String
-
+    var selectedSessionIndex: Int = 0 {
+        didSet {
+            print("ExerciseController::selectedSessionIndex didSet \(self.selectedSessionIndex)")
+            self.selectedSessionKey = self.exLabels[self.selectedSessionIndex]
+        }
+    }
+    var selectedSessionKey: String {
+        didSet {
+            print("ExerciseController::selectSessionKey didSet \(self.selectedSessionKey)")
+            UserDefaults.standard.set(self.selectedSessionKey, forKey: "fitman_session_key")
+            let ex: ExerciseSession = self.sessionDb[self.selectedSessionKey]!
+            self.model.changeSession(exercises: ex)
+        }
+    }
+    
     @Published var sessionDb: ExerciseSessionDatabase
     
     init() {
@@ -40,19 +52,19 @@ class ExerciseController: ObservableObject {
         let ex: ExerciseSession = sDb[self.selectedSessionKey]!
         self.model = SessionViewModel(exercises: ex)
     }
-    func changeSession(value: Int) {
-        print("ExercizeController::changeSession \(value)")
-        if (self.selectedSessionIndex == value) {
-            return
-        }
-        self.selectedSessionIndex = value
-        self.selectedSessionKey = self.exLabels[self.selectedSessionIndex]
-        UserDefaults.standard.set(self.selectedSessionKey, forKey: "fitman_session_key")
-        let k: String = self.exLabels[self.selectedSessionIndex]
-        print("ExercizeController::changeSession \(k)")
-        let ex: ExerciseSession = self.sessionDb[k]!
-        self.selectedSessionIndex = value
-        self.model.changeSession(exercises: ex)
-    }
+//    func xchangeSession(value: Int) {
+//        print("ExercizeController::changeSession \(value)")
+//        if (self.selectedSessionIndex == value) {
+//            return
+//        }
+//        self.selectedSessionIndex = value
+//        self.selectedSessionKey = self.exLabels[self.selectedSessionIndex]
+//        UserDefaults.standard.set(self.selectedSessionKey, forKey: "fitman_session_key")
+//        let k: String = self.exLabels[self.selectedSessionIndex]
+//        print("ExercizeController::changeSession \(k)")
+//        let ex: ExerciseSession = self.sessionDb[k]!
+//        self.selectedSessionIndex = value
+//        self.model.changeSession(exercises: ex)
+//    }
 }
 

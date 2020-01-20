@@ -28,7 +28,7 @@ struct SessionPicker: View {
                 }
             }.onReceive([self.selectedExerciseSet].publisher.first()) { (value) in
                 print("onReceive selected value \(value)")
-                self.controller.changeSession(value: value)
+//                self.controller.changeSession(value: value)
             }
         }
     }

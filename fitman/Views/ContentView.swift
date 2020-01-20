@@ -13,7 +13,7 @@ fileprivate let flag = false
 // Structire the app as a single view
 struct ContentView: View {
     
-    var controller: ExerciseController
+    @ObservedObject var controller: ExerciseController
     let sessionLabels: [String]
     var previousSelectedExerciseSet: Int = 0
     
@@ -33,7 +33,8 @@ struct ContentView: View {
                     Spacer()
                     DefaultsTopView(controller: controller,
                         sessionLabels: sessionLabels,
-                        selectedExerciseSet: $selectedExerciseSet,
+                        selectedExerciseSet: $controller.selectedSessionIndex, //$selectedExerciseSet,
+                        
                         preludeDelay: $someNumber
                         )
                     Spacer()
