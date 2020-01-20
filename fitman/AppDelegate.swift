@@ -27,12 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             controller: self.exerciseController!,
             sessionLabels: labels,
             state: self.exerciseController!.model,
-            current: self.exerciseController!.model.currentExerciseIndex,
-            selectedExerciseSet: self.exerciseController!.selectedSessionIndex,
             someNumber: self.exerciseController!.model.preludeDelayString
             )
-        
-//        self.exerciseController?.model.contentView = contentView // dont thinnk I need this anymore
         
         // Create the window and set the content view. 
         window = ResponderWindow(

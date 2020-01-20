@@ -15,12 +15,12 @@ struct ContentView: View {
     
     @ObservedObject var controller: ExerciseController
     let sessionLabels: [String]
-    var previousSelectedExerciseSet: Int = 0
+//    var previousSelectedExerciseSet: Int = 0
     
     @ObservedObject var state: SessionViewModel
-    @State var current: Int
+//    @State var current: Int
     @State var playPauseLabel: String = "Play"
-    @State var selectedExerciseSet: Int
+//    @State var selectedExerciseSet: Int
     @State var someNumber = "999"
     var body: some View {
 
@@ -33,7 +33,7 @@ struct ContentView: View {
                     Spacer()
                     DefaultsTopView(controller: controller,
                         sessionLabels: sessionLabels,
-                        selectedExerciseSet: $controller.selectedSessionIndex, //$selectedExerciseSet,
+                        selectedExerciseSet: $controller.selectedSessionIndex,
                         
                         preludeDelay: $someNumber
                         )
@@ -43,7 +43,7 @@ struct ContentView: View {
                 HStack(alignment: .center, spacing: 20)
                 {
                     Spacer()
-                    RunTopView(sessionName: "\(self.sessionLabels[self.selectedExerciseSet])")
+                    RunTopView(sessionName: "\(self.sessionLabels[self.controller.selectedSessionIndex])")
                     Spacer()
                 }
             }
@@ -79,8 +79,6 @@ struct ContentView_Previews: PreviewProvider {
             controller: exerciseController,
             sessionLabels: exerciseController.exLabels,
             state: exerciseController.model,
-            current: exerciseController.model.currentExerciseIndex,
-            selectedExerciseSet: exerciseController.selectedSessionIndex,
             someNumber: exerciseController.model.preludeDelayString
             )
         

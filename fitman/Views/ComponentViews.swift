@@ -26,9 +26,6 @@ struct SessionPicker: View {
                 ForEach(0 ..< exLabels.count) {
                    Text(self.exLabels[$0]).tag($0)
                 }
-            }.onReceive([self.selectedExerciseSet].publisher.first()) { (value) in
-                print("onReceive selected value \(value)")
-//                self.controller.changeSession(value: value)
             }
         }
     }
