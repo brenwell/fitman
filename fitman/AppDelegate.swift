@@ -26,8 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let contentView = ContentView(
             controller: self.exerciseController!,
             sessionLabels: labels,
-            state: self.exerciseController!.model,
-            someNumber: self.exerciseController!.model.preludeDelayString
+            model: self.exerciseController!.model
             )
         
         // Create the window and set the content view. 

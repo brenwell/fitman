@@ -57,11 +57,12 @@ class SessionViewModel: ObservableObject {
     var exercises: ExerciseSession
     var runner: ExercisePlayer?
     
-    var preluDelay: Int
+    var preludeDelay: Int
     @Published var preludeDelayString: String {
         didSet {
             if let tmp = NumberFormatter().number(from: self.preludeDelayString) {
-                self.preluDelay = tmp.intValue
+                self.preludeDelay = tmp.intValue
+                UserDefaults.standard.set(self.preludeDelay, forKey: UserDefaultKeys.preludeDelay)
             }
         }
     }
@@ -90,8 +91,14 @@ class SessionViewModel: ObservableObject {
         // this is because Swift insists that all properties be initialized before
         // I can call any methods. Hence the initialization has to happen twice.
         // Or I make the Controllers Model property @Published
-        self.preludeDelayString = "10"
-        self.preluDelay = 10
+        let tmp: Int = UserDefaults.standard.integer(forKey: UserDefaultKeys.preludeDelay)
+        if (tmp <= 0) || (tmp >= 100) {
+            self.preludeDelay = 10
+        } else {
+            self.preludeDelay = tmp
+        }
+        self.preludeDelayString = String(self.preludeDelay)
+//        print("preludeDelayString: \(self.preludeDelay)")
         self.currentExerciseIndex = 0
         self.exercises = exercises
         self.isPaused = true

@@ -15,19 +15,15 @@ struct ContentView: View {
     
     @ObservedObject var controller: ExerciseController
     let sessionLabels: [String]
-//    var previousSelectedExerciseSet: Int = 0
-    
-    @ObservedObject var state: SessionViewModel
-//    @State var current: Int
+    @ObservedObject var model: SessionViewModel
     @State var playPauseLabel: String = "Play"
-//    @State var selectedExerciseSet: Int
-    @State var someNumber = "999"
+
     var body: some View {
 
         return VStack(alignment: HorizontalAlignment.center, spacing: 20)
         {
-            if ( (state.buttonState != ViewModelState.Playing)
-                && (state.buttonState != ViewModelState.Paused)) {
+            if ( (model.buttonState != ViewModelState.Playing)
+                && (model.buttonState != ViewModelState.Paused)) {
                 HStack(alignment: .center, spacing: 20)
                 {
                     Spacer()
@@ -35,7 +31,7 @@ struct ContentView: View {
                         sessionLabels: sessionLabels,
                         selectedExerciseSet: $controller.selectedSessionIndex,
                         
-                        preludeDelay: $someNumber
+                        preludeDelay: $model.preludeDelayString //$someNumber
                         )
                     Spacer()
                 }
@@ -50,9 +46,9 @@ struct ContentView: View {
             ExDivider()
             HStack(alignment: .center, spacing: 20)
             {
-                ControlButtons(state: state, playPauseLabel: playPauseLabel)
+                ControlButtons(state: model, playPauseLabel: playPauseLabel)
             }.padding(10)
-            RunBottomView(state: state, discFlag: flag)
+            RunBottomView(state: model, discFlag: flag)
         }.background(Color(.sRGB, white: 0.8, opacity: 1))
         
     }
@@ -78,8 +74,7 @@ struct ContentView_Previews: PreviewProvider {
         let contentView = ContentView(
             controller: exerciseController,
             sessionLabels: exerciseController.exLabels,
-            state: exerciseController.model,
-            someNumber: exerciseController.model.preludeDelayString
+            model: exerciseController.model
             )
         
         return contentView
