@@ -39,11 +39,11 @@ class Defaults: ObservableObject {
                UserDefaults.standard.set(self, forKey: UserDefaultKeys.preludeDelay)
            }
        }
-    var layoutId: LayoutIds {
-           didSet {
-               UserDefaults.standard.set(self, forKey: UserDefaultKeys.layoutId)
-           }
-       }
+//    var layoutId: LayoutIds {
+//           didSet {
+//               UserDefaults.standard.set(self, forKey: UserDefaultKeys.layoutId)
+//           }
+//       }
     private static var sharedDefaults: Defaults = Defaults()
     
     private init() {
@@ -60,11 +60,11 @@ class Defaults: ObservableObject {
         }
         self.preludeDelayString = String(self.preludeDelay)
 
-        if let tmp = UserDefaults.standard.object(forKey: UserDefaultKeys.sessionKey) as! LayoutIds? {
-            self.layoutId = tmp
-        } else {
-            self.layoutId = LayoutIds.ring
-        }
+//        if let tmp = UserDefaults.standard.object(forKey: UserDefaultKeys.sessionKey) as! LayoutIds? {
+//            self.layoutId = tmp
+//        } else {
+//            self.layoutId = LayoutIds.ring
+//        }
     }
     class func shared() -> Defaults {
         return sharedDefaults

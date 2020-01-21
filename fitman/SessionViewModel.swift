@@ -60,6 +60,7 @@ class SessionViewModel: ObservableObject {
     var preludeDelay: Int
     @Published var preludeDelayString: String {
         didSet {
+            // this code is called when the preludeDelayString is changed by the view
             if let tmp = NumberFormatter().number(from: self.preludeDelayString) {
                 self.preludeDelay = tmp.intValue
                 UserDefaults.standard.set(self.preludeDelay, forKey: UserDefaultKeys.preludeDelay)
@@ -80,6 +81,7 @@ class SessionViewModel: ObservableObject {
     }
     var buttonState: ViewModelState {
         didSet {
+            // this code is called when the view Play/Pause button state is changed by a view
             self.buttonLabel = buttonLabelFromState(state: self.buttonState)
             print("buttonState: \(self.buttonState)")
         }
@@ -88,9 +90,9 @@ class SessionViewModel: ObservableObject {
     public var onComplete: (()->())?
 
     init(exercises: ExerciseSession) {
-        // this is because Swift insists that all properties be initialized before
+        // why is explicit initialization being done here and in changeSession ?
+        // Because Swift insists that all properties be initialized before
         // I can call any methods. Hence the initialization has to happen twice.
-        // Or I make the Controllers Model property @Published
         let tmp: Int = UserDefaults.standard.integer(forKey: UserDefaultKeys.preludeDelay)
         if (tmp <= 0) || (tmp >= 100) {
             self.preludeDelay = 10

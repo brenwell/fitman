@@ -11,12 +11,15 @@ import Foundation
 import AVFoundation
 
 class ExerciseController: ObservableObject {
+    // a convenience property holding the names of the available exercise sessions
     let exLabels: [String]
+
+    var sessionDb: ExerciseSessionDatabase
     let model: SessionViewModel
 
-    @Published var sessionDb: ExerciseSessionDatabase
     var selectedSessionIndex: Int = 0 {
         didSet {
+            // this code is called when the view selects a new session index
             print("ExerciseController::selectedSessionIndex didSet \(self.selectedSessionIndex)")
             self.selectedSessionKey = self.exLabels[self.selectedSessionIndex]
         }

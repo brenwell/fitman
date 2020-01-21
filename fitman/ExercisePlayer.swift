@@ -73,7 +73,8 @@ struct Task {
 func buildTasks(exercise: Exercise) -> Array<Task> {
     var tasks = [Task]()
     let announcementDelay: Double = 0.0
-    let preludeDelay: Double = 10.0
+    let delay = Defaults.shared().preludeDelay
+    let preludeDelay: Double = Double(delay) //10.0
     let exerciseStartElapsed: Double = announcementDelay + preludeDelay
 
     tasks.append(Task(elapsed: exerciseStartElapsed - 3.0, action: playPop(elapsed:)))
