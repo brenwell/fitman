@@ -132,9 +132,9 @@ func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
     return mutableTasks
 }
 enum PlayerState: String {
-    case annoucement_wait = "announecement_wait"
-    case paused = "paused"
-    case running = "running"
+    case announcementRequired = "announcement_required"
+    case annoucementPending = "announecement_pending"
+    case annoucementDone = "announecement_done"
 }
 //
 // Plays a single Exercise allowing the play to be paused and restarted.
@@ -149,14 +149,12 @@ class ExercisePlayer: Speaker {
     var timer: Timer?
     var pauseFlag: Bool
     var runningFlag: Bool
-    var announcementDone = false
-    var announcementPending = false
+    var announcementState = PlayerState.annoucementDone
     
     init(exercise: Exercise) {
         self.pauseFlag = false
         self.runningFlag = false
-        self.announcementDone = false
-        self.announcementPending = false
+        self.announcementState = PlayerState.annoucementDone
         
         self.frequency = 0.1
         self.exercise = exercise
@@ -164,7 +162,8 @@ class ExercisePlayer: Speaker {
         super.init()
     }
     public func go() {
-        self.announce(self.exercise)
+        self.announcementState = PlayerState.announcementRequired
+        self.doPerform()
     }
     public func stop() {
         self.timer?.invalidate()
@@ -176,12 +175,9 @@ class ExercisePlayer: Speaker {
         self.pauseFlag = onOff
     }
     override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-//        print("didFinish")
-//        self.announcementPending = false
-//        self.announcementDone = true
         // note this may be executed not on the main thread
         DispatchQueue.main.async {
-            self.doPerform()
+            self.announcementState = PlayerState.annoucementDone
         }
     }
     private func doPerform() {
@@ -191,6 +187,14 @@ class ExercisePlayer: Speaker {
         self.runningFlag = true
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) {timer in
             if self.pauseFlag {
+                return
+            }
+            if (self.announcementState == PlayerState.announcementRequired) {
+                self.announcementState = PlayerState.annoucementPending
+                self.announce(self.exercise)
+                return
+            }
+            if (self.announcementState == PlayerState.annoucementPending) {
                 return
             }
             let now = NSDate().timeIntervalSince1970
