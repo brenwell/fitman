@@ -15,7 +15,7 @@ class ExerciseController: ObservableObject {
     let model: SessionViewModel
 
     @Published var sessionDb: ExerciseSessionDatabase
-    @Published var selectedSessionIndex: Int = 0 {
+    var selectedSessionIndex: Int = 0 {
         didSet {
             print("ExerciseController::selectedSessionIndex didSet \(self.selectedSessionIndex)")
             self.selectedSessionKey = self.exLabels[self.selectedSessionIndex]
