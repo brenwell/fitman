@@ -14,11 +14,11 @@ fileprivate let flag = false
 struct ContentView: View {
     
     @ObservedObject var controller: ExerciseController
-    let sessionLabels: [String]
     @ObservedObject var model: SessionViewModel
     @State var playPauseLabel: String = "Play"
 
     var body: some View {
+        let sessionLabels: Array<String> = Array(self.controller.exLabels)
 
         return VStack(alignment: HorizontalAlignment.center, spacing: 20)
         {
@@ -30,7 +30,6 @@ struct ContentView: View {
                     DefaultsTopView(controller: controller,
                         sessionLabels: sessionLabels,
                         selectedExerciseSet: $controller.selectedSessionIndex,
-                        
                         preludeDelay: $model.preludeDelayString //$someNumber
                         )
                     Spacer()
@@ -39,7 +38,7 @@ struct ContentView: View {
                 HStack(alignment: .center, spacing: 20)
                 {
                     Spacer()
-                    RunTopView(sessionName: "\(self.sessionLabels[self.controller.selectedSessionIndex])")
+                    RunTopView(sessionName: "\(sessionLabels[self.controller.selectedSessionIndex])")
                     Spacer()
                 }
             }
@@ -73,7 +72,6 @@ struct ContentView_Previews: PreviewProvider {
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView(
             controller: exerciseController,
-            sessionLabels: exerciseController.exLabels,
             model: exerciseController.model
             )
         

@@ -13,7 +13,9 @@ import AVFoundation
 class ExerciseController: ObservableObject {
     let exLabels: [String]
     let model: SessionViewModel
-    var selectedSessionIndex: Int = 0 {
+
+    @Published var sessionDb: ExerciseSessionDatabase
+    @Published var selectedSessionIndex: Int = 0 {
         didSet {
             print("ExerciseController::selectedSessionIndex didSet \(self.selectedSessionIndex)")
             self.selectedSessionKey = self.exLabels[self.selectedSessionIndex]
@@ -28,7 +30,6 @@ class ExerciseController: ObservableObject {
         }
     }
     
-    @Published var sessionDb: ExerciseSessionDatabase
     
     init() {
         let sDb: ExerciseSessionDatabase = loadExerciseFile();
