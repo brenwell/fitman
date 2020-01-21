@@ -5,44 +5,44 @@ import AVFoundation
 func playStart(elapsed: Double) {
     let speaker: Speaker = Speaker()
     speaker.say("This is a long announcement describing an exercise toes and no toes")
-    print("play start sound at \(elapsed)")
+//    print("play start sound at \(elapsed)")
 }
 func playText(elapsed: Double) {
     let speaker: Speaker = Speaker()
     speaker.say("This is a long announcement describing an exercise toes and no toes")
-    print("play start sound at \(elapsed)")
+//    print("play start sound at \(elapsed)")
 }
 
 func playPop(elapsed: Double) {
     let speaker: Speaker = Speaker()
     speaker.playPopSound()
-    print("play chime sound at \(elapsed)")
+//    print("play chime sound at \(elapsed)")
 }
 func playTink(elapsed: Double) {
     let speaker: Speaker = Speaker()
     speaker.playTinkSound()
-    print("play chime sound at \(elapsed)")
+//    print("play chime sound at \(elapsed)")
 }
 func playPurr(elapsed: Double) {
     let speaker: Speaker = Speaker()
     speaker.playPurrSound()
-    print("play chime sound at \(elapsed)")
+//    print("play chime sound at \(elapsed)")
 }
 
 func playProgress(elapsed: Double) {
-    print("speak progress at \(elapsed)")
+//    print("speak progress at \(elapsed)")
 }
 
 func playEnd(elapsed: Double) {
     let speaker: Speaker = Speaker()
     speaker.playPurrSound()
-    print("play end at \(elapsed)")
+//    print("play end at \(elapsed)")
 }
 
 func playEndSound(elapsed: Double) {
     let speaker: Speaker = Speaker()
     speaker.playPurrSound()
-    print("play end sound at \(elapsed)")
+//    print("play end sound at \(elapsed)")
 }
 
 func playProgressAnnoucement(text: String)-> ((Double)->Void) {
@@ -59,7 +59,7 @@ func playText(text: String)-> ((Double)->Void) {
 }
 
 func onProgress(elapsed: Double) {
-    print("progress at \(elapsed)")
+//    print("progress at \(elapsed)")
 }
 
 func durationOfTasks(tasks: Array<Task>) -> Double {
@@ -92,7 +92,7 @@ func buildTasks(exercise: Exercise) -> Array<Task> {
     tasks.append(Task(elapsed: tmp, action: playProgressAnnoucement(text: "done")))
     var endTime: Double = exerciseStartElapsed + 10.0 * Double((exercise.duration))
     endTime = tasks.last!.elapsed
-    tasks.append(Task(elapsed: endTime + 0.5, action: playEndSound(elapsed:)))
+    tasks.append(Task(elapsed: endTime + 2.95, action: playEndSound(elapsed:)))
 
     // sort tasks - should be unnecessary
     tasks = tasks.sorted(by: { $0.elapsed < $1.elapsed })
@@ -176,7 +176,7 @@ class ExercisePlayer: Speaker {
         self.pauseFlag = onOff
     }
     override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        print("didFinish")
+//        print("didFinish")
 //        self.announcementPending = false
 //        self.announcementDone = true
         // note this may be executed not on the main thread

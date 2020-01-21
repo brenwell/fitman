@@ -140,7 +140,7 @@ class SessionViewModel: ObservableObject {
             self.next(byNextButton: false)
         }
         self.runner!.onProgressReport = { (a: Double, b: Double) in
-            print("progress report \(a) \(b)")
+//            print("progress report \(a) \(b)")
             self.duration = b
             self.elapsed = a
         }
