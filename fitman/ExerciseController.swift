@@ -27,6 +27,9 @@ class ExerciseController: ObservableObject {
     var selectedSessionKey: String {
         didSet {
             print("ExerciseController::selectSessionKey didSet \(self.selectedSessionKey)")
+            
+            // NOTE: the next line of code should be:
+            // Defaults.shared().sessionKey = self.selectedSessionKey
             UserDefaults.standard.set(self.selectedSessionKey, forKey: UserDefaultKeys.sessionKey)
             let ex: ExerciseSession = self.sessionDb[self.selectedSessionKey]!
             self.model.changeSession(exercises: ex)
@@ -38,6 +41,18 @@ class ExerciseController: ObservableObject {
         let sDb: ExerciseSessionDatabase = loadExerciseFile();
         self.sessionDb = sDb
         self.exLabels = sDb.map{$0.key}
+        
+        // NOTE: This next sequence oof code down to lex ex: should be
+        //
+        // self.selectedSessionKey = Defaults.shared().selectedSessionKey
+        //  if let ix = self.exLabels.firstIndex(of: tmpKey) {
+        //      self.selectedSessionIndex = ix
+        //  } else {
+        //      self.selectedSessionIndex = 0
+        //      self.selectedSessionKey = self.exLabels[0]
+        //  }
+        // but that has not been tested
+        
         if let tmpKey: String = UserDefaults.standard.object(forKey: UserDefaultKeys.sessionKey) as? String {
             self.selectedSessionKey = tmpKey
             if let ix = self.exLabels.firstIndex(of: tmpKey) {

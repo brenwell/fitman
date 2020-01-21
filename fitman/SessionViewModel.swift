@@ -61,8 +61,15 @@ class SessionViewModel: ObservableObject {
     @Published var preludeDelayString: String {
         didSet {
             // this code is called when the preludeDelayString is changed by the view
+            
+            // NOTE: This next code should be something like
+            //
+            // Defaults.shared().preludeDelatString = self.preludeDelayString()
             if let tmp = NumberFormatter().number(from: self.preludeDelayString) {
                 self.preludeDelay = tmp.intValue
+                // NOTE: This should be
+                // Defaults.shared().preludeDelay = self.preludeDelay
+                // but have not tested that
                 UserDefaults.standard.set(self.preludeDelay, forKey: UserDefaultKeys.preludeDelay)
             }
         }
@@ -93,6 +100,9 @@ class SessionViewModel: ObservableObject {
         // why is explicit initialization being done here and in changeSession ?
         // Because Swift insists that all properties be initialized before
         // I can call any methods. Hence the initialization has to happen twice.
+        
+        // NOTE: This next sequence down to self.currentExerciseIndex should be
+        // self.preludeDelay = Defauls.shared().preludeDelay
         let tmp: Int = UserDefaults.standard.integer(forKey: UserDefaultKeys.preludeDelay)
         if (tmp <= 0) || (tmp >= 100) {
             self.preludeDelay = 10
