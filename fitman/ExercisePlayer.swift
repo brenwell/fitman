@@ -166,7 +166,11 @@ class ExercisePlayer: Speaker {
         self.doPerform()
     }
     public func stop() {
+        if self.timer != nil && self.announcementState == PlayerState.annoucementPending {
+            self.avSpeechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
+        }
         self.timer?.invalidate()
+        self.timer = nil
     }
     public func togglePause() {
         self.pauseFlag = !self.pauseFlag
