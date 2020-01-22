@@ -15,7 +15,7 @@ class ExerciseController: ObservableObject {
     let exLabels: [String]
 
     var sessionDb: ExerciseSessionDatabase
-    let model: SessionViewModel
+    var model: SessionViewModel
 
     var selectedSessionIndex: Int = 0 {
         didSet {
@@ -29,7 +29,7 @@ class ExerciseController: ObservableObject {
             print("ExerciseController::selectSessionKey didSet \(self.selectedSessionKey)")
             UserDefaults.standard.set(self.selectedSessionKey, forKey: UserDefaultKeys.sessionKey)
             let ex: ExerciseSession = self.sessionDb[self.selectedSessionKey]!
-            self.model.changeSession(exercises: ex)
+            self.model = SessionViewModel(exercises: ex)
         }
     }
     

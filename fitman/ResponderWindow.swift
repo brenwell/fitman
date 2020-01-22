@@ -19,7 +19,6 @@ class ResponderWindow: NSWindow {
 
     // Override the NSView keydown func to read keycode of pressed key
     override func keyDown(with theEvent: NSEvent) {
-        Swift.print(theEvent.keyCode)
         
         switch theEvent.keyCode {
             case 49: //space

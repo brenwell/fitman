@@ -13,6 +13,8 @@ struct RunBottomView: View {
 
 
     var body: some View {
+        
+        _ = NSColor(named: NSColor.Name("nextExerciseLabel"))
 
         return VStack(alignment: HorizontalAlignment.center, spacing: 0) {
 
@@ -22,7 +24,7 @@ struct RunBottomView: View {
                 ProgressCircle(session: self.state)
                 CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
             }
-            Text("\(state.elapsed)")
+            
 
             Spacer()
             

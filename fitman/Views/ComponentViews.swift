@@ -37,20 +37,21 @@ struct ControlButtons: View {
 
     var body: some View {
         return HStack(alignment: .center, spacing: 20) {
+                        
             Button(action: {
                 self.state.previous()
             }) {
-                Text("Previous")
+                Image(nsImage: NSImage(named: NSImage.goLeftTemplateName)! )
             }
             Button(action: {
                 self.state.togglePause()
             }) {
-                    Text(self.state.buttonLabel)
+                    Text(playPauseLabel)
             }
             Button(action: {
                 self.state.next()
             }) {
-                Text("Next")
+                Image(nsImage: NSImage(named: NSImage.goRightTemplateName)! )
             }
         }
     }
@@ -82,41 +83,24 @@ struct CurrentPrevNextView: View {
     
     var body: some View {
     
-//        let prev = session.exercises[safe: current-1]
         let curr = session.exercises[safe: current]
         let next = session.exercises[safe: current+1]
+        let currLabel: String = ((curr) != nil) ? curr!.label : ""
+        let nextLabel: String = ((next) != nil) ? next!.label : ""
+        let timeLabel: String = "\(Int(session.elapsed))"
         
         return VStack(alignment: .center, spacing: 20) {
-//            Row(exercise: prev, isCurrent: false)
-            Row(exercise: curr, isCurrent: true)
-            Row(exercise: next, isCurrent: false)
+            Row(labelStr: timeLabel, isCurrent: false)
+            Row(labelStr: currLabel, isCurrent: true)
+            Row(labelStr: nextLabel, isCurrent: false)
         }
     }
 }
 
-struct SessionView: View {
 
-    @ObservedObject var session: SessionViewModel
-    var current: Int
-    
-    var body: some View {
-//        List(session.exercises) { exercise in
-//            Row(excercise: exercise, currentIndex: self.session.currentExerciseIndex)
-//        }
-        List {
-            ForEach(0 ..< session.exercises.count) { index -> Row in
-//                let isCurrent = self.session.currentExerciseIndex == index
-                let isCurrent = self.current == index
-                return Row(exercise: self.session.exercises[index], isCurrent: isCurrent)
-                
-            }
-        }
-    }
-    
-}
 
 struct Row: View {
-    var exercise: Exercise?
+    var labelStr: String
     var isCurrent: Bool
 
     var body: some View {
@@ -126,8 +110,7 @@ struct Row: View {
     
         let fontSize: CGFloat = !isCurrent ? 40 : 60
         let fontColor: Color = !isCurrent ? Color(nextColor!) : Color(currColor!)
-        let labelStr: String = (exercise != nil) ? exercise!.label : " "
-//        let durationStr: String = (exercise != nil) ? String(exercise!.duration) : " "
+        
         
         return HStack(alignment: .center, spacing: 10) {
             Spacer()
@@ -136,12 +119,6 @@ struct Row: View {
                 Text("\(labelStr)")
                     .font(.custom("Futura", size: fontSize))
                     .foregroundColor(fontColor)
-                    
-                
-//                Text("\(durationStr)s")
-//                    .font(.custom("Futura", size: 13))
-//                    .foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8))
-//                    .baselineOffset(8)
             })
             Spacer()
         }

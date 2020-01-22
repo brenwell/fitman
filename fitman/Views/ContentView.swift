@@ -25,8 +25,7 @@ struct ContentView: View {
                 Spacer()
                 DefaultsTopView(controller: controller,
                     sessionLabels: sessionLabels,
-                    selectedExerciseSet: $controller.selectedSessionIndex,
-                    preludeDelay: $model.preludeDelayString //$someNumber
+                    selectedExerciseSet: $controller.selectedSessionIndex
                 )
                 ControlButtons(state: model, playPauseLabel: playPauseLabel)
                 Spacer()

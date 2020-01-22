@@ -17,8 +17,9 @@ struct DefaultsTopView: View {
     
     var controller: ExerciseController
     let sessionLabels: [String]
+    
     @Binding var selectedExerciseSet: Int
-    @Binding var preludeDelay: String
+    
     var body: some View {
         return VStack(alignment: HorizontalAlignment.center) {
             HStack() {
