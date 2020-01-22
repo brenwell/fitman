@@ -1,66 +1,7 @@
 import SwiftUI
 import AVFoundation
 
-//let speaker: Speaker = Speaker()
-func playStart(elapsed: Double) {
-    let speaker: Speaker = Speaker()
-    speaker.say("This is a long announcement describing an exercise toes and no toes")
-//    print("play start sound at \(elapsed)")
-}
-func playText(elapsed: Double) {
-    let speaker: Speaker = Speaker()
-    speaker.say("This is a long announcement describing an exercise toes and no toes")
-//    print("play start sound at \(elapsed)")
-}
 
-func playPop(elapsed: Double) {
-    let speaker: Speaker = Speaker()
-    speaker.playPopSound()
-//    print("play chime sound at \(elapsed)")
-}
-func playTink(elapsed: Double) {
-    let speaker: Speaker = Speaker()
-    speaker.playTinkSound()
-//    print("play chime sound at \(elapsed)")
-}
-func playPurr(elapsed: Double) {
-    let speaker: Speaker = Speaker()
-    speaker.playPurrSound()
-//    print("play chime sound at \(elapsed)")
-}
-
-func playProgress(elapsed: Double) {
-//    print("speak progress at \(elapsed)")
-}
-
-func playEnd(elapsed: Double) {
-    let speaker: Speaker = Speaker()
-    speaker.playPurrSound()
-//    print("play end at \(elapsed)")
-}
-
-func playEndSound(elapsed: Double) {
-    let speaker: Speaker = Speaker()
-    speaker.playPurrSound()
-//    print("play end sound at \(elapsed)")
-}
-
-func playProgressAnnoucement(text: String)-> ((Double)->Void) {
-    return { (elapsed: Double) -> Void in
-        let speaker: Speaker = Speaker()
-        speaker.say(text)
-    }
-}
-func playText(text: String)-> ((Double)->Void) {
-    return { (elapsed: Double) -> Void in
-        let speaker: Speaker = Speaker()
-        speaker.say(text)
-    }
-}
-
-func onProgress(elapsed: Double) {
-//    print("progress at \(elapsed)")
-}
 
 func durationOfTasks(tasks: Array<Task>) -> Double {
     return (tasks.last!.elapsed) + 1.0
@@ -75,49 +16,33 @@ func buildTasks(exercise: Exercise) -> Array<Task> {
     let announcementDelay: Double = 0.0
     let delay = Defaults.shared().preludeDelay
     let preludeDelay: Double = Double(delay) //10.0
-    let exerciseStartElapsed: Double = announcementDelay + preludeDelay
+    let excDuration: Double = Double(exercise.duration)
+    let countInDuration: Double = announcementDelay + preludeDelay
+    let totalDuration: Double = countInDuration + excDuration
+    
+    tasks.append(Task(elapsed: 0.0, action: playExceriseAnnoucement(text: exercise.label, duration: exercise.duration)))
+    tasks.append(Task(elapsed: 1.0, action: playExceriseAnnoucement(text: exercise.label, duration: exercise.duration)))
+    tasks.append(Task(elapsed: countInDuration - 3.0, action: playPop(elapsed:)))
+    tasks.append(Task(elapsed: countInDuration - 2.0, action: playPop(elapsed:)))
+    tasks.append(Task(elapsed: countInDuration - 1.0, action: playPurr(elapsed:)))
 
-    tasks.append(Task(elapsed: exerciseStartElapsed - 3.0, action: playPop(elapsed:)))
-    tasks.append(Task(elapsed: exerciseStartElapsed - 2.0, action: playPop(elapsed:)))
-//    tasks.append(Task(elapsed: exerciseStartElapsed - 1.0, action: playPurr(elapsed:)))
-    tasks.append(Task(elapsed: exerciseStartElapsed - 1.0, action: playProgressAnnoucement(text: "Go")))
-    for i in 0...exercise.duration - 20 {
-        if(i % 10 == 0) {
-            let txt: String = "\(10+i)"
-            let elapsed: Double = exerciseStartElapsed + 10.0 + Double(i)
-            tasks.append(Task(elapsed: elapsed, action: playProgressAnnoucement(text: txt)))
-        }
+    for i in stride(from: 10, to: exercise.duration, by: 10) {
+        let txt: String = "\(i)"
+        tasks.append(Task(elapsed: Double(i), action: playProgressAnnoucement(text: txt)))
     }
-    let tmp = exerciseStartElapsed + Double((exercise.duration - 1))
-    tasks.append(Task(elapsed: tmp, action: playProgressAnnoucement(text: "done")))
-    var endTime: Double = exerciseStartElapsed + 10.0 * Double((exercise.duration))
-    endTime = tasks.last!.elapsed
-    tasks.append(Task(elapsed: endTime + 2.95, action: playEndSound(elapsed:)))
+    
+    tasks.append(Task(elapsed: totalDuration - 3.0, action: playPop(elapsed:)))
+    tasks.append(Task(elapsed: totalDuration - 2.0, action: playPop(elapsed:)))
+    tasks.append(Task(elapsed: totalDuration - 1.0, action: playPurr(elapsed:)))
+    
 
     // sort tasks - should be unnecessary
-    tasks = tasks.sorted(by: { $0.elapsed < $1.elapsed })
+//    tasks = tasks.sorted(by: { $0.elapsed < $1.elapsed })
     
     return tasks
 }
 
-// Creates a task stack
-func buildTasks() -> [Task] {
-    var tasks = [Task]()
-    tasks.append(Task(elapsed: 0.0, action: playStart(elapsed:)))
-    tasks.append(Task(elapsed: 7.0, action: playPop(elapsed:)))
-    tasks.append(Task(elapsed: 8.0, action: playPop(elapsed:)))
-    tasks.append(Task(elapsed: 9.0, action: playPurr(elapsed:)))
-    tasks.append(Task(elapsed: 20.0, action: playProgressAnnoucement(text: "10")))
-    tasks.append(Task(elapsed: 30.0, action: playProgressAnnoucement(text: "20")))
-    tasks.append(Task(elapsed: 40.0, action: playProgressAnnoucement(text: "30")))
-    tasks.append(Task(elapsed: 50.0, action: playProgressAnnoucement(text: "40")))
-    tasks.append(Task(elapsed: 60.0, action: playProgressAnnoucement(text: "50")))
-    tasks.append(Task(elapsed: 62.0, action: playEndSound(elapsed:)))
 
-    // sort tasks
-    tasks = tasks.sorted(by: { $0.elapsed < $1.elapsed })
-    return tasks
-}
 // Executes as many pending tasks scheduled for the elapsed time
 func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
     
@@ -131,57 +56,45 @@ func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
     }
     return mutableTasks
 }
-enum PlayerState: String {
-    case announcementRequired = "announcement_required"
-    case annoucementPending = "announecement_pending"
-    case annoucementDone = "announecement_done"
-}
-//
+
+
 // Plays a single Exercise allowing the play to be paused and restarted.
 // Creating another instance of this class for each new Exercise
 //
-class ExercisePlayer: Speaker {
+class ExercisePlayer {
+    
+    public var onComplete: (()->())?
+    public var onProgressReport: ((Double, Double)->())?
+    
     var frequency: Double
     var exercise: Exercise
     var tasks: Array<Task>
-    public var onComplete: (()->())?
-    public var onProgressReport: ((Double, Double)->())?
     var timer: Timer?
     var pauseFlag: Bool
     var runningFlag: Bool
-    var announcementState = PlayerState.annoucementDone
     
     init(exercise: Exercise) {
         self.pauseFlag = false
         self.runningFlag = false
-        self.announcementState = PlayerState.annoucementDone
         
-        self.frequency = 0.1
+        self.frequency = 0.2
         self.exercise = exercise
         self.tasks = buildTasks(exercise: self.exercise)
-        super.init()
     }
     public func go() {
-        self.announcementState = PlayerState.announcementRequired
         self.doPerform()
     }
     public func stop() {
-        if self.timer != nil && self.announcementState == PlayerState.annoucementPending {
-            self.avSpeechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
-        }
         self.timer?.invalidate()
         self.timer = nil
     }
     public func togglePause() {
         self.pauseFlag = !self.pauseFlag
-    }
-    public func setPause(onOff: Bool) {
-        self.pauseFlag = onOff
-    }
-    override func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        // note this may be executed not on the main thread
-        DispatchQueue.main.async {
-            self.announcementState = PlayerState.annoucementDone
+        
+        if (self.pauseFlag) {
+            pauseAnnouncement()
+        }else {
+            resumeAnnouncement()
         }
     }
     private func doPerform() {
@@ -191,14 +104,6 @@ class ExercisePlayer: Speaker {
         self.runningFlag = true
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) {timer in
             if self.pauseFlag {
-                return
-            }
-            if (self.announcementState == PlayerState.announcementRequired) {
-                self.announcementState = PlayerState.annoucementPending
-                self.announce(self.exercise)
-                return
-            }
-            if (self.announcementState == PlayerState.annoucementPending) {
                 return
             }
             let now = NSDate().timeIntervalSince1970
@@ -224,7 +129,5 @@ class ExercisePlayer: Speaker {
             }
         }
     }
-    @objc func handleTimer() {
-        print("timer")
-    }
+
 }

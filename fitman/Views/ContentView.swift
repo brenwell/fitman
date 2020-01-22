@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-fileprivate let flag = false
-
 // Structire the app as a single view
 struct ContentView: View {
     
@@ -22,45 +20,22 @@ struct ContentView: View {
 
         return VStack(alignment: HorizontalAlignment.center, spacing: 20)
         {
-            if ( (model.buttonState != ViewModelState.Playing)
-                && (model.buttonState != ViewModelState.Paused)) {
-                HStack(alignment: .center, spacing: 20)
-                {
-                    Spacer()
-                    DefaultsTopView(controller: controller,
-                        sessionLabels: sessionLabels,
-                        selectedExerciseSet: $controller.selectedSessionIndex,
-                        preludeDelay: $model.preludeDelayString //$someNumber
-                        )
-                    Spacer()
-                }
-            } else {
-                HStack(alignment: .center, spacing: 20)
-                {
-                    Spacer()
-                    RunTopView(sessionName: "\(sessionLabels[self.controller.selectedSessionIndex])")
-                    Spacer()
-                }
-            }
-            ExDivider()
             HStack(alignment: .center, spacing: 20)
             {
+                Spacer()
+                DefaultsTopView(controller: controller,
+                    sessionLabels: sessionLabels,
+                    selectedExerciseSet: $controller.selectedSessionIndex,
+                    preludeDelay: $model.preludeDelayString //$someNumber
+                )
                 ControlButtons(state: model, playPauseLabel: playPauseLabel)
-            }.padding(10)
-            RunBottomView(state: model, discFlag: flag)
-        }.background(Color(.sRGB, white: 0.8, opacity: 1))
+                Spacer()
+            }
+
+            
+            RunBottomView(state: model)
+        }
         
-    }
-}
-// custom divider between top and bottom part of screen
-struct ExDivider: View {
-    let color: Color = .black
-    let width: CGFloat = 2
-    var body: some View {
-        Rectangle()
-            .fill(color)
-            .frame(height: width)
-            .edgesIgnoringSafeArea(.horizontal)
     }
 }
 

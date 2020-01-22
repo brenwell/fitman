@@ -12,10 +12,14 @@ import AVFoundation
 
 
 class Speaker: NSObject, AVSpeechSynthesizerDelegate {
-    var avSpeechSynthesizer: AVSpeechSynthesizer
+    
+    var synthesizer: AVSpeechSynthesizer?
+    
     override init() {
-        self.avSpeechSynthesizer = AVSpeechSynthesizer()
+        
         super.init()
+        
+//        AVAudioSession.sha
 //        let speechVoices = AVSpeechSynthesisVoice.speechVoices()
 //        speechVoices.forEach { (voice) in
 //          print("**********************************")
@@ -26,48 +30,78 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
 //        }
     }
     func announce(_ exercise: Exercise) {
-        self.avSpeechSynthesizer = AVSpeechSynthesizer()
-        self.avSpeechSynthesizer.delegate = self
+        self.synthesizer = AVSpeechSynthesizer()
+        self.synthesizer!.delegate = self
         let utterance = AVSpeechUtterance(string: exercise.label + " for \(exercise.duration) seconds")
         utterance.rate = 0.4
         utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
-        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
-//        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.Zarvox")
+//        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
         DispatchQueue.global(qos: .background).async {
             // Bren this worked to smooth out the progress display
-            self.avSpeechSynthesizer.speak(utterance)
+            self.synthesizer!.speak(utterance)
         }
     }
     func say(_ text: String) {
-        self.avSpeechSynthesizer = AVSpeechSynthesizer()
-        self.avSpeechSynthesizer.delegate = self
+        
+        self.stopSpeech()
+        
+        self.synthesizer = AVSpeechSynthesizer()
+        self.synthesizer!.delegate = self
         let utterance = AVSpeechUtterance(string: text)
         utterance.rate = 0.4
         utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
-        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
+//        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
         DispatchQueue.global(qos: .background).async {
             // Bren this worked to smooth out the progress display
-            self.avSpeechSynthesizer.speak(utterance)
+            self.synthesizer!.speak(utterance)
         }
     }
 
+    func stopSpeech(){
+        if ((self.synthesizer) != nil) {
+            self.synthesizer!.stopSpeaking(at: .immediate)
+        }
+    }
+    
+    func pauseSpeech() {
+        if ((self.synthesizer) != nil) {
+            self.synthesizer!.pauseSpeaking(at: .immediate)
+        }
+    }
+    
+    func resumeSpeech() {
+        if ((self.synthesizer) != nil) {
+            self.synthesizer!.continueSpeaking()
+        }
+    }
+    
     func playTinkSound() {
-        NSSound(named: "Tink")?.play()
+        DispatchQueue.global(qos: .background).async {
+            NSSound(named: "Tink")?.play()
+        }
     }
     func playPurrSound() {
-        NSSound(named: "Purr")?.play()
+        DispatchQueue.global(qos: .background).async {
+            NSSound(named: "Purr")?.play()
+        }
     }
     func playPopSound() {
-        NSSound(named: "Pop")?.play()
+        DispatchQueue.global(qos: .background).async {
+            NSSound(named: "Pop")?.play()
+        }
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        print("didFinish")
+        print("didFinish", self.synthesizer)
+//        self.synthesizer = nil
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) { }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didContinue utterance: AVSpeechUtterance) {}
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) { }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        print("didCancel")
+        self.synthesizer = nil
+    }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) { }
 }
