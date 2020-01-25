@@ -1,69 +1,77 @@
 import SwiftUI
 
+enum SessionState {
+    case stopped
+    case countingIn
+    case playing
+    case paused
+}
+
 class SessionViewModel: ObservableObject {
     
     var exercises: ExerciseSession
     
     @Published var currentExerciseIndex: Int
-    @Published var isPaused: Bool
-    @Published var isStopped: Bool
+    @Published var state: SessionState
     @Published var frequency: Double
     @Published var duration: Double
     @Published var elapsed: Double
     @Published var durationBetween: Double
     
-    public var progressCallback: ((Double, Double) ->())?
-    public var onComplete: (()->())?
-    
     private var runner: Runner
+    private var prevState: SessionState
 
     init(exercises: ExerciseSession) {
         self.currentExerciseIndex = 0
         self.exercises = exercises
-        self.isPaused = true
-        self.isStopped = true
+        self.state = .stopped
+        self.prevState = .stopped
         self.duration = 0.0
         self.elapsed = 0.0
-        self.durationBetween = 10.0
-        self.frequency = 0.2
+        self.durationBetween = 6.0
+        self.frequency = 0.1
         self.runner = Runner()
     }
     
     public func start(){
         print("start")
-        self.isPaused = false
-        self.isStopped = false
-        
         self.playCountIn()
     }
      
     func playCountIn() {
-            
-        let exercise = self.exercises[self.currentExerciseIndex]
-        let cTasks = buildCountInTasks(exercise: exercise)
         
-        self.duration = durationBetween
+        self.state = .countingIn
+        
+        let exercise = self.exercises[safe: self.currentExerciseIndex]
+        
+        if ((exercise) == nil) {
+            print("done")
+            speaker.say("Done")
+            return
+        }
+        
+        let tasks = buildCountInTasks(exercise: exercise!, duration: durationBetween)
         
         self.runner.start(
-            tasks: cTasks,
+            tasks: tasks,
             frequency: self.frequency,
             duration: Int(durationBetween),
-            onProgress: onProgress(elapsed:),
+            onProgress: onProgress,
             onComplete: playExercise)
     }
     
     func playExercise() {
         
-        let exercise = self.exercises[self.currentExerciseIndex]
-        let eTasks = buildExerciseTasks(exercise: exercise)
+        self.state = .playing
         
-        self.duration = Double(exercise.duration)
+        let exercise = self.exercises[self.currentExerciseIndex]
+        let tasks = buildExerciseTasks(exercise: exercise)
         
         self.runner.start(
-            tasks: eTasks,
+            tasks: tasks,
             frequency: self.frequency,
             duration: exercise.duration,
-            onProgress: onProgress(elapsed:),
+            onProgress: onProgress,
             onComplete: onExerciseDone
         )
     }
@@ -73,50 +81,71 @@ class SessionViewModel: ObservableObject {
     }
     
     public func next(){
+        
+        if (self.exercises.count <= self.currentExerciseIndex + 1) {
+            self.state = .stopped
+            print("done")
+            return
+        }
+        
         print("next")
         
-        // check exists
         self.currentExerciseIndex += 1
         self.start()
     }
     
     public func previous() {
         print("previous")
+        
+        if (self.currentExerciseIndex - 1 <= 0) {
+//            self.state = .stopped
+            print("at beginning")
+            return
+        }
+        
+        print("prev")
+        
+        self.currentExerciseIndex -= 1
+        self.start()
     }
     
     public func togglePause(){
         print("togglePause")
         
-        if (self.isPaused) {
-            if (self.isStopped) {
-                self.start()
-            } else {
-                self.resume()
-            }
-            
-        }
-        else {
+        switch self.state {
+        case .stopped:
+            return self.start()
+        case .paused:
+            return self.resume()
+        default:
             self.pause()
         }
     }
     
     public func pause(){
-        self.isPaused = true
+        self.prevState = self.state
+        self.state = .paused
         self.runner.pause()//
         
         pauseAnnouncement()
     }
     
     public func resume(){
-        self.isPaused = false
+        self.state = self.prevState
         self.runner.resume()
         
         resumeAnnouncement()
     }
+    
+    public func stop(){
+        self.state = .stopped
+        self.runner.stop()
+    }
 
-    func onProgress(elapsed: Double) {
+    func onProgress(elapsed: Double, duration: Double) {
 //        print("progress at \(elapsed)")
         self.elapsed = elapsed
+        self.duration = duration
     }
 
 }

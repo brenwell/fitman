@@ -12,7 +12,6 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var controller: ExerciseController
-    @ObservedObject var model: SessionViewModel
     @State var playPauseLabel: String = "Play"
 
     var body: some View {
@@ -22,17 +21,20 @@ struct ContentView: View {
         {
             HStack(alignment: .center, spacing: 20)
             {
-                Spacer()
+                
                 DefaultsTopView(controller: controller,
                     sessionLabels: sessionLabels,
                     selectedExerciseSet: $controller.selectedSessionIndex
                 )
-                ControlButtons(state: model, playPauseLabel: playPauseLabel)
                 Spacer()
-            }
+                
+                ControlButtons(state: controller.model, playPauseLabel: playPauseLabel)
+                
+            
+            }.padding(10)
 
             
-            RunBottomView(state: model)
+            RunBottomView(state: controller.model)
         }
         
     }
@@ -44,10 +46,7 @@ struct ContentView_Previews: PreviewProvider {
         let exerciseController = ExerciseController()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(
-            controller: exerciseController,
-            model: exerciseController.model
-            )
+        let contentView = ContentView(controller: exerciseController)
         
         return contentView
     }

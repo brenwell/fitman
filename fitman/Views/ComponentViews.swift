@@ -22,7 +22,7 @@ struct SessionPicker: View {
     var body: some View {
         return VStack(alignment: HorizontalAlignment.leading) {
         
-            Picker(selection: $selectedExerciseSet, label: Text("Select Exercise Set from:")) {
+            Picker(selection: $selectedExerciseSet, label: Text("Routine:")) {
                 ForEach(0 ..< exLabels.count) {
                    Text(self.exLabels[$0]).tag($0)
                 }

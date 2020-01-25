@@ -17,9 +17,10 @@ struct ProgressCircle: View {
         let width: CGFloat = 20.0
         let frameWidth: CGFloat = 600.0
         
+        let barColorStr = getColor(state: session.state)
+        let barColor = NSColor(named: NSColor.Name(barColorStr))
         let bgColor = NSColor(named: NSColor.Name("progressBarBg"))
-        let barColor = NSColor(named: NSColor.Name("exerciseProgressBar"))
-        
+
         return ZStack {
             Circle()
                 .stroke(Color(bgColor!), lineWidth: width)
@@ -34,3 +35,14 @@ struct ProgressCircle: View {
     }
 }
 
+
+func getColor(state: SessionState) -> String {
+    switch state {
+    case .playing:
+        return "exerciseProgressBar"
+    case .paused:
+        return "countInProgressBar"
+    default:
+        return "stoppedProgressBar"
+    }
+}

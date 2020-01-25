@@ -21,11 +21,9 @@ struct DefaultsTopView: View {
     @Binding var selectedExerciseSet: Int
     
     var body: some View {
-        return VStack(alignment: HorizontalAlignment.center) {
-            HStack() {
-                SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet).padding(0)
-            }
-        }.padding(10)
+        return SessionPicker(controller: self.controller, exLabels: sessionLabels, selectedExerciseSet: $selectedExerciseSet).padding(0)
     }
+            
+    
 }
 

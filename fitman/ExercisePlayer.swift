@@ -6,14 +6,9 @@ struct Task {
     var action: (Double) -> ()
 }
 
-func buildCountInTasks(exercise: Exercise) -> Array<Task> {
+func buildCountInTasks(exercise: Exercise, duration: Double) -> Array<Task> {
     
     var tasks = [Task]()
-    
-    // FIXME
-    let delay = Defaults.shared().preludeDelay
-    
-    let duration: Double = Double(delay) //10.0
     
     tasks.append(Task(elapsed: 0.0, action: playExceriseAnnoucement(text: exercise.label, duration: exercise.duration)))
     tasks.append(Task(elapsed: duration - 3.0, action: playPop(elapsed:)))
@@ -65,19 +60,26 @@ class Runner {
     var elapsed: Double = 0.0
     var lastTime: TimeInterval?
     var isPaused: Bool = false
+    var timer: Timer?
     
     // Executes a task stack
     private func perform(
         tasks: [Task],
         frequency: Double,
         duration: Int,
-        onProgress: @escaping (Double) -> Void,
+        onProgress: @escaping (Double, Double) -> Void,
         onComplete: @escaping () -> Void) {
         
         var mutableTasks = tasks
         self.lastTime = NSDate().timeIntervalSince1970
         
-        Timer.scheduledTimer(withTimeInterval: frequency, repeats: true) { timer in
+        self.timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true) { timer in
+            
+            if (self.elapsed > Double(duration)) {
+                self.stop()
+                onComplete()
+                return
+            }
             
             if self.isPaused { return }
             
@@ -85,17 +87,11 @@ class Runner {
             self.elapsed += now - self.lastTime!
             self.lastTime = now
             
-            print(self.elapsed)
-            
             mutableTasks = attemptToPerformTask(tasks: mutableTasks, elapsed: self.elapsed)
             
-            if (self.elapsed > Double(duration)) {
-                timer.invalidate()
-                onComplete()
-                return
-            }
+//            print("\(Int(self.elapsed/Double(duration)*100))%") // Percent
             
-            onProgress(self.elapsed)
+            onProgress(self.elapsed, Double(duration))
         }
     }
     
@@ -103,10 +99,12 @@ class Runner {
         tasks: [Task],
         frequency: Double,
         duration: Int,
-        onProgress: @escaping (Double) -> Void,
+        onProgress: @escaping (Double, Double) -> Void,
         onComplete: @escaping () -> Void
     ) {
-//        self.resume()
+        
+        self.stop()
+        
         self.perform(
             tasks: tasks,
             frequency: frequency,
@@ -127,5 +125,9 @@ class Runner {
         self.isPaused = true
     }
     
+    func stop() {
+        self.elapsed = 0.0
+        self.timer?.invalidate()iterm
+    }
 }
 

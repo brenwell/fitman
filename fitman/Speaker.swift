@@ -29,18 +29,7 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
 //          print("Voice quality: \(voice.quality.rawValue)") // Compact: 1 ; Enhanced: 2
 //        }
     }
-    func announce(_ exercise: Exercise) {
-        self.synthesizer = AVSpeechSynthesizer()
-        self.synthesizer!.delegate = self
-        let utterance = AVSpeechUtterance(string: exercise.label + " for \(exercise.duration) seconds")
-        utterance.rate = 0.4
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
-//        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
-        DispatchQueue.global(qos: .background).async {
-            // Bren this worked to smooth out the progress display
-            self.synthesizer!.speak(utterance)
-        }
-    }
+    
     func say(_ text: String) {
         
         self.stopSpeech()
