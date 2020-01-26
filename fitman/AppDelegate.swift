@@ -15,14 +15,14 @@ import AVFoundation
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: ResponderWindow!
-    var exerciseController: ExerciseController?
+    var exerciseController: App?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
     
-        self.exerciseController = ExerciseController()
+        self.exerciseController = App()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(controller: self.exerciseController!)
+        let contentView = ContentView(app: self.exerciseController!)
         
         // Create the window and set the content view. 
         window = ResponderWindow(
@@ -33,8 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-        window.model = self.exerciseController?.model
-        disableScreenSleep()
+        window.model = self.exerciseController?.routineModel
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

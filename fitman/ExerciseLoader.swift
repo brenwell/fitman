@@ -14,30 +14,67 @@ import Foundation
 import AVFoundation
 
 
-func loadExercises(path: String) -> ExerciseSession {
-    let yyy: ExerciseSession = loadExerciseFile()["rob"]!
-    return yyy
-}
-func loadExerciseFile() -> ExerciseSessionDatabase {
-    if let filepath = Bundle.main.path(forResource: "exercise", ofType: "json") {
-        do {
-            let contents = try String(contentsOfFile: filepath)
-//            print(contents)
-            let data = Data(contents.utf8)
-            let decoder = JSONDecoder()
-            do {
-                let exDb = try decoder.decode(ExerciseSessionDatabase.self, from: data)
-//                let ex: ExerciseSession = exDb["rob"]!
-                return exDb
-            } catch {
-                exerciseErrorDialog(text: "JSON decode of exercise.json failed")
-            }
-            
-        } catch {
-            exerciseErrorDialog(text: "JSON read of file exercise.json failed")
-        }
-    } else {
+
+func loadData() -> Database? {
+    guard let filepath = Bundle.main.path(forResource: "routines", ofType: "json") else {
         exerciseErrorDialog(text: "JSON file exercise.json not found")
+        return nil
     }
-    return ["rob":[]]
+    
+    do {
+        let contents = try String(contentsOfFile: filepath)
+        print(contents)
+        let data = Data(contents.utf8)
+        let decoder = JSONDecoder()
+        let exDb = try decoder.decode(Database.self, from: data)
+        return exDb
+        
+    } catch {
+        exerciseErrorDialog(text: "JSON read of file exercise.json failed")
+        
+        return nil
+    }
+
 }
+
+//func loadOldData() -> ExerciseSessionDatabase {
+//    guard let filepath = Bundle.main.path(forResource: "exercise", ofType: "json") else {
+//        exerciseErrorDialog(text: "JSON file exercise.json not found")
+//        return ["rob":[]]
+//    }
+//
+//    do {
+//        let contents = try String(contentsOfFile: filepath)
+////            print(contents)
+//        let data = Data(contents.utf8)
+//        let decoder = JSONDecoder()
+//        let exDb = try decoder.decode(ExerciseSessionDatabase.self, from: data)
+//        return exDb
+//
+//    } catch {
+//        exerciseErrorDialog(text: "JSON read of file exercise.json failed")
+//
+//        return ["rob":[]]
+//    }
+//
+//}
+
+//func saveData() -> Bool {
+//    guard let filepath = Bundle.main.path(forResource: "exercise", ofType: "json") else {
+//        exerciseErrorDialog(text: "JSON file exercise.json not found")
+//        return false
+//    }
+//
+//    do {
+//
+//        let json = try JSONEncoder().encode(ExerciseSessionDatabase)
+//        json.wr
+//        return true
+//
+//    } catch {
+//        exerciseErrorDialog(text: "JSON read of file exercise.json failed")
+//
+//        return false
+//    }
+//
+//}

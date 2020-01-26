@@ -11,7 +11,7 @@ import Cocoa
 // We subclass an NSView
 
 class ResponderWindow: NSWindow {
-    public var model: SessionViewModel?
+    public var model: RoutineModel?
     // Allow view to receive keypress (remove the purr sound)
     override var acceptsFirstResponder : Bool {
         return true

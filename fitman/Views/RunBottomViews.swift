@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RunBottomView: View {
-    @ObservedObject var state: SessionViewModel
+    @ObservedObject var state: RoutineModel
 
 
     var body: some View {

@@ -11,30 +11,27 @@ import SwiftUI
 // Structire the app as a single view
 struct ContentView: View {
     
-    @ObservedObject var controller: ExerciseController
-    @State var playPauseLabel: String = "Play"
-
+    @ObservedObject var app: App
+    
     var body: some View {
-        let sessionLabels: Array<String> = Array(self.controller.exLabels)
+        
+        let labels = app.database.routines.map { $0.label }
 
         return VStack(alignment: HorizontalAlignment.center, spacing: 20)
         {
             HStack(alignment: .center, spacing: 20)
             {
+                SessionPicker(controller: self.app, labels: labels, selectedExerciseSet: $app.selectedSessionIndex).padding(0)
                 
-                DefaultsTopView(controller: controller,
-                    sessionLabels: sessionLabels,
-                    selectedExerciseSet: $controller.selectedSessionIndex
-                )
                 Spacer()
                 
-                ControlButtons(state: controller.model, playPauseLabel: playPauseLabel)
+                ControlButtons(state: app.routineModel)
                 
             
             }.padding(10)
 
             
-            RunBottomView(state: controller.model)
+            RunBottomView(state: app.routineModel)
         }
         
     }
@@ -43,10 +40,10 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
-        let exerciseController = ExerciseController()
+        let exerciseController = App()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(controller: exerciseController)
+        let contentView = ContentView(app: exerciseController)
         
         return contentView
     }

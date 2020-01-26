@@ -6,41 +6,6 @@ struct Task {
     var action: (Double) -> ()
 }
 
-func buildCountInTasks(exercise: Exercise, duration: Double) -> Array<Task> {
-    
-    var tasks = [Task]()
-    
-    tasks.append(Task(elapsed: 0.0, action: playExceriseAnnoucement(text: exercise.label, duration: exercise.duration)))
-    tasks.append(Task(elapsed: duration - 3.0, action: Sound.playCount(elapsed:)))
-    tasks.append(Task(elapsed: duration - 2.0, action: Sound.playCount(elapsed:)))
-    tasks.append(Task(elapsed: duration - 1.0, action: Sound.playStart(elapsed:)))
-    
-    return tasks
-}
-
-func buildExerciseTasks(exercise: Exercise) -> Array<Task> {
-    
-    var tasks = [Task]()
-    
-    let duration: Double = Double(exercise.duration)
-
-    for i in stride(from: 10, to: duration, by: 10) {
-        let txt: String = "\(Int(i))"
-        tasks.append(Task(elapsed: Double(i), action: playProgressAnnoucement(text: txt)))
-    }
-    
-    tasks.append(Task(elapsed: duration - 3.0, action: Sound.playCount(elapsed:)))
-    tasks.append(Task(elapsed: duration - 2.0, action: Sound.playCount(elapsed:)))
-    tasks.append(Task(elapsed: duration - 1.0, action: Sound.playEnd(elapsed:)))
-    
-
-    // sort tasks - should be unnecessary
-//    tasks = tasks.sorted(by: { $0.elapsed < $1.elapsed })
-    
-    return tasks
-}
-
-
 // Executes as many pending tasks scheduled for the elapsed time
 func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
     
@@ -55,7 +20,7 @@ func attemptToPerformTask(tasks: [Task], elapsed: Double) -> [Task]{
     return mutableTasks
 }
 
-class Runner {
+class TaskRunner {
     
     var elapsed: Double = 0.0
     var lastTime: TimeInterval?

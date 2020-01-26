@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-fileprivate let flag: Bool = false
+
 
 //
 // picks the exercise session to run.
@@ -15,28 +15,28 @@ fileprivate let flag: Bool = false
 //
 struct SessionPicker: View {
 
-    var controller: ExerciseController
-    var exLabels: [String]
+    var controller: App
+    var labels: [String]
     @Binding var selectedExerciseSet: Int
 
     var body: some View {
         return VStack(alignment: HorizontalAlignment.leading) {
         
-            Picker(selection: $selectedExerciseSet, label: Text("Routine:")) {
-                ForEach(0 ..< exLabels.count) {
-                   Text(self.exLabels[$0]).tag($0)
+            Picker(selection: $selectedExerciseSet, label: Text("")) {
+                ForEach(0 ..< labels.count) {
+                   Text(self.labels[$0]).tag($0)
                 }
-            }
+            }.frame(maxWidth: 200)
         }
     }
 }
 
 struct ControlButtons: View {
-    @ObservedObject var state: SessionViewModel
+    @ObservedObject var state: RoutineModel
     @State var playPauseLabel: String = "Play"
 
     var body: some View {
-        return HStack(alignment: .center, spacing: 20) {
+        return HStack(alignment: .center) {
                         
             Button(action: {
                 self.state.previous()
@@ -59,7 +59,7 @@ struct ControlButtons: View {
 
 struct ProgressBar: View {
 
-    @ObservedObject var session: SessionViewModel
+    @ObservedObject var session: RoutineModel
     
     var body: some View {
 //        var pdone: Double = self.state.elapsed / self.state.duration
@@ -78,7 +78,7 @@ extension Collection {
 }
 
 struct CurrentPrevNextView: View {
-    @ObservedObject var session: SessionViewModel
+    @ObservedObject var session: RoutineModel
     var current: Int
     
     var body: some View {

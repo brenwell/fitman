@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ProgressCircle: View {
 
-    @ObservedObject var session: SessionViewModel
+    @ObservedObject var session: RoutineModel
     
     var body: some View {
         
@@ -36,7 +36,7 @@ struct ProgressCircle: View {
 }
 
 
-func getColor(state: SessionState) -> String {
+func getColor(state: RoutineState) -> String {
     switch state {
     case .playing:
         return "exerciseProgressBar"
