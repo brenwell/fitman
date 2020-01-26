@@ -46,7 +46,7 @@ class SessionViewModel: ObservableObject {
         
         if ((exercise) == nil) {
             print("done")
-            playComplete(elapsed: 0.0)
+            Sound.playComplete(elapsed: 0.0)
             return
         }
         
@@ -85,7 +85,7 @@ class SessionViewModel: ObservableObject {
         if (self.exercises.count <= self.currentExerciseIndex + 1) {
             self.state = .stopped
             print("done")
-            playComplete(elapsed: 0.0)
+            Sound.playComplete(elapsed: 0.0)
             return
         }
         
