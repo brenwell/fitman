@@ -18,6 +18,8 @@
                 { "label": "Hand to wall", "duration": 40 },
                 { "label": "Fist curls", "duration": 30 },
                 { "label": "Plank", "duration": 60 },
+                { "label": "Right Arm Ups", "duration": 60 },
+                { "label": "Left Arm Upds", "duration": 60 },
                 { "label": "T-Raises", "duration": 60 },
                 { "label": "Leg lifts", "duration": 60 },
                 { "label": "Kneeling squats", "duration": 60 },
