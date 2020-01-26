@@ -11,9 +11,9 @@ func buildCountInTasks(exercise: Exercise, duration: Double) -> Array<Task> {
     var tasks = [Task]()
     
     tasks.append(Task(elapsed: 0.0, action: playExceriseAnnoucement(text: exercise.label, duration: exercise.duration)))
-    tasks.append(Task(elapsed: duration - 3.0, action: playPop(elapsed:)))
-    tasks.append(Task(elapsed: duration - 2.0, action: playPop(elapsed:)))
-    tasks.append(Task(elapsed: duration - 1.0, action: playPurr(elapsed:)))
+    tasks.append(Task(elapsed: duration - 3.0, action: playCount(elapsed:)))
+    tasks.append(Task(elapsed: duration - 2.0, action: playCount(elapsed:)))
+    tasks.append(Task(elapsed: duration - 1.0, action: playStart(elapsed:)))
     
     return tasks
 }
@@ -29,9 +29,9 @@ func buildExerciseTasks(exercise: Exercise) -> Array<Task> {
         tasks.append(Task(elapsed: Double(i), action: playProgressAnnoucement(text: txt)))
     }
     
-    tasks.append(Task(elapsed: duration - 3.0, action: playPop(elapsed:)))
-    tasks.append(Task(elapsed: duration - 2.0, action: playPop(elapsed:)))
-    tasks.append(Task(elapsed: duration - 1.0, action: playPurr(elapsed:)))
+    tasks.append(Task(elapsed: duration - 3.0, action: playCount(elapsed:)))
+    tasks.append(Task(elapsed: duration - 2.0, action: playCount(elapsed:)))
+    tasks.append(Task(elapsed: duration - 1.0, action: playEnd(elapsed:)))
     
 
     // sort tasks - should be unnecessary
@@ -127,7 +127,7 @@ class Runner {
     
     func stop() {
         self.elapsed = 0.0
-        self.timer?.invalidate()iterm
+        self.timer?.invalidate()
     }
 }
 

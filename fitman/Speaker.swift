@@ -14,20 +14,15 @@ import AVFoundation
 class Speaker: NSObject, AVSpeechSynthesizerDelegate {
     
     var synthesizer: AVSpeechSynthesizer?
+    var voice: String?
+    var locale: String?
+    var rate: Float = 0.4
     
-    override init() {
+    
+    init(voice: String, locale: String) {
         
-        super.init()
-        
-//        AVAudioSession.sha
-//        let speechVoices = AVSpeechSynthesisVoice.speechVoices()
-//        speechVoices.forEach { (voice) in
-//          print("**********************************")
-//          print("Voice identifier: \(voice.identifier)")
-//          print("Voice language: \(voice.language)")
-//          print("Voice name: \(voice.name)")
-//          print("Voice quality: \(voice.quality.rawValue)") // Compact: 1 ; Enhanced: 2
-//        }
+        self.voice = voice
+        self.locale = locale
     }
     
     func say(_ text: String) {
@@ -37,8 +32,8 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
         self.synthesizer = AVSpeechSynthesizer()
         self.synthesizer!.delegate = self
         let utterance = AVSpeechUtterance(string: text)
-        utterance.rate = 0.4
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
+        utterance.rate = self.rate
+        utterance.voice = AVSpeechSynthesisVoice(language: self.locale)
 //        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
         DispatchQueue.global(qos: .background).async {
             // Bren this worked to smooth out the progress display
@@ -63,26 +58,9 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
             self.synthesizer!.continueSpeaking()
         }
     }
-    
-    func playTinkSound() {
-        DispatchQueue.global(qos: .background).async {
-            NSSound(named: "Tink")?.play()
-        }
-    }
-    func playPurrSound() {
-        DispatchQueue.global(qos: .background).async {
-            NSSound(named: "Purr")?.play()
-        }
-    }
-    func playPopSound() {
-        DispatchQueue.global(qos: .background).async {
-            NSSound(named: "Pop")?.play()
-        }
-    }
-
+        
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        print("didFinish", self.synthesizer)
-//        self.synthesizer = nil
+        print("didFinish", self.synthesizer!)
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
     }
@@ -93,4 +71,16 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
         self.synthesizer = nil
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) { }
+    
+    func printVoices() {
+//                AVAudioSession.sha
+        let speechVoices = AVSpeechSynthesisVoice.speechVoices()
+        speechVoices.forEach { (voice) in
+          print("**********************************")
+          print("Voice identifier: \(voice.identifier)")
+          print("Voice language: \(voice.language)")
+          print("Voice name: \(voice.name)")
+          print("Voice quality: \(voice.quality.rawValue)") // Compact: 1 ; Enhanced: 2
+        }
+    }
 }

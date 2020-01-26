@@ -30,6 +30,7 @@
 		0ECF97FC23CB56A8004D708C /* SessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECF97F923CB56A8004D708C /* SessionViewModel.swift */; };
 		0ED697C423CFD7C800F0A2A6 /* ProgressCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED697C323CFD7C800F0A2A6 /* ProgressCircleView.swift */; };
 		DA5A1D2923D89FAF00DE041C /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5A1D2823D89FAF00DE041C /* AudioPlayer.swift */; };
+		DA8E7A7523DC91D5001FBF1E /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = DA8E7A7423DC91D4001FBF1E /* Sounds */; };
 		DA9C3D2E23C7F79800ACCE39 /* ResponderWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +83,7 @@
 		0ECF97F923CB56A8004D708C /* SessionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionViewModel.swift; sourceTree = "<group>"; };
 		0ED697C323CFD7C800F0A2A6 /* ProgressCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressCircleView.swift; sourceTree = "<group>"; };
 		DA5A1D2823D89FAF00DE041C /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		DA8E7A7423DC91D4001FBF1E /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
 		DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponderWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +148,7 @@
 		0E8EA79F23C50A5E00853440 /* fitman */ = {
 			isa = PBXGroup;
 			children = (
+				DA8E7A7423DC91D4001FBF1E /* Sounds */,
 				0E0A4A0723C5FD5B000134B1 /* exercise.json */,
 				0E1088E123CDEE3800A9F2E2 /* Defaults.swift */,
 				0ECF97F823CB56A8004D708C /* Exercise.swift */,
@@ -300,6 +303,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA8E7A7523DC91D5001FBF1E /* Sounds in Resources */,
 				0E8EA7AB23C50A6100853440 /* Main.storyboard in Resources */,
 				0E0A4A0823C5FD5B000134B1 /* exercise.json in Resources */,
 				0E8EA7A823C50A6100853440 /* Preview Assets.xcassets in Resources */,
