@@ -8,24 +8,26 @@
 
 import SwiftUI
 
-struct RunBottomView: View {
-    @ObservedObject var state: RoutineModel
+struct MainView: View {
+    @ObservedObject var app: App
 
 
     var body: some View {
-        
-        _ = NSColor(named: NSColor.Name("nextExerciseLabel"))
 
         return VStack(alignment: HorizontalAlignment.center, spacing: 0) {
 
             Spacer()
 
             ZStack(alignment: .center) {
-                ProgressCircle(session: self.state)
-                CurrentPrevNextView(session: self.state, current: self.state.currentExerciseIndex)
+                ProgressCircleView(routine: self.app.routineModel)
+                ExerciseInfoView(routine: self.app.routineModel)
             }
             
 
+            Spacer()
+            Spacer()
+            Spacer()
+            Spacer()
             Spacer()
             
         }

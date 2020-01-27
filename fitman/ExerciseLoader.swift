@@ -16,65 +16,71 @@ import AVFoundation
 
 
 func loadData() -> Database? {
-    guard let filepath = Bundle.main.path(forResource: "routines", ofType: "json") else {
+    
+    do {
+        let savedPath = getPersonalDataPath()
+        
+        if let database = attemptToLoadFile(path: savedPath) {
+            print("got from saved")
+            print(database)
+            return database
+        }
+    }
+
+    print("not got from saved")
+    
+    guard let bundlePath = Bundle.main.path(forResource: "routines", ofType: "json") else {
         exerciseErrorDialog(text: "JSON file exercise.json not found")
         return nil
     }
+
+    if let database = attemptToLoadFile(path: bundlePath) {
+        print(database)
+        return database
+    }
+
+    return nil
     
+}
+
+func saveData(database: Database) -> Bool {
+//    let filepath = Bundle.main.path(forResource: "test", ofType: "json")!
+    
+    let path = getPersonalDataPath()
+    let url: URL = URL(fileURLWithPath: path)
+    
+    if let encodedData =  try? JSONEncoder().encode(database) {
+        
+        do {
+            try encodedData.write(to: url)
+            return true
+        }
+        catch {
+            print("Failed to write JSON data: \(error.localizedDescription)")
+        }
+        return false
+    }
+
+    return false
+}
+
+func attemptToLoadFile(path: String) -> Database? {
     do {
-        let contents = try String(contentsOfFile: filepath)
-        print(contents)
+        let contents = try String(contentsOfFile: path)
         let data = Data(contents.utf8)
-        let decoder = JSONDecoder()
-        let exDb = try decoder.decode(Database.self, from: data)
-        return exDb
+        let db = try JSONDecoder().decode(Database.self, from: data)
+        return db
         
     } catch {
-        exerciseErrorDialog(text: "JSON read of file exercise.json failed")
+//        exerciseErrorDialog(text: "JSON read of file exercise.json failed")
         
         return nil
     }
-
 }
 
-//func loadOldData() -> ExerciseSessionDatabase {
-//    guard let filepath = Bundle.main.path(forResource: "exercise", ofType: "json") else {
-//        exerciseErrorDialog(text: "JSON file exercise.json not found")
-//        return ["rob":[]]
-//    }
-//
-//    do {
-//        let contents = try String(contentsOfFile: filepath)
-////            print(contents)
-//        let data = Data(contents.utf8)
-//        let decoder = JSONDecoder()
-//        let exDb = try decoder.decode(ExerciseSessionDatabase.self, from: data)
-//        return exDb
-//
-//    } catch {
-//        exerciseErrorDialog(text: "JSON read of file exercise.json failed")
-//
-//        return ["rob":[]]
-//    }
-//
-//}
 
-//func saveData() -> Bool {
-//    guard let filepath = Bundle.main.path(forResource: "exercise", ofType: "json") else {
-//        exerciseErrorDialog(text: "JSON file exercise.json not found")
-//        return false
-//    }
-//
-//    do {
-//
-//        let json = try JSONEncoder().encode(ExerciseSessionDatabase)
-//        json.wr
-//        return true
-//
-//    } catch {
-//        exerciseErrorDialog(text: "JSON read of file exercise.json failed")
-//
-//        return false
-//    }
-//
-//}
+func getPersonalDataPath() -> String {
+    let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    let path = documents.appending("/database.json")
+    return path
+}

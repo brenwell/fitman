@@ -14,11 +14,11 @@ struct Exercise: Identifiable, Decodable, Encodable {
         private enum CodingKeys : String, CodingKey {
             case label = "label"
             case duration = "duration"
-            
+            case id = "id"
         }
     var label: String
     var duration: Int
-    var id: Int?
+    var id: String
 }
 
 typealias Exercises = Array<Exercise>

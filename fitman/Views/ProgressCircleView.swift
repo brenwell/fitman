@@ -8,30 +8,33 @@
 
 import SwiftUI
 
-struct ProgressCircle: View {
+struct ProgressCircleView: View {
 
-    @ObservedObject var session: RoutineModel
+    @ObservedObject var routine: RoutineModel
     
     var body: some View {
         
         let width: CGFloat = 20.0
-        let frameWidth: CGFloat = 600.0
         
-        let barColorStr = getColor(state: session.state)
+        let barColorStr = getColor(state: routine.state)
         let barColor = NSColor(named: NSColor.Name(barColorStr))
         let bgColor = NSColor(named: NSColor.Name("progressBarBg"))
+        
+        let decimalInverted = 1 - (CGFloat(routine.elapsed / routine.duration))
+        
 
         return ZStack {
             Circle()
-                .stroke(Color(bgColor!), lineWidth: width)
-                .frame(width: frameWidth)
+                .stroke(Color(barColor!), lineWidth: width)
+                
                 .rotationEffect(Angle(degrees:-90))
             Circle()
-                .trim(from: 0.0, to: CGFloat(session.elapsed / session.duration))
-                .stroke(Color(barColor!), lineWidth: width)
-                .frame(width: frameWidth)
+                .trim(from:decimalInverted, to: 1.0)
+                .stroke(Color(bgColor!), lineWidth: width)
+                
                 .rotationEffect(Angle(degrees:-90))
-        }
+                
+            }
     }
 }
 

@@ -21,17 +21,17 @@ struct ContentView: View {
         {
             HStack(alignment: .center, spacing: 20)
             {
-                SessionPicker(controller: self.app, labels: labels, selectedExerciseSet: $app.selectedSessionIndex).padding(0)
+                RoutinePickerView(app: self.app, labels: labels, selectedExerciseSet: $app.selectedSessionIndex).padding(0)
                 
                 Spacer()
                 
-                ControlButtons(state: app.routineModel)
+                ButtonControlView(state: app.routineModel)
                 
             
             }.padding(10)
 
             
-            RunBottomView(state: app.routineModel)
+            MainContentView(app: app)
         }
         
     }

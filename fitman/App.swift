@@ -19,7 +19,7 @@ class App: ObservableObject {
     var selectedSessionIndex: Int = 0 {
         didSet {
             // this code is called when the view selects a new session index
-            print("ExerciseController::selectedSessionIndex didSet \(self.selectedSessionIndex)")
+            print("App::selectedSessionIndex didSet \(self.selectedSessionIndex)")
 
             self.routineModel = setCurrentRoutine(index: selectedSessionIndex, database: self.database)
             
@@ -27,6 +27,12 @@ class App: ObservableObject {
                 
             UserDefaults.standard.set(self.selectedSessionIndex, forKey: "routineIndex")
             UserDefaults.standard.set(self.routineModel.routine.label, forKey: "routineLabel")
+        }
+    }
+    
+    @Published var showMainView: Bool = true {
+        didSet {
+             print("App::showMainView didSet \(self.showMainView)")
         }
     }
     
@@ -45,9 +51,13 @@ class App: ObservableObject {
             index = 0
         }
         
+        
+        
         self.routineModel = setCurrentRoutine(index: index, database: db)
         
         self.selectedSessionIndex = index
+        
+//        saveData(database: db)
     }
     
 }
@@ -55,6 +65,23 @@ class App: ObservableObject {
 func setCurrentRoutine(index: Int, database: Database) -> RoutineModel {
     let routines:Routines = database.routines
     let routine: Routine = routines[index]
+    
+    calculateTotalDuration(exercises: routine.exercises)
+    
     return RoutineModel(routine: routine)
+}
+
+func calculateTotalDuration(exercises: Exercises) {
+    let sum = exercises.reduce(0) { $0 + $1.duration }
+    
+    print(sum)
+    
+
+    let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = [.hour, .minute, .second]
+    formatter.unitsStyle = .full
+
+    let formattedString = formatter.string(from: TimeInterval(sum))!
+    print(formattedString)
 }
 

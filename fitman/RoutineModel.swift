@@ -10,7 +10,6 @@ enum RoutineState {
 class RoutineModel: ObservableObject {
     
     var routine: Routine
-    var exercises: Exercises
     
     @Published var currentExerciseIndex: Int
     @Published var state: RoutineState
@@ -26,7 +25,6 @@ class RoutineModel: ObservableObject {
     init(routine: Routine) {
         self.currentExerciseIndex = 0
         self.routine = routine
-        self.exercises = routine.exercises
         self.state = .stopped
         self.prevState = .stopped
         self.durationBetween = Double(routine.gap)
@@ -37,6 +35,8 @@ class RoutineModel: ObservableObject {
         // Used to publish progress
         self.duration = 0.0
         self.elapsed = 0.0
+        
+        
     }
     
     public func start(){
@@ -50,7 +50,7 @@ class RoutineModel: ObservableObject {
         
         self.state = .countingIn
         
-        guard let exercise = self.exercises[safe: self.currentExerciseIndex] else {
+        guard let exercise = self.routine.exercises[safe: self.currentExerciseIndex] else {
             self.stop(playNoise: false)
             return
         }
@@ -69,7 +69,7 @@ class RoutineModel: ObservableObject {
         
         self.state = .playing
         
-        let exercise = self.exercises[self.currentExerciseIndex]
+        let exercise = self.routine.exercises[self.currentExerciseIndex]
         let tasks = buildExerciseTasks(exercise: exercise)
         
         self.runner.start(
@@ -87,7 +87,7 @@ class RoutineModel: ObservableObject {
     
     public func next(){
         
-        if (self.exercises.count <= self.currentExerciseIndex + 1) {
+        if (self.routine.exercises.count <= self.currentExerciseIndex + 1) {
             self.stop(playNoise: true)
             return
         }
@@ -183,7 +183,7 @@ class RoutineModel: ObservableObject {
         
         if (interval > 0) {
             for i in stride(from: interval, to: Int(duration), by: interval) {
-                let txt: String = "\(Int(i))"
+                let txt: String = "\(Int(duration) - Int(i))"
                 tasks.append(Task(elapsed: Double(i), action: playProgressAnnoucement(text: txt)))
             }
         }
