@@ -18,15 +18,17 @@
                 { "label": "Hand to wall", "duration": 40, "id": "11" },
                 { "label": "Fist curls", "duration": 30, "id": "12" },
                 { "label": "Plank", "duration": 60, "id": "13" },
-                { "label": "Right Arm Ups", "duration": 60, "id": "14" },
-                { "label": "Left Arm Upds", "duration": 60, "id": "15" },
-                { "label": "T-Raises", "duration": 60, "id": "16" },
-                { "label": "Leg lifts", "duration": 60, "id": "17" },
-                { "label": "Kneeling squats", "duration": 60, "id": "18" },
-                { "label": "Push-ups", "duration": 40, "id": "19" },
-                { "label": "Arm circles", "duration": 40, "id": "20" },
-                { "label": "Calf stretch left", "duration": 40, "id": "21" },
-                { "label": "Calf stretch right", "duration": 40, "id": "22" }
+                { "label": "Arm Ups right", "duration": 30, "id": "14" },
+                { "label": "Arm Ups left", "duration": 30, "id": "15" },
+                { "label": "Bicep curls", "duration": 60, "id": "16" },
+                { "label": "T-Raises", "duration": 60, "id": "17" },
+                { "label": "Leg lifts", "duration": 60, "id": "18" },
+                { "label": "Squat", "duration": 60, "id": "18" },
+                { "label": "Fire hydrants", "duration": 60, "id": "19" },
+                { "label": "Push-ups", "duration": 40, "id": "20" },
+                { "label": "Arm circles", "duration": 40, "id": "21" },
+                { "label": "Calf stretch left", "duration": 40, "id": "22" },
+                { "label": "Calf stretch right", "duration": 40, "id": "23" }
             ]
         },
         {

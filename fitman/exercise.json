@@ -1,9 +1,9 @@
 {
     "Hard" : [
         { "label": "Door stretch", "duration": 60 },
-        { "label": "Touch toes", "duration": 40 },
-        { "label": "Wall sit", "duration": 50 },
-        { "label": "Tricep dips", "duration": 50 },
+        { "label": "Touch toes", "duration": 60 },
+        { "label": "Wall sit", "duration": 60 },
+        { "label": "Tricep dips", "duration": 60 },
         { "label": "Lunges", "duration": 60 },
         { "label": "Push-ups", "duration": 50 },
         { "label": "Crunches", "duration": 50 },
@@ -18,8 +18,8 @@
         { "label": "Kneeling squats", "duration": 60 },
         { "label": "Push-ups", "duration": 40 },
         { "label": "Arm circles", "duration": 40 },
-        { "label": "Calf stretch left", "duration": 40 },
-        { "label": "Calf stretch right", "duration": 40 }
+        { "label": "Calf stretch left", "duration": 60 },
+        { "label": "Calf stretch right", "duration": 60 }
     ],
     "Easy" : [
         { "label": "Door stretch", "duration": 30 },

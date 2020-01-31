@@ -89,19 +89,25 @@ class RoutineModel: ObservableObject {
         
         if (self.routine.exercises.count <= self.currentExerciseIndex + 1) {
             self.stop(playNoise: true)
+            
+            self.currentExerciseIndex = 0
             return
         }
         
         print("next")
         
         self.currentExerciseIndex += 1
-        self.start()
+        
+        if (self.state == .playing || self.state == .countingIn) {
+
+            self.start()
+        }
     }
     
     public func previous() {
         print("previous")
         
-        if (self.currentExerciseIndex - 1 <= 0) {
+        if (self.currentExerciseIndex - 1 < 0) {
             print("at beginning")
             return
         }
@@ -109,7 +115,11 @@ class RoutineModel: ObservableObject {
         print("prev")
         
         self.currentExerciseIndex -= 1
-        self.start()
+        
+        if (self.state == .playing || self.state == .countingIn) {
+
+            self.start()
+        }
     }
     
     public func togglePause(){
