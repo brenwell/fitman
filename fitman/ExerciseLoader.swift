@@ -17,30 +17,31 @@ import AVFoundation
 
 func loadData() -> Database? {
     
-    do {
-        let savedPath = getPersonalDataPath()
-        
-        if let database = attemptToLoadFile(path: savedPath) {
-            print("got from saved")
-            print(database)
-            return database
-        }
-    }
-
-    print("not got from saved")
+    let savedPath = getPersonalDataPath()
     
     guard let bundlePath = Bundle.main.path(forResource: "routines", ofType: "json") else {
         exerciseErrorDialog(text: "JSON file exercise.json not found")
         return nil
     }
-
-    if let database = attemptToLoadFile(path: bundlePath) {
-        print(database)
-        return database
-    }
-
-    return nil
     
+    
+    do {
+        let defaultDb = attemptToLoadFile(path: bundlePath)
+        var personalDb = attemptToLoadFile(path: savedPath)
+        
+        if personalDb == nil { return defaultDb }
+        if defaultDb == nil { return personalDb }
+        
+        for (_, element) in defaultDb!.routines.enumerated() {
+            let found = personalDb!.routines.first(where: { $0.label == element.label })
+            if (found == nil) {
+                personalDb!.routines.append(element)
+            }
+        }
+        
+        
+        return personalDb
+    }
 }
 
 func saveData(database: Database) -> Bool {

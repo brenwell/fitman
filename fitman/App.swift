@@ -86,11 +86,12 @@ class App: ObservableObject {
         self.routineModel = RoutineModel(routine: routine)
     }
     
-    
+    // used to persist changes
     func persist() {
         
         var db = self.database
         db.routines[self.selectedSessionIndex] = self.routineModel.routine
+        db.modified = "\(Int(NSDate().timeIntervalSince1970))"
         
         let success = saveData(database: db)
         
