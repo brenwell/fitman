@@ -92,7 +92,16 @@ class App: ObservableObject {
         var db = self.database
         db.routines[self.selectedSessionIndex] = self.routineModel.routine
         
-        saveData(database: db)
+        let success = saveData(database: db)
+        
+        print("Saving changes - success: \(success)")
+    }
+    
+    // Used to cancel cahnges
+    func undo() {
+        self.routineModel = setCurrentRoutine(index: self.selectedSessionIndex, database: self.database)
+        
+        print("UNdoing changes")
     }
 }
 

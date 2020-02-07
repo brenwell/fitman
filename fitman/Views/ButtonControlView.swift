@@ -46,6 +46,7 @@ struct ButtonControlView: View {
                     Text("Save")
                 }
                 Button(action: {
+                    self.app.undo()
                     self.app.showMainView = true
                 }) {
                     Text("Cancel")
