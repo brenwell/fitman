@@ -15,14 +15,14 @@ import AVFoundation
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: ResponderWindow!
-    var app: App?
+    var store: Store?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
     
-        self.app = App()
+        self.store = Store()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(app: self.app!)
+        let contentView = ContentView(store: self.store!)
         
         // Create the window and set the content view. 
         window = ResponderWindow(
@@ -34,7 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         
-        window.model = self.app?.routineModel
+        window.model = self.store?.selectedRoutine
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

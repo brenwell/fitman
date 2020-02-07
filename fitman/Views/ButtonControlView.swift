@@ -11,28 +11,28 @@ import SwiftUI
 
 struct ButtonControlView: View {
    
-    @ObservedObject var app: App
+    @ObservedObject var store: Store
 
     var body: some View {
         
-        let playPauseLabel = (app.routineModel.state == .paused || app.routineModel.state == .stopped) ? "Play" : "Pause"
+        let playPauseLabel = (store.selectedRoutine.state == .paused || store.selectedRoutine.state == .stopped) ? "Play" : "Pause"
         
         return HStack(alignment: .center) {
                    
-            if self.app.showMainView {
+            if self.store.showMainView {
 
                 Button(action: {
-                    self.app.routineModel.previous()
+                    self.store.selectedRoutine.previous()
                 }) {
                     Image(nsImage: NSImage(named: NSImage.goLeftTemplateName)! )
                 }
                 Button(action: {
-                    self.app.routineModel.togglePause()
+                    self.store.selectedRoutine.togglePause()
                 }) {
                     Text(playPauseLabel)
                 }
                 Button(action: {
-                    self.app.routineModel.next()
+                    self.store.selectedRoutine.next()
                 }) {
                     Image(nsImage: NSImage(named: NSImage.goRightTemplateName)! )
                 }
@@ -40,14 +40,14 @@ struct ButtonControlView: View {
             
             else {
                 Button(action: {
-                    self.app.persist()
-                    self.app.showMainView = true
+                    self.store.persist()
+                    self.store.showMainView = true
                 }) {
                     Text("Save")
                 }
                 Button(action: {
-                    self.app.undo()
-                    self.app.showMainView = true
+                    self.store.undo()
+                    self.store.showMainView = true
                 }) {
                     Text("Cancel")
                 }

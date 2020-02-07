@@ -9,14 +9,14 @@
 import SwiftUI
 
 struct MainContentView: View {
-    @ObservedObject var app: App
+    @ObservedObject var store: Store
 
     @ViewBuilder
     var body: some View {
-        if (self.app.showMainView) {
-            MainView(app: app)
+        if (self.store.showMainView) {
+            MainView(store: store)
         } else {
-            EditView(app: app)
+            EditView(store: store)
         }
     }
 

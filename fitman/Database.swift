@@ -66,6 +66,7 @@ struct Routine: Identifiable {
     var gap: Int
     var exercises: Exercises
     var id: Int
+    var totalDuration: String?
 }
 
 struct Database {

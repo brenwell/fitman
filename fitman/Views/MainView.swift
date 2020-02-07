@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var app: App
+    @ObservedObject var store: Store
 
     var body: some View {
 
@@ -18,14 +18,12 @@ struct MainView: View {
             Spacer()
 
             ZStack(alignment: .center) {
-                ProgressCircleView(routine: self.app.routineModel)
-                ExerciseInfoView(routine: self.app.routineModel)
+                ProgressCircleView(routine: self.store.selectedRoutine)
+                ExerciseInfoView(routine: self.store.selectedRoutine)
             }
             
-            Spacer()
-            Spacer()
-            Spacer()
-            Spacer()
+            
+            
             Spacer()
             
         }

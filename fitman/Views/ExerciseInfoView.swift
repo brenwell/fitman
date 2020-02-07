@@ -16,8 +16,8 @@ struct ExerciseInfoView: View {
     
     var body: some View {
     
-        let curr = routine.routine.exercises[safe: routine.currentExerciseIndex]
-        let next = routine.routine.exercises[safe: routine.currentExerciseIndex+1]
+        let curr = routine.enabledExercises[safe: routine.currentExerciseIndex]
+        let next = routine.enabledExercises[safe: routine.currentExerciseIndex+1]
         let currLabel: String = ((curr) != nil) ? curr!.label : ""
         let nextLabel: String = ((next) != nil) ? next!.label : ""
         let timeLabel: String = "\(Int(routine.duration - routine.elapsed))"

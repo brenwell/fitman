@@ -11,27 +11,15 @@ import SwiftUI
 // Structire the app as a single view
 struct ContentView: View {
     
-    @ObservedObject var app: App
+    @ObservedObject var store: Store
     
     var body: some View {
-        
-        let labels = app.database.routines.map { $0.label }
 
-        return VStack(alignment: HorizontalAlignment.center, spacing: 20)
+        return VStack(alignment: HorizontalAlignment.center)
         {
-            HStack(alignment: .center, spacing: 20)
-            {
-                RoutinePickerView(app: self.app, labels: labels, selectedExerciseSet: $app.selectedSessionIndex).padding(0)
-                
-                Spacer()
-                
-                ButtonControlView(app: self.app)
-                
-            
-            }.padding(10)
-
-            
-            MainContentView(app: app)
+            TopView(store: store)
+            MainContentView(store: store)
+            BottomView(store: store)
         }
         
     }
@@ -40,10 +28,10 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
-        let exerciseController = App()
+        let store = Store()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(app: exerciseController)
+        let contentView = ContentView(store: store)
         
         return contentView
     }

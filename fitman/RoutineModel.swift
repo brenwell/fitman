@@ -10,6 +10,7 @@ enum RoutineState {
 class RoutineModel: ObservableObject {
     
     var routine: Routine
+    var enabledExercises: Exercises
     
     @Published var currentExerciseIndex: Int
     @Published var state: RoutineState
@@ -17,6 +18,7 @@ class RoutineModel: ObservableObject {
     @Published var duration: Double
     @Published var elapsed: Double
     @Published var durationBetween: Double
+    @Published var totalDuration: String = "n/a"
     
     private var speaker: Speaker
     private var runner: TaskRunner
@@ -36,7 +38,8 @@ class RoutineModel: ObservableObject {
         self.duration = 0.0
         self.elapsed = 0.0
         
-        
+        self.enabledExercises = routine.exercises.filter { $0.enabled }
+        self.totalDuration = calculateTotalDuration(exercises: self.enabledExercises)
     }
     
     public func start(){
@@ -50,7 +53,7 @@ class RoutineModel: ObservableObject {
         
         self.state = .countingIn
         
-        guard let exercise = self.routine.exercises[safe: self.currentExerciseIndex] else {
+        guard let exercise = self.enabledExercises[safe: self.currentExerciseIndex] else {
             self.stop(playNoise: false)
             return
         }
@@ -69,7 +72,7 @@ class RoutineModel: ObservableObject {
         
         self.state = .playing
         
-        let exercise = self.routine.exercises[self.currentExerciseIndex]
+        let exercise = self.enabledExercises[self.currentExerciseIndex]
         let tasks = buildExerciseTasks(exercise: exercise)
         
         self.runner.start(
@@ -87,7 +90,7 @@ class RoutineModel: ObservableObject {
     
     public func next(){
         
-        if (self.routine.exercises.count <= self.currentExerciseIndex + 1) {
+        if (self.enabledExercises.count <= self.currentExerciseIndex + 1) {
             self.stop(playNoise: true)
             
             self.currentExerciseIndex = 0
@@ -222,4 +225,25 @@ class RoutineModel: ObservableObject {
         }
     }
 
+}
+
+
+func calculateTotalDuration(exercises: Exercises) -> String{
+    
+    let sum = exercises.reduce(0) {
+        if (!$1.enabled) { return $0 }
+        return $0 + $1.duration
+    }
+    
+    print(sum)
+    
+
+    let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = [.hour, .minute, .second]
+    formatter.unitsStyle = .full
+
+    let formattedString = formatter.string(from: TimeInterval(sum))!
+    print(formattedString)
+    
+    return formattedString
 }

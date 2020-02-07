@@ -15,7 +15,7 @@
 		0E1088D923CD1E3600A9F2E2 /* ExerciseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088D723CD1E3600A9F2E2 /* ExerciseInfoView.swift */; };
 		0E1088DE23CD1FB400A9F2E2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088DC23CD1FB400A9F2E2 /* MainView.swift */; };
 		0E1088E023CD23E900A9F2E2 /* NumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1088DF23CD23E900A9F2E2 /* NumberTextField.swift */; };
-		0E52217623C59B0300479741 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52217523C59B0300479741 /* App.swift */; };
+		0E52217623C59B0300479741 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52217523C59B0300479741 /* Store.swift */; };
 		0E8EA7A123C50A5E00853440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8EA7A023C50A5E00853440 /* AppDelegate.swift */; };
 		0E8EA7A523C50A6100853440 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E8EA7A423C50A6100853440 /* Assets.xcassets */; };
 		0E8EA7A823C50A6100853440 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E8EA7A723C50A6100853440 /* Preview Assets.xcassets */; };
@@ -37,6 +37,8 @@
 		DA8E7A8423DDF2EB001FBF1E /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8E7A8323DDF2EB001FBF1E /* MainContentView.swift */; };
 		DA8E7A8623DDF814001FBF1E /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8E7A8523DDF814001FBF1E /* EditView.swift */; };
 		DA9C3D2E23C7F79800ACCE39 /* ResponderWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */; };
+		DACA6E9323EDB8C0006FE3CD /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACA6E9223EDB8C0006FE3CD /* TopView.swift */; };
+		DACA6E9523EDC37C006FE3CD /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACA6E9423EDC37C006FE3CD /* BottomView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +68,7 @@
 		0E1088D723CD1E3600A9F2E2 /* ExerciseInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseInfoView.swift; sourceTree = "<group>"; };
 		0E1088DC23CD1FB400A9F2E2 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		0E1088DF23CD23E900A9F2E2 /* NumberTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberTextField.swift; sourceTree = "<group>"; };
-		0E52217523C59B0300479741 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		0E52217523C59B0300479741 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		0E8EA79D23C50A5E00853440 /* fitman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fitman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E8EA7A023C50A5E00853440 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0E8EA7A423C50A6100853440 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -95,6 +97,8 @@
 		DA8E7A8323DDF2EB001FBF1E /* MainContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
 		DA8E7A8523DDF814001FBF1E /* EditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 		DA9C3D2D23C7F79800ACCE39 /* ResponderWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponderWindow.swift; sourceTree = "<group>"; };
+		DACA6E9223EDB8C0006FE3CD /* TopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
+		DACA6E9423EDC37C006FE3CD /* BottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,8 @@
 			children = (
 				0E1088D523CD138200A9F2E2 /* ContentView.swift */,
 				0E1088DC23CD1FB400A9F2E2 /* MainView.swift */,
+				DACA6E9223EDB8C0006FE3CD /* TopView.swift */,
+				DACA6E9423EDC37C006FE3CD /* BottomView.swift */,
 				DA8E7A8523DDF814001FBF1E /* EditView.swift */,
 				DA8E7A8323DDF2EB001FBF1E /* MainContentView.swift */,
 				0ED697C323CFD7C800F0A2A6 /* ProgressCircleView.swift */,
@@ -166,7 +172,7 @@
 				0E1088D423CD132700A9F2E2 /* Views */,
 				DA8E7A7823DDA155001FBF1E /* routines.json */,
 				0E8EA7A023C50A5E00853440 /* AppDelegate.swift */,
-				0E52217523C59B0300479741 /* App.swift */,
+				0E52217523C59B0300479741 /* Store.swift */,
 				0ECF97F823CB56A8004D708C /* Database.swift */,
 				0E0A4A0523C5F4C7000134B1 /* ExerciseLoader.swift */,
 				DA8E7A7623DD3095001FBF1E /* Sound.swift */,
@@ -359,7 +365,7 @@
 				0E1088D623CD138200A9F2E2 /* ContentView.swift in Sources */,
 				0E0A4A0A23C605C9000134B1 /* ExerciseError.swift in Sources */,
 				DA8E7A7D23DDDDC2001FBF1E /* ButtonControlView.swift in Sources */,
-				0E52217623C59B0300479741 /* App.swift in Sources */,
+				0E52217623C59B0300479741 /* Store.swift in Sources */,
 				0E0A4A0623C5F4C7000134B1 /* ExerciseLoader.swift in Sources */,
 				DA8E7A8023DDDE45001FBF1E /* Collection.swift in Sources */,
 				DA8E7A8423DDF2EB001FBF1E /* MainContentView.swift in Sources */,
@@ -377,7 +383,9 @@
 				0ECF97FC23CB56A8004D708C /* RoutineModel.swift in Sources */,
 				0ED697C423CFD7C800F0A2A6 /* ProgressCircleView.swift in Sources */,
 				0E8EA7A123C50A5E00853440 /* AppDelegate.swift in Sources */,
+				DACA6E9323EDB8C0006FE3CD /* TopView.swift in Sources */,
 				DA8E7A7B23DDDD7F001FBF1E /* RoutinePickerView.swift in Sources */,
+				DACA6E9523EDC37C006FE3CD /* BottomView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

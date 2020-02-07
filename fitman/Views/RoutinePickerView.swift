@@ -10,21 +10,22 @@ import SwiftUI
 
 struct RoutinePickerView: View {
 
-    var app: App
-    var labels: [String]
-    @Binding var selectedExerciseSet: Int
+    @ObservedObject var store: Store
 
     var body: some View {
+        
+        let labels: [String] = store.database.routines.map { $0.label }
+        
         return HStack() {
         
-            Picker(selection: $selectedExerciseSet, label: Text("")) {
+            Picker(selection: $store.selectedRoutineIndex, label: Text("")) {
                 ForEach(0 ..< labels.count) {
-                   Text(self.labels[$0]).tag($0)
+                   Text(labels[$0]).tag($0)
                 }
-            }.frame(maxWidth: 200)
+            }.frame(maxWidth: 200.0)
             
             Button(action: {
-                self.app.showMainView = !self.app.showMainView
+                self.store.showMainView = !self.store.showMainView
             }) {
                 Image(nsImage: NSImage(named: NSImage.actionTemplateName)! )
             }

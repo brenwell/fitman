@@ -10,33 +10,46 @@ import SwiftUI
 
 struct EditView: View {
     
-    @ObservedObject var app: App
+    @ObservedObject var store: Store
     
     var body: some View {
         
-        let exercises = app.routineModel.routine.exercises
+        let exercises = store.selectedRoutine.routine.exercises
 
         return ScrollView() {
+            
             VStack(alignment: HorizontalAlignment.center) {
                 
                     ForEach(exercises) { exercise in
-                        HStack(){
-                        TextField(exercise.label, text: Binding(
-                          get: {
-                            return exercise.label
-                            },
-                          set: { (newValue) in
-                            return self.app.changeExerciseLabel(label: newValue, index: exercise.id)
-                        }))
                         
-                        TextField("\(exercise.duration)", text: Binding(
-                          get: {
-                            return "\(exercise.duration)"
-                            },
-                          set: { (newValue) in
-                            return self.app.changeExerciseDuration(duration: newValue, index: exercise.id)
-                        }))
-                            }
+                        HStack(){
+                        
+                            TextField(exercise.label, text: Binding(
+                              get: {
+                                return exercise.label
+                                },
+                              set: { (newValue) in
+                                return self.store.changeExerciseLabel(label: newValue, index: exercise.id)
+                            }))
+                            
+                            TextField("\(exercise.duration)", text: Binding(
+                              get: {
+                                return "\(exercise.duration)"
+                                },
+                              set: { (newValue) in
+                                return self.store.changeExerciseDuration(duration: newValue, index: exercise.id)
+                            }))
+                            
+                            Toggle("", isOn: Binding(
+                              get: {
+                                return exercise.enabled
+                                },
+                              set: { (newValue) in
+                                return self.store.changeExerciseEnabled(enabled: newValue, index: exercise.id)
+                            }))
+                            
+                        }
+                        
                     }
                 
 
@@ -45,35 +58,3 @@ struct EditView: View {
     }
 }
 
-
-struct ListRow: View {
-    @State var exercise: Exercise
-    
-
-    var body: some View {
-        print(exercise)
-        return HStack {
-
-            TextField(exercise.label, text: Binding(
-              get: {
-                return self.exercise.label
-                },
-              set: { (newValue) in
-                return self.exercise.label = newValue
-            }))
-            
-            TextField("", text: Binding(
-              get: {
-                return "\(self.exercise.duration)"
-                },
-              set: { (newValue) in
-                if (newValue == "") { return }
-                self.exercise.duration = Int(newValue)!
-                print(self.exercise)
-
-                return
-            }))
-            
-        }
-    }
-}
