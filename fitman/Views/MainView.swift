@@ -11,7 +11,6 @@ import SwiftUI
 struct MainView: View {
     @ObservedObject var app: App
 
-
     var body: some View {
 
         return VStack(alignment: HorizontalAlignment.center, spacing: 0) {
@@ -23,7 +22,6 @@ struct MainView: View {
                 ExerciseInfoView(routine: self.app.routineModel)
             }
             
-
             Spacer()
             Spacer()
             Spacer()

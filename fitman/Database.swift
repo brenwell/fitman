@@ -8,23 +8,24 @@
 
 import Foundation
 
-// An exercise session consists of a list of exercise descriptions and
-// a time drutaion for which each exercise should be performed
-struct Exercise: Identifiable, Decodable, Encodable {
+/** On disk data **/
+
+struct PersistedExercise: Codable {
         private enum CodingKeys : String, CodingKey {
             case label = "label"
             case duration = "duration"
-            case id = "id"
+            case enabled = "enabled"
         }
     var label: String
     var duration: Int
-    var id: String
+    var enabled: Bool
+    
 }
 
-typealias Exercises = Array<Exercise>
-typealias Routines = Array<Routine>
+typealias PersistedExercises = Array<PersistedExercise>
+typealias PersistedRoutines = Array<PersistedRoutine>
 
-struct Routine: Identifiable, Decodable, Encodable {
+struct PersistedRoutine: Codable {
         private enum CodingKeys : String, CodingKey {
             case label = "label"
             case gap = "gap"
@@ -33,15 +34,41 @@ struct Routine: Identifiable, Decodable, Encodable {
         }
     var label: String
     var gap: Int
-    var exercises: Exercises
-    var id: Int?
+    var exercises: PersistedExercises
 }
 
-struct Database: Decodable, Encodable {
+struct PersistedDatabase: Codable {
     private enum CodingKeys : String, CodingKey {
         case routines = "routines"
         case modified = "modified"
     }
+    var routines: PersistedRoutines
+    var modified: String
+}
+
+
+
+/** In memory data **/
+
+struct Exercise: Identifiable {
+    var label: String
+    var duration: Int
+    var enabled: Bool
+    var id: Int
+    
+}
+
+typealias Exercises = Array<Exercise>
+typealias Routines = Array<Routine>
+
+struct Routine: Identifiable {
+    var label: String
+    var gap: Int
+    var exercises: Exercises
+    var id: Int
+}
+
+struct Database {
     var routines: Routines
     var modified: String
 }

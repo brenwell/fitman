@@ -15,14 +15,14 @@ import AVFoundation
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: ResponderWindow!
-    var exerciseController: App?
+    var app: App?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
     
-        self.exerciseController = App()
+        self.app = App()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(app: self.exerciseController!)
+        let contentView = ContentView(app: self.app!)
         
         // Create the window and set the content view. 
         window = ResponderWindow(
@@ -34,7 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         
-        window.model = self.exerciseController?.routineModel
+        window.model = self.app?.routineModel
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

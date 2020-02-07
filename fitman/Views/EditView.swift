@@ -13,15 +13,35 @@ struct EditView: View {
     @ObservedObject var app: App
     
     var body: some View {
+        
+        let exercises = app.routineModel.routine.exercises
 
         return ScrollView() {
             VStack(alignment: HorizontalAlignment.center) {
-            
-                ForEach(app.routineModel.routine.exercises, id: \.id) { exercise in
-                    ListRow(exercise: exercise)
-                }
-            }
-        }.padding(20)
+                
+                    ForEach(exercises) { exercise in
+                        HStack(){
+                        TextField(exercise.label, text: Binding(
+                          get: {
+                            return exercise.label
+                            },
+                          set: { (newValue) in
+                            return self.app.changeExerciseLabel(label: newValue, index: exercise.id)
+                        }))
+                        
+                        TextField("\(exercise.duration)", text: Binding(
+                          get: {
+                            return "\(exercise.duration)"
+                            },
+                          set: { (newValue) in
+                            return self.app.changeExerciseDuration(duration: newValue, index: exercise.id)
+                        }))
+                            }
+                    }
+                
+
+            }.frame(maxWidth: 600)
+        }
     }
 }
 
@@ -47,7 +67,11 @@ struct ListRow: View {
                 return "\(self.exercise.duration)"
                 },
               set: { (newValue) in
-                return self.exercise.duration = Int(newValue)!
+                if (newValue == "") { return }
+                self.exercise.duration = Int(newValue)!
+                print(self.exercise)
+
+                return
             }))
             
         }

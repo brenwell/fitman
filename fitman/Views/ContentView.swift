@@ -25,7 +25,7 @@ struct ContentView: View {
                 
                 Spacer()
                 
-                ButtonControlView(state: app.routineModel)
+                ButtonControlView(app: self.app)
                 
             
             }.padding(10)

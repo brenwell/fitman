@@ -46,10 +46,11 @@ func loadData() -> Database? {
 func saveData(database: Database) -> Bool {
 //    let filepath = Bundle.main.path(forResource: "test", ofType: "json")!
     
+    let persistedDb = parseAppDataToPersist(db: database)
     let path = getPersonalDataPath()
     let url: URL = URL(fileURLWithPath: path)
     
-    if let encodedData =  try? JSONEncoder().encode(database) {
+    if let encodedData =  try? JSONEncoder().encode(persistedDb) {
         
         do {
             try encodedData.write(to: url)
@@ -68,7 +69,8 @@ func attemptToLoadFile(path: String) -> Database? {
     do {
         let contents = try String(contentsOfFile: path)
         let data = Data(contents.utf8)
-        let db = try JSONDecoder().decode(Database.self, from: data)
+        let persisted = try JSONDecoder().decode(PersistedDatabase.self, from: data)
+        let db = parsePersistedDataToApp(persisted: persisted)
         return db
         
     } catch {
@@ -76,6 +78,43 @@ func attemptToLoadFile(path: String) -> Database? {
         
         return nil
     }
+}
+
+func parsePersistedDataToApp(persisted: PersistedDatabase) -> Database {
+    
+    let persistedRoutines: PersistedRoutines = persisted.routines
+    
+    let routines: Routines = persistedRoutines.enumerated().map { (offset: Int, ro: PersistedRoutine) in
+        
+        let exercises: Exercises = ro.exercises.enumerated().map { (offset: Int, ex: PersistedExercise) in
+            return Exercise(label: ex.label, duration: ex.duration, enabled: ex.enabled, id: offset)
+        }
+        
+        return Routine(label: ro.label, gap: ro.gap, exercises: exercises, id: offset)
+    }
+    
+    let db = Database(routines: routines, modified: persisted.modified)
+    
+    return db
+}
+
+func parseAppDataToPersist(db: Database) -> PersistedDatabase {
+    
+    let routines: Routines = db.routines
+    
+    let persistedRoutines: PersistedRoutines = routines.enumerated().map { (offset: Int, po: Routine) in
+        
+        let persistedExercises: PersistedExercises = po.exercises.enumerated().map { (offset: Int, ex: Exercise) in
+            return PersistedExercise(label: ex.label, duration: ex.duration, enabled: ex.enabled)
+        }
+        
+        return PersistedRoutine(label: po.label, gap: po.gap, exercises: persistedExercises)
+
+    }
+    
+    let persistedDb = PersistedDatabase(routines: persistedRoutines, modified: db.modified)
+    
+    return persistedDb
 }
 
 

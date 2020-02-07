@@ -10,27 +10,49 @@ import SwiftUI
 
 
 struct ButtonControlView: View {
-    @ObservedObject var state: RoutineModel
-    @State var playPauseLabel: String = "Play"
+   
+    @ObservedObject var app: App
 
     var body: some View {
+        
+        let playPauseLabel = (app.routineModel.state == .paused || app.routineModel.state == .stopped) ? "Play" : "Pause"
+        
         return HStack(alignment: .center) {
-                        
-            Button(action: {
-                self.state.previous()
-            }) {
-                Image(nsImage: NSImage(named: NSImage.goLeftTemplateName)! )
-            }
-            Button(action: {
-                self.state.togglePause()
-            }) {
+                   
+            if self.app.showMainView {
+
+                Button(action: {
+                    self.app.routineModel.previous()
+                }) {
+                    Image(nsImage: NSImage(named: NSImage.goLeftTemplateName)! )
+                }
+                Button(action: {
+                    self.app.routineModel.togglePause()
+                }) {
                     Text(playPauseLabel)
+                }
+                Button(action: {
+                    self.app.routineModel.next()
+                }) {
+                    Image(nsImage: NSImage(named: NSImage.goRightTemplateName)! )
+                }
             }
-            Button(action: {
-                self.state.next()
-            }) {
-                Image(nsImage: NSImage(named: NSImage.goRightTemplateName)! )
+            
+            else {
+                Button(action: {
+                    self.app.persist()
+                    self.app.showMainView = true
+                }) {
+                    Text("Save")
+                }
+                Button(action: {
+                    self.app.showMainView = true
+                }) {
+                    Text("Cancel")
+                }
+                
             }
+            
         }
     }
 }

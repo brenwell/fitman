@@ -60,6 +60,40 @@ class App: ObservableObject {
 //        saveData(database: db)
     }
     
+    func changeExerciseLabel(label: String, index: Int) {
+        
+        if (label == "") { return }
+        
+        var old = self.routineModel.routine
+        let oldEx = old.exercises[index]
+        old.exercises[index] = Exercise(label: label, duration: oldEx.duration, enabled: oldEx.enabled, id: oldEx.id)
+        let routine = Routine(label: old.label, gap: old.gap, exercises: old.exercises, id: old.id)
+        
+        self.routineModel = RoutineModel(routine: routine)
+    }
+    
+    func changeExerciseDuration(duration: String, index: Int) {
+        
+        guard let durationInt =  Int(duration) else {
+            return
+        }
+        
+        var old = self.routineModel.routine
+        let oldEx = old.exercises[index]
+        old.exercises[index] = Exercise(label: oldEx.label, duration: durationInt, enabled: oldEx.enabled, id: oldEx.id)
+        let routine = Routine(label: old.label, gap: old.gap, exercises: old.exercises, id: old.id)
+        
+        self.routineModel = RoutineModel(routine: routine)
+    }
+    
+    
+    func persist() {
+        
+        var db = self.database
+        db.routines[self.selectedSessionIndex] = self.routineModel.routine
+        
+        saveData(database: db)
+    }
 }
 
 func setCurrentRoutine(index: Int, database: Database) -> RoutineModel {
