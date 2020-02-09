@@ -3,17 +3,13 @@ import SwiftUI
 /**
   Speech methods
  */
-class MyToolBar: NSToolbar, NSToolbarDelegate {
-
-    func setup() {
-        self.displayMode = .iconOnly
-        self.delegate = self
-        
-        
-        
-        
-        self.insertItem(withItemIdentifier: NSToolbarItem.Identifier.cloudSharing, at: 0)
-    }
+struct Settings {
+    static let voice: String = "com.apple.speech.synthesis.voice.daniel.premium"
+    static let locale: String = "en-GB"
+    static let rate: Float = 0.4 // playback rate
+    static let frequency: Double = 0.1
+    static let gap: Double = 6.0
+    static let announceInterval: Int = 10 // how often to announce
 }
 
 

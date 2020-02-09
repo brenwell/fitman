@@ -14,9 +14,9 @@ import AVFoundation
 class Speaker: NSObject, AVSpeechSynthesizerDelegate {
     
     var synthesizer: AVSpeechSynthesizer?
-    var voice: String?
-    var locale: String?
-    var rate: Float?
+    var voice: String
+    var locale: String
+    var rate: Float
     
     
     init(voice: String, locale: String, rate: Float) {
@@ -32,7 +32,7 @@ class Speaker: NSObject, AVSpeechSynthesizerDelegate {
         self.synthesizer = AVSpeechSynthesizer()
         self.synthesizer!.delegate = self
         let utterance = AVSpeechUtterance(string: text)
-        utterance.rate = self.rate!
+        utterance.rate = self.rate
         utterance.voice = AVSpeechSynthesisVoice(language: self.locale)
 //        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.speech.synthesis.voice.daniel.premium")
         DispatchQueue.global(qos: .background).async {

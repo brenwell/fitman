@@ -24,7 +24,7 @@ class RoutineModel: ObservableObject {
     private var runner: TaskRunner
     private var prevState: RoutineState
 
-    init(routine: Routine) {
+    init(routine: Routine, speaker: Speaker) {
         self.currentExerciseIndex = 0
         self.routine = routine
         self.state = .stopped
@@ -32,7 +32,7 @@ class RoutineModel: ObservableObject {
         self.durationBetween = Double(routine.gap)
         self.frequency = Settings.frequency
         self.runner = TaskRunner()
-        self.speaker = Speaker(voice: Settings.voice, locale: Settings.locale, rate: Settings.rate)
+        self.speaker = speaker
         
         // Used to publish progress
         self.duration = 0.0

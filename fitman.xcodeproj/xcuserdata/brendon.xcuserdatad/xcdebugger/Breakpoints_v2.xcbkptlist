@@ -34,17 +34,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7EC72276-20FD-4243-BD55-A8AE545609FE"
-            shouldBeEnabled = "No"
+            uuid = "EBA0759A-BA8C-4F80-A3CB-48DC65540DF3"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "fitman/Store.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "selectedRoutineIndex"
-            landmarkType = "24">
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "addRoutine()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

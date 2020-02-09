@@ -14,12 +14,20 @@ struct RoutinePickerView: View {
 
     var body: some View {
         
-        let labels: [String] = store.database.routines.map { $0.label }
+        let labels: [String] = store.routines.map { $0.label }
         
         return HStack() {
         
-            Picker(selection: $store.selectedRoutineIndex, label: Text("")) {
-                ForEach(0 ..< labels.count) {
+            Picker(selection: Binding(
+                get: {
+                    return self.store.selectedRoutineIndex
+                },
+                set: { (newValue) in
+                    return self.store.changeSelectedRoutine(index: newValue)
+                }
+            )
+            , label: Text("")) {
+                ForEach(0 ..< labels.count, id: \.self) {
                    Text(labels[$0]).tag($0)
                 }
             }.frame(maxWidth: 200.0)
