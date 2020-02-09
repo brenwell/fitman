@@ -10,17 +10,15 @@ import SwiftUI
 
 struct BottomView: View {
     
-    @ObservedObject var store: Store
+    @ObservedObject var routine: RoutineModel
     
     var body: some View {
-
-        print(store.selectedRoutine.currentExerciseIndex)
         
         return HStack(alignment: .center, spacing: 20)
         {
-            Text("\(store.selectedRoutine.currentExerciseIndex) / \(store.selectedRoutine.enabledExercises.count)")
+            Text("\(routine.currentExerciseIndex) / \(routine.enabledExercises.count)")
             Spacer() 
-            Text(store.selectedRoutine.totalDuration)
+            Text(routine.totalDuration)
         
         }.padding(10)
 

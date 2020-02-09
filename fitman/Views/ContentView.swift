@@ -19,7 +19,7 @@ struct ContentView: View {
         {
             TopView(store: store)
             MainContentView(store: store)
-            BottomView(store: store)
+            BottomView(routine: store.selectedRoutine)
         }
         
     }

@@ -20,21 +20,32 @@ struct EditView: View {
             
             VStack(alignment: HorizontalAlignment.center) {
                 
-                TextField(store.selectedRoutine.routine.label, text: Binding(
-                  get: {
-                    return self.store.selectedRoutine.routine.label
-                    },
-                  set: { (newValue) in
-                    return self.store.changeRoutineLabel(label: newValue)
-                }))
-                
-                TextField("\(Int(store.selectedRoutine.routine.gap))", text: Binding(
-                  get: {
-                    return "\(Int(self.store.selectedRoutine.routine.gap))"
-                    },
-                  set: { (newValue) in
-                    return self.store.changeRoutineGap(gap: newValue)
-                }))
+                HStack() {
+                    
+                    TextField(store.selectedRoutine.routine.label, text: Binding(
+                      get: {
+                        return self.store.selectedRoutine.routine.label
+                        },
+                      set: { (newValue) in
+                        return self.store.changeRoutineLabel(label: newValue)
+                    }))
+                        .font(.custom("Futura", size: 20))
+                        .padding(5)
+                        .background(Color.clear)
+                        .textFieldStyle(PlainTextFieldStyle())
+                    
+                    Spacer()
+                    
+                    Text("Duration between")
+                    
+                    TextField("\(Int(store.selectedRoutine.routine.gap))", text: Binding(
+                      get: {
+                        return "\(Int(self.store.selectedRoutine.routine.gap))"
+                        },
+                      set: { (newValue) in
+                        return self.store.changeRoutineGap(gap: newValue)
+                    })).frame(maxWidth: 50).textFieldStyle(PlainTextFieldStyle()).padding(5).background(Color.white.opacity(0.1))
+                }
                 
                 ForEach(exercises) { exercise in
                     
@@ -54,7 +65,7 @@ struct EditView: View {
                             },
                           set: { (newValue) in
                             return self.store.changeExerciseLabel(label: newValue, index: exercise.id)
-                        }))
+                        })).textFieldStyle(PlainTextFieldStyle()).padding(5).background(Color.white.opacity(0.1))
                         
                         TextField("\(exercise.duration)", text: Binding(
                           get: {
@@ -62,13 +73,13 @@ struct EditView: View {
                             },
                           set: { (newValue) in
                             return self.store.changeExerciseDuration(duration: newValue, index: exercise.id)
-                        }))
+                            })).textFieldStyle(PlainTextFieldStyle()).padding(5).background(Color.white.opacity(0.1))
                         
                         Button(action: {
                             self.store.removeExercise(index: exercise.id)
                         }) {
-                            Image(nsImage: NSImage(named: NSImage.removeTemplateName)! )
-                        }
+                            Image(nsImage: NSImage(named: NSImage.stopProgressTemplateName)! )
+                        }.buttonStyle(PlainButtonStyle()).padding(8).background(Color.white.opacity(0.1))
                         
                     }
                     
@@ -85,7 +96,7 @@ struct EditView: View {
                             self.store.addExercise()
                         }) {
                             Image(nsImage: NSImage(named: NSImage.addTemplateName)! )
-                        }
+                        }.buttonStyle(PlainButtonStyle()).padding(8).background(Color.white.opacity(0.1))
                     
                 
             }.frame(maxWidth: 600)
