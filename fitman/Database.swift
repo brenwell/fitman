@@ -41,9 +41,11 @@ struct PersistedDatabase: Codable {
     private enum CodingKeys : String, CodingKey {
         case routines = "routines"
         case modified = "modified"
+        case current = "current"
     }
     var routines: PersistedRoutines
     var modified: String
+    var current: Int
 }
 
 
@@ -72,4 +74,5 @@ struct Routine: Identifiable {
 struct Database {
     var routines: Routines
     var modified: String
+    var current: Int
 }

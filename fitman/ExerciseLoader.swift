@@ -94,7 +94,7 @@ func parsePersistedDataToApp(persisted: PersistedDatabase) -> Database {
         return Routine(label: ro.label, gap: ro.gap, exercises: exercises, id: offset)
     }
     
-    let db = Database(routines: routines, modified: persisted.modified)
+    let db = Database(routines: routines, modified: persisted.modified, current: persisted.current)
     
     return db
 }
@@ -113,7 +113,7 @@ func parseAppDataToPersist(db: Database) -> PersistedDatabase {
 
     }
     
-    let persistedDb = PersistedDatabase(routines: persistedRoutines, modified: db.modified)
+    let persistedDb = PersistedDatabase(routines: persistedRoutines, modified: db.modified, current: db.current)
     
     return persistedDb
 }

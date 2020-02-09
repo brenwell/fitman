@@ -5,17 +5,18 @@
 //  Created by Robert BLACKWELL on 1/8/20.
 //  Copyright © 2020 Robert Blackwell. All rights reserved.
 //
-import Cocoa
-import SwiftUI
-import Foundation
-import AVFoundation
 
-let R_INDEX_KEY: String = "routineIndex"
-let R_LABEL_KEY: String = "routineLabel"
+import SwiftUI
+
 
 class Store: ObservableObject {
 
+    // should always represent the actual hard disk
+    // used to do undos
     var database: Database
+    
+    // should be the current state at all time
+    // the complete oppositte to the database property
     @Published var showMainView: Bool = true
     @Published var selectedRoutine: RoutineModel
     @Published var selectedRoutineIndex: Int = 0
@@ -23,35 +24,29 @@ class Store: ObservableObject {
     
     init() {
         let db: Database = loadData()!
-        let index = Store.getCurrentRoutineIndex(routines: db.routines)
         
+        (self.selectedRoutine, self.selectedRoutineIndex) = Store.setCurrentRoutine(index:  db.current, routines: db.routines)
+        self.routines = db.routines
         self.database = db
-        self.selectedRoutine = Store.setCurrentRoutine(index: index, routines: db.routines)
-        self.selectedRoutineIndex = index
-        self.routines = database.routines
     }
     
     // used to persist changes
     func persist() {
         
-        var db = self.database
-        db.routines = self.routines
-        db.modified = "\(Int(NSDate().timeIntervalSince1970))"
+        // update the in memory database
+        database = Database(routines: self.routines, modified: "\(Int(NSDate().timeIntervalSince1970))", current: self.selectedRoutineIndex)
         
-        self.database = db
-        let success = saveData(database: db)
+        // and persist to disk
+        let success = saveData(database: database)
         
         print("Saving changes - success: \(success)")
     }
     
     // Used to cancel changes
     func undo() {
-        let db = self.database
-        let index = Store.getCurrentRoutineIndex(routines: db.routines)
         
-        self.database = db
-        self.selectedRoutine = Store.setCurrentRoutine(index: index, routines: db.routines)
-        self.selectedRoutineIndex = index
+        (self.selectedRoutine, self.selectedRoutineIndex) = Store.setCurrentRoutine(index: database.current, routines: database.routines)
+        
         self.routines = database.routines
         
         print("Undoing changes")
@@ -59,13 +54,11 @@ class Store: ObservableObject {
     
     func changeSelectedRoutine(index: Int) {
         
-        self.selectedRoutineIndex = index
-        
         self.selectedRoutine.stop(playNoise: false)
 
-        self.selectedRoutine = Store.setCurrentRoutine(index: selectedRoutineIndex, routines: self.routines)
+        (self.selectedRoutine, self.selectedRoutineIndex) = Store.setCurrentRoutine(index: index, routines: self.routines)
         
-        Store.saveCurrentRoutineIndex(index: self.selectedRoutineIndex, label: self.selectedRoutine.routine.label)
+        persist()
     }
     
     func changeRoutineLabel(label: String) {
@@ -147,7 +140,7 @@ class Store: ObservableObject {
     }
     
     func deleteRoutine() {
-        self.routines = database.routines.filter { $0.id != selectedRoutineIndex }
+        self.routines = self.routines.filter { $0.id != selectedRoutineIndex }
         
         changeSelectedRoutine(index: 0)
     }
@@ -156,11 +149,11 @@ class Store: ObservableObject {
             Private Static Methods (Helpers)
      */
 
-    private static func setCurrentRoutine(index: Int, routines: Routines) -> RoutineModel {
+    private static func setCurrentRoutine(index: Int, routines: Routines) -> (RoutineModel, Int) {
         
         let routine: Routine = routines[index]
         
-        return createRoutineModel(routine: routine)
+        return (createRoutineModel(routine: routine), index)
     }
 
     private static func createRoutineModel(label: String, gap: Int, exercises: Exercises, id: Int ) -> RoutineModel {
@@ -177,23 +170,6 @@ class Store: ObservableObject {
         return RoutineModel(routine: routine, speaker: speaker)
     }
 
-
-    private static func getCurrentRoutineIndex(routines: Routines) -> Int {
-        
-        var index: Int = UserDefaults.standard.integer(forKey: R_INDEX_KEY)
-        
-        if (index < 0 || index >= routines.count) {
-            index = 0
-        }
-        
-        return index
-    }
-
-    private static func saveCurrentRoutineIndex(index: Int, label: String) {
-        
-        UserDefaults.standard.set(index, forKey: R_INDEX_KEY)
-        UserDefaults.standard.set(label, forKey: R_LABEL_KEY)
-    }
 }
 
 
