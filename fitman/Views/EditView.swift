@@ -28,6 +28,14 @@ struct EditView: View {
                     return self.store.changeRoutineLabel(label: newValue)
                 }))
                 
+                TextField("\(Int(store.selectedRoutine.routine.gap))", text: Binding(
+                  get: {
+                    return "\(Int(self.store.selectedRoutine.routine.gap))"
+                    },
+                  set: { (newValue) in
+                    return self.store.changeRoutineGap(gap: newValue)
+                }))
+                
                 ForEach(exercises) { exercise in
                     
                     HStack(){

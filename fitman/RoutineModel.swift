@@ -39,7 +39,7 @@ class RoutineModel: ObservableObject {
         self.elapsed = 0.0
         
         self.enabledExercises = routine.exercises.filter { $0.enabled }
-        self.totalDuration = calculateTotalDuration(exercises: self.enabledExercises)
+        self.totalDuration = calculateTotalDuration(exercises: self.enabledExercises, gap: Int(self.durationBetween))
     }
     
     public func start(){
@@ -228,22 +228,25 @@ class RoutineModel: ObservableObject {
 }
 
 
-func calculateTotalDuration(exercises: Exercises) -> String{
+func calculateTotalDuration(exercises: Exercises, gap: Int) -> String{
     
     let sum = exercises.reduce(0) {
         if (!$1.enabled) { return $0 }
         return $0 + $1.duration
     }
     
-    print(sum)
+    let gaps = (exercises.count-1) * gap
     
 
     let formatter = DateComponentsFormatter()
     formatter.allowedUnits = [.hour, .minute, .second]
     formatter.unitsStyle = .full
 
-    let formattedString = formatter.string(from: TimeInterval(sum))!
-    print(formattedString)
+    let formattedExercises = formatter.string(from: TimeInterval(sum))!
+    print(formattedExercises)
     
-    return formattedString
+    let formattedExercisesAndGaps = formatter.string(from: TimeInterval(gaps))!
+    print(formattedExercisesAndGaps)
+    
+    return "\(formattedExercises) + (\(formattedExercisesAndGaps))"
 }

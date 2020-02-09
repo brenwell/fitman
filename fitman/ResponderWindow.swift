@@ -11,7 +11,21 @@ import Cocoa
 // We subclass an NSView
 
 class ResponderWindow: NSWindow {
-    public var model: RoutineModel?
+    public var store: Store
+    
+    init(store: Store) {
+        
+        self.store = store
+        
+        super.init(
+            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+        
+    }
+    
     // Allow view to receive keypress (remove the purr sound)
     override var acceptsFirstResponder : Bool {
         return true
@@ -22,23 +36,23 @@ class ResponderWindow: NSWindow {
         
         switch theEvent.keyCode {
             case 49: //space
-                // TODO
-                if let m = self.model {
-                    m.togglePause()
-                }
-                return print("key space")
+                
+                
+                store.selectedRoutine.togglePause()
+                
+                return //print("key space")
             case 123: //left
-                // TODO
-                if let m = self.model {
-                    m.previous()
-                }
-                return print("key left")
+                
+                
+                store.selectedRoutine.previous()
+                
+                return //print("key left")
             case 124: //right
-                // TODO
-                if let m = self.model {
-                    m.next()
-                }
-                return print("key right")
+                
+                
+                store.selectedRoutine.next()
+                
+                return //print("key right")
             default:
                 return
         }

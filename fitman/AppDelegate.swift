@@ -13,28 +13,22 @@ import AVFoundation
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
+    
     var window: ResponderWindow!
-    var store: Store?
-    
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-    
-        self.store = Store()
+        
+        let store: Store = Store()
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView(store: self.store!)
+        let contentView = ContentView(store: store)
         
         // Create the window and set the content view. 
-        window = ResponderWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
+        window = ResponderWindow(store: store)
         window.center()
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-        
-        window.model = self.store?.selectedRoutine
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

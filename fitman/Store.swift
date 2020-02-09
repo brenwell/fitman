@@ -74,6 +74,24 @@ class Store: ObservableObject {
         }
     }
     
+    func changeRoutineGap(gap: String) {
+        
+        guard let gapInt = Int(gap) else {
+            return
+        }
+        
+        let old = self.selectedRoutine.routine
+        
+        self.selectedRoutine = Store.createRoutineModel(label: old.label, gap: gapInt, exercises: old.exercises, id: old.id)
+        
+        self.routines = self.routines.map { (po: Routine) in
+            if po.id != old.id {
+                return po
+            }
+            return self.selectedRoutine.routine
+        }
+    }
+    
     func changeExerciseLabel(label: String, index: Int) {
         
         if (label == "") { return }
