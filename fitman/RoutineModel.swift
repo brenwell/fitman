@@ -5,6 +5,7 @@ enum RoutineState {
     case countingIn
     case playing
     case paused
+    case finished
 }
 
 class RoutineModel: ObservableObject {
@@ -18,19 +19,21 @@ class RoutineModel: ObservableObject {
     @Published var duration: Double
     @Published var elapsed: Double
     @Published var durationBetween: Double
+    @Published var announcementInterval: Int
     @Published var totalDuration: String = "n/a"
     
     private var speaker: Speaker
     private var runner: TaskRunner
     private var prevState: RoutineState
 
-    init(routine: Routine, speaker: Speaker) {
+    init(routine: Routine, speaker: Speaker, frequency: Double, announcementInterval: Int) {
         self.currentExerciseIndex = 0
         self.routine = routine
         self.state = .stopped
         self.prevState = .stopped
         self.durationBetween = Double(routine.gap)
-        self.frequency = Settings.frequency
+        self.frequency = frequency
+        self.announcementInterval = announcementInterval
         self.runner = TaskRunner()
         self.speaker = speaker
         
@@ -54,7 +57,7 @@ class RoutineModel: ObservableObject {
         self.state = .countingIn
         
         guard let exercise = self.enabledExercises[safe: self.currentExerciseIndex] else {
-            self.stop(playNoise: false)
+            self.reset()
             return
         }
         
@@ -73,7 +76,7 @@ class RoutineModel: ObservableObject {
         self.state = .playing
         
         let exercise = self.enabledExercises[self.currentExerciseIndex]
-        let tasks = buildExerciseTasks(exercise: exercise)
+        let tasks = buildExerciseTasks(exercise: exercise, interval: self.announcementInterval)
         
         self.runner.start(
             tasks: tasks,
@@ -85,19 +88,21 @@ class RoutineModel: ObservableObject {
     }
 
     func onExerciseDone() {
-        self.next()
+        if (self.enabledExercises.count <= self.currentExerciseIndex + 1) {
+            self.finish()
+        }
+        else{
+            self.next()
+        }
     }
     
     public func next(){
         
         if (self.enabledExercises.count <= self.currentExerciseIndex + 1) {
-            if (self.state == .playing) { self.stop(playNoise: true) }
-            
-            self.currentExerciseIndex = 0
+            print("at end")
             return
         }
         
-//        print("next")
         
         self.currentExerciseIndex += 1
         
@@ -113,8 +118,6 @@ class RoutineModel: ObservableObject {
             print("at beginning")
             return
         }
-        
-//        print("prev")
         
         self.currentExerciseIndex -= 1
         
@@ -132,6 +135,8 @@ class RoutineModel: ObservableObject {
             return self.start()
         case .paused:
             return self.resume()
+        case .finished:
+            return self.reset()
         default:
             self.pause()
         }
@@ -156,16 +161,28 @@ class RoutineModel: ObservableObject {
         disableScreenSleep()
     }
     
-    public func stop(playNoise: Bool){
-        print("done")
+    public func stop(){
+        print("stop")
         self.state = .stopped
         self.runner.stop()
         
         enableScreenSleep()
+    }
+    
+    public func finish() {
+        print("finish")
+        self.stop()
+        Sound.playComplete(elapsed: 0.0)
+        self.state = .finished
         
-        if playNoise {
-            Sound.playComplete(elapsed: 0.0)
-        }
+    }
+    
+    public func reset() {
+        self.currentExerciseIndex = 0
+        self.state = .stopped
+        self.prevState = .stopped
+        self.duration = 0.0
+        self.elapsed = 0.0
     }
 
     func onProgress(elapsed: Double, duration: Double) {
@@ -186,12 +203,11 @@ class RoutineModel: ObservableObject {
         return tasks
     }
 
-    func buildExerciseTasks(exercise: Exercise) -> Array<Task> {
+    func buildExerciseTasks(exercise: Exercise, interval: Int) -> Array<Task> {
         
         var tasks = [Task]()
         
         let duration: Double = Double(exercise.duration)
-        let interval = Settings.announceInterval
         
         if (interval > 0) {
             for i in stride(from: interval, to: Int(duration), by: interval) {

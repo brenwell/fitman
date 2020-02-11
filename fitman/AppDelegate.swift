@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
+        // create a store
         let store: Store = Store()
         
         // Create the SwiftUI view that provides the window contents.
@@ -29,6 +30,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
+        
+    
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

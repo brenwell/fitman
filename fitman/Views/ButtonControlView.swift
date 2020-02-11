@@ -63,6 +63,12 @@ struct ButtonControlView: View {
                     Text("Add New")
                 }
                 
+                Button(action: {
+                    self.store.reset()
+                }) {
+                    Text("Reset")
+                }
+                
             }
             
         }

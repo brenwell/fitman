@@ -44,6 +44,22 @@ func loadData() -> Database? {
     }
 }
 
+func loadResetData() -> Database? {
+    
+    guard let bundlePath = Bundle.main.path(forResource: "routines", ofType: "json") else {
+        exerciseErrorDialog(text: "JSON file exercise.json not found")
+        return nil
+    }
+    
+    do {
+        let defaultDb = attemptToLoadFile(path: bundlePath)
+    
+        if defaultDb == nil { return nil }
+        
+        return defaultDb
+    }
+}
+
 func saveData(database: Database) -> Bool {
 //    let filepath = Bundle.main.path(forResource: "test", ofType: "json")!
     

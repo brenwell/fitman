@@ -56,6 +56,8 @@ class TaskRunner {
             
 //            print("\(Int(self.elapsed/Double(duration)*100))%") // Percent
             
+            print(self.elapsed, duration)
+            
             onProgress(self.elapsed, Double(duration))
         }
     }

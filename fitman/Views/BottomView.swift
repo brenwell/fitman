@@ -16,7 +16,7 @@ struct BottomView: View {
         
         return HStack(alignment: .center, spacing: 20)
         {
-            Text("\(routine.currentExerciseIndex) / \(routine.enabledExercises.count)")
+            Text("\(routine.currentExerciseIndex+1) / \(routine.enabledExercises.count)")
             Spacer() 
             Text(routine.totalDuration)
         

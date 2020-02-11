@@ -18,7 +18,7 @@ struct EditView: View {
 
         return ScrollView() {
             
-            VStack(alignment: HorizontalAlignment.center) {
+            VStack() {
                 
                 HStack() {
                     
@@ -47,7 +47,7 @@ struct EditView: View {
                     })).frame(maxWidth: 50).textFieldStyle(PlainTextFieldStyle()).padding(5).background(Color.white.opacity(0.1))
                 }
                 
-                ForEach(exercises) { exercise in
+                ForEach(exercises, id: \.id) { exercise in
                     
                     HStack(){
    
@@ -79,9 +79,16 @@ struct EditView: View {
                             self.store.removeExercise(index: exercise.id)
                         }) {
                             Image(nsImage: NSImage(named: NSImage.stopProgressTemplateName)! )
-                        }.buttonStyle(PlainButtonStyle()).padding(8).background(Color.white.opacity(0.1))
+                            
+                        }
                         
-                    }
+                        Button(action: {
+                            self.store.addExercise(index: exercise.id)
+                        }) {
+                            Image(nsImage: NSImage(named: NSImage.addTemplateName)! )
+                        }
+                        
+                    } 
                     
                 }
                 
@@ -96,7 +103,7 @@ struct EditView: View {
                             self.store.addExercise()
                         }) {
                             Image(nsImage: NSImage(named: NSImage.addTemplateName)! )
-                        }.buttonStyle(PlainButtonStyle()).padding(8).background(Color.white.opacity(0.1))
+                        }
                     
                 
             }.frame(maxWidth: 600)

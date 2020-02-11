@@ -87,7 +87,7 @@
                 { "label": "Squats", "duration": 30, "enabled": true },
                 { "label": "Triceps dip", "duration": 30, "enabled": true },
                 { "label": "Plank", "duration": 30, "enabled": true },
-                { "label": "High knees running in place", "duration": 30, "enabled": true },
+                { "label": "High knees running in place, High knees running in place", "duration": 30, "enabled": true },
                 { "label": "Lunges", "duration": 30, "enabled": true },
                 { "label": "Push-ups with rotation", "duration": 30, "enabled": true },
                 { "label": "Side plank", "duration": 30, "enabled": true }

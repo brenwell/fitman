@@ -28,6 +28,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
+        
         let store = Store()
         
         // Create the SwiftUI view that provides the window contents.
