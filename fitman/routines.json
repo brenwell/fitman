@@ -7,7 +7,7 @@
             "gap": 10,
             "exercises": [
                 { "label": "Door stretch", "duration": 60, "enabled": true },
-                { "label": "Touch toes", "duration": 40, "enabled": true },
+                { "label": "Touch toes", "duration": 80, "enabled": true },
                 { "label": "Wall sit", "duration": 50, "enabled": true },
                 { "label": "Tricep dips", "duration": 50, "enabled": true },
                 { "label": "Lunges", "duration": 60, "enabled": true },
@@ -28,8 +28,8 @@
                 { "label": "Fire hydrants", "duration": 60, "enabled": true },
                 { "label": "Push-ups", "duration": 40, "enabled": true },
                 { "label": "Arm circles", "duration": 40, "enabled": true },
-                { "label": "Calf stretch left", "duration": 40, "enabled": true },
-                { "label": "Calf stretch right", "duration": 40, "enabled": true }
+                { "label": "Calf stretch left", "duration": 60, "enabled": true },
+                { "label": "Calf stretch right", "duration": 60, "enabled": true }
             ]
         },
         {
@@ -91,6 +91,36 @@
                 { "label": "Lunges", "duration": 30, "enabled": true },
                 { "label": "Push-ups with rotation", "duration": 30, "enabled": true },
                 { "label": "Side plank", "duration": 30, "enabled": true }
+            ]
+        },
+        {
+            "label": "Joint",
+            "gap": 10,
+            "exercises": [
+                { "label": "Door stretch", "duration": 60, "enabled": true },
+                { "label": "Touch toes", "duration": 80, "enabled": true },
+                { "label": "Wall sit", "duration": 50, "enabled": true },
+                { "label": "Tricep dips", "duration": 50, "enabled": true },
+                { "label": "Lunges", "duration": 60, "enabled": true },
+                { "label": "Push-ups", "duration": 50, "enabled": true },
+                { "label": "Crunches", "duration": 50, "enabled": true },
+                { "label": "Reverse plank", "duration": 40, "enabled": true },
+                { "label": "Crouching dog", "duration": 50, "enabled": true },
+                { "label": "Calf raises", "duration": 60, "enabled": true },
+                { "label": "Hand to wall", "duration": 40, "enabled": true },
+                { "label": "Fist curls", "duration": 30, "enabled": true },
+                { "label": "Plank", "duration": 60, "enabled": true },
+                { "label": "Arm Ups right", "duration": 30, "enabled": true },
+                { "label": "Arm Ups left", "duration": 30, "enabled": true },
+                { "label": "Bicep curls", "duration": 60, "enabled": true },
+                { "label": "T-Raises", "duration": 60, "enabled": true },
+                { "label": "Leg lifts", "duration": 60, "enabled": true },
+                { "label": "Squat", "duration": 60, "enabled": true },
+                { "label": "Fire hydrants", "duration": 60, "enabled": true },
+                { "label": "Push-ups", "duration": 40, "enabled": true },
+                { "label": "Arm circles", "duration": 40, "enabled": true },
+                { "label": "Calf stretch left", "duration": 60, "enabled": true },
+                { "label": "Calf stretch right", "duration": 60, "enabled": true }
             ]
         }
     ]

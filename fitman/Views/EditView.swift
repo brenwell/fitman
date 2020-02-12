@@ -47,43 +47,43 @@ struct EditView: View {
                     })).frame(maxWidth: 50).textFieldStyle(PlainTextFieldStyle()).padding(5).background(Color.white.opacity(0.1))
                 }
                 
-                ForEach(exercises, id: \.id) { exercise in
+                ForEach(0..<exercises.count) { index in
                     
                     HStack(){
    
                         Toggle("", isOn: Binding(
                           get: {
-                            return exercise.enabled
+                            return exercises[index].enabled
                             },
                           set: { (newValue) in
-                            return self.store.changeExerciseEnabled(enabled: newValue, index: exercise.id)
+                            return self.store.changeExerciseEnabled(enabled: newValue, index: index)
                         }))
                         
-                        TextField(exercise.label, text: Binding(
+                        TextField(exercises[index].label, text: Binding(
                           get: {
-                            return exercise.label
+                            return exercises[index].label
                             },
                           set: { (newValue) in
-                            return self.store.changeExerciseLabel(label: newValue, index: exercise.id)
+                            return self.store.changeExerciseLabel(label: newValue, index: index)
                         })).textFieldStyle(PlainTextFieldStyle()).padding(5).background(Color.white.opacity(0.1))
                         
-                        TextField("\(exercise.duration)", text: Binding(
+                        TextField("\(exercises[index].duration)", text: Binding(
                           get: {
-                            return "\(exercise.duration)"
+                            return "\(exercises[index].duration)"
                             },
                           set: { (newValue) in
-                            return self.store.changeExerciseDuration(duration: newValue, index: exercise.id)
+                            return self.store.changeExerciseDuration(duration: newValue, index: index)
                             })).textFieldStyle(PlainTextFieldStyle()).padding(5).background(Color.white.opacity(0.1))
                         
                         Button(action: {
-                            self.store.removeExercise(index: exercise.id)
+                            self.store.removeExercise(index: index)
                         }) {
                             Image(nsImage: NSImage(named: NSImage.stopProgressTemplateName)! )
                             
                         }
                         
                         Button(action: {
-                            self.store.addExercise(index: exercise.id)
+                            self.store.addExercise(index: index)
                         }) {
                             Image(nsImage: NSImage(named: NSImage.addTemplateName)! )
                         }

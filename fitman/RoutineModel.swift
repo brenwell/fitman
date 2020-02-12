@@ -263,5 +263,8 @@ func calculateTotalDuration(exercises: Exercises, gap: Int) -> String{
     let formattedExercisesAndGaps = formatter.string(from: TimeInterval(gaps))!
     print(formattedExercisesAndGaps)
     
-    return "\(formattedExercises) + (\(formattedExercisesAndGaps))"
+    let formatted = formatter.string(from: TimeInterval(sum + gaps))!
+    print(formatted)
+    
+    return "\(formatted)"
 }
