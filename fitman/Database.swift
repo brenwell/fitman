@@ -53,7 +53,7 @@ struct PersistedDatabase: Codable {
 /** In memory data **/
 
 struct Exercise: Identifiable {
-    var id: UUID = UUID()
+    let id: UUID
     var label: String
     var duration: Int
     var enabled: Bool
@@ -63,7 +63,7 @@ typealias Exercises = Array<Exercise>
 typealias Routines = Array<Routine>
 
 struct Routine: Identifiable {
-    var id: UUID = UUID()
+    let id: UUID
     var label: String
     var gap: Int
     var exercises: Exercises

@@ -39,6 +39,7 @@ func loadData() -> Database? {
             }
         }
         
+        print(personalDb!)
         
         return personalDb
     }
@@ -104,10 +105,10 @@ func parsePersistedDataToApp(persisted: PersistedDatabase) -> Database {
     let routines: Routines = persistedRoutines.enumerated().map { (offset: Int, ro: PersistedRoutine) in
         
         let exercises: Exercises = ro.exercises.enumerated().map { (offset: Int, ex: PersistedExercise) in
-            return Exercise(label: ex.label, duration: ex.duration, enabled: ex.enabled, id: offset)
+            return Exercise(id: UUID(), label: ex.label, duration: ex.duration, enabled: ex.enabled)
         }
         
-        return Routine(label: ro.label, gap: ro.gap, exercises: exercises, id: offset)
+        return Routine(id: UUID(), label: ro.label, gap: ro.gap, exercises: exercises)
     }
     
     let db = Database(routines: routines, modified: persisted.modified, current: persisted.current)

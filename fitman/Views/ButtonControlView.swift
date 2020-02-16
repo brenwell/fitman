@@ -51,6 +51,13 @@ struct ButtonControlView: View {
                 }) {
                     Text("Cancel")
                 }
+
+                Button(action: {
+                    self.store.duplicateRoutine()
+                }) {
+                    Text("Duplicate")
+                }
+
                 Button(action: {
                     self.store.deleteRoutine()
                 }) {

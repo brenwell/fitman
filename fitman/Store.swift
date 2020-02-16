@@ -73,6 +73,38 @@ class Store: ObservableObject {
         persist()
     }
     
+    func addRoutine() {
+        
+        let old = self.routines
+        
+        let empty = emptyRoutine(gap: Int(self.settings.gap))
+        
+        self.routines = insert(item: empty, arr: old, idx: old.count) as! Routines
+        
+        // Change to new routine
+        changeSelectedRoutine(index: self.routines.count - 1 )
+    }
+    
+    func deleteRoutine() {
+        
+        self.routines = remove(arr: self.routines, idx: self.selectedRoutineIndex) as! Routines
+        
+        changeSelectedRoutine(index: 0)
+    }
+    
+    func duplicateRoutine() {
+        let old = self.selectedRoutine.routine
+        
+        let duplicateLabel = "\(old.label) Copy"
+        
+        let duplicate = Routine(id: UUID(), label: duplicateLabel, gap: old.gap, exercises: old.exercises)
+        
+        self.routines = insert(item: duplicate, arr: self.routines, idx: self.routines.count) as! Routines
+        
+        // Change to new routine
+        changeSelectedRoutine(index: self.routines.count - 1 )
+    }
+    
     func changeRoutineLabel(label: String) {
         updateRoutines(label: label)
     }
@@ -87,21 +119,21 @@ class Store: ObservableObject {
         updateRoutines(gap: gapInt)
     }
     
-    func changeExerciseLabel(label: String, index: Int) {
+    func changeExerciseLabel(label: String, id: UUID) {
         
         if (label == "") { return }
         
         let old = self.selectedRoutine.routine.exercises
         
         let new: Exercises = old.enumerated().map { (offset: Int, ex: Exercise) in
-            let l = (ex.id == index) ? label : ex.label
-            return Exercise(label: l, duration: ex.duration, enabled: ex.enabled, id: offset)
+            let l = (ex.id == id) ? label : ex.label
+            return Exercise(id: ex.id, label: l, duration: ex.duration, enabled: ex.enabled)
         }
         
         updateRoutines(exercises: new)
     }
     
-    func changeExerciseDuration(duration: String, index: Int) {
+    func changeExerciseDuration(duration: String, id: UUID) {
         
         guard let durationInt = Int(duration) else {
             return
@@ -110,21 +142,21 @@ class Store: ObservableObject {
         let old = self.selectedRoutine.routine.exercises
         
         let new: Exercises = old.enumerated().map { (offset: Int, ex: Exercise) in
-            let d = (ex.id == index) ? durationInt : ex.duration
-            return Exercise(label: ex.label, duration: d, enabled: ex.enabled, id: offset)
+            let d = (ex.id == id) ? durationInt : ex.duration
+            return Exercise(id: ex.id, label: ex.label, duration: d, enabled: ex.enabled)
         }
         
         updateRoutines(exercises: new)
 
     }
     
-    func changeExerciseEnabled(enabled: Bool, index: Int) {
+    func changeExerciseEnabled(enabled: Bool, id: UUID) {
         
         let old = self.selectedRoutine.routine.exercises
         
         let new: Exercises = old.enumerated().map { (offset: Int, ex: Exercise) in
-            let e = (ex.id == index) ? enabled : ex.enabled
-            return Exercise(label: ex.label, duration: ex.duration, enabled: e, id: offset)
+            let e = (ex.id == id) ? enabled : ex.enabled
+            return Exercise(id: ex.id, label: ex.label, duration: ex.duration, enabled: e)
         }
         
         updateRoutines(exercises: new)
@@ -132,59 +164,39 @@ class Store: ObservableObject {
     
     func addExercise() {
         
-        self.addExercise(index: self.selectedRoutine.routine.exercises.count)
-    }
-    
-    func addExercise(index: Int) {
-        
         let old = self.selectedRoutine.routine.exercises
         
-        let empty = emptyExercise(idx: index)
+        let empty = emptyExercise()
+        
+        let index = old.count - 1
         
         let new = insert(item: empty, arr: old, idx: index) as! Exercises
         
-        let indexed = reIndexExercises(exercises: new)
-        
-        updateRoutines(exercises: indexed)
+        updateRoutines(exercises: new)
     }
     
-    func removeExercise(index: Int) {
+    func addExercise(before: UUID) {
         
         let old = self.selectedRoutine.routine.exercises
         
-        let new = remove(arr: old, idx: index) as! Exercises
+        let empty = emptyExercise()
         
-        let indexed = reIndexExercises(exercises: new)
+        let index = old.firstIndex{$0.id == before} ?? old.count - 1
         
-        updateRoutines(exercises: indexed)
-    }
-
-    func addRoutine() {
+        let new = insert(item: empty, arr: old, idx: index) as! Exercises
         
-        let old = self.routines
-        
-        let empty = emptyRoutine(idx: old.count, gap: Int(self.settings.gap))
-        
-        let new = insert(item: empty, arr: old, idx: old.count) as! Routines
-        
-        let indexed = reIndexRoutines(routines: new)
-        
-        self.routines = indexed
-        
-        // Change to new routine
-        changeSelectedRoutine(index: self.routines.count - 1 )
+        updateRoutines(exercises: new)
     }
     
-    func deleteRoutine() {
+    func removeExercise(id: UUID) {
         
-        let new = self.routines.filter { $0.id != selectedRoutineIndex }
+        let old = self.selectedRoutine.routine.exercises
         
-        let indexed = reIndexRoutines(routines: new)
+        let new = old.filter { $0.id != id }
         
-        self.routines = indexed
-        
-        changeSelectedRoutine(index: 0)
+        updateRoutines(exercises: new)
     }
+
     
     /**
             Private Methods (Helpers)
@@ -207,10 +219,9 @@ class Store: ObservableObject {
         let l = label ?? self.selectedRoutine.routine.label
         let g = gap ?? self.selectedRoutine.routine.gap
         let e = exercises ?? self.selectedRoutine.routine.exercises
-        let i = id ?? self.selectedRoutine.routine.id
         let s = settings ?? self.settings
         
-        let routine = Routine(label: l, gap: g, exercises: e, id: i)
+        let routine = Routine(id: self.selectedRoutine.routine.id, label: l, gap: g, exercises: e)
         
         self.selectedRoutine = Store.createRoutineModel(routine: routine, settings: s)
         
@@ -245,7 +256,7 @@ func insert(item: Any, arr: Array<Any>, idx: Int) -> Array<Any> {
     let part1 = arr[0..<idx]
     let part2 = arr[idx..<arr.count]
     
-    return [] + part1 + [item] + part2 as! Exercises
+    return [] + part1 + [item] + part2
 }
 
 func remove(arr: Array<Any>, idx: Int) -> Array<Any> {
@@ -256,25 +267,14 @@ func remove(arr: Array<Any>, idx: Int) -> Array<Any> {
     return [] + part1 + part2
 }
 
-func reIndexExercises(exercises: Exercises) -> Exercises {
-    return exercises.enumerated().map { (offset: Int, ex: Exercise) in
-        return Exercise(label: ex.label, duration: ex.duration, enabled: ex.enabled, id: offset)
-    }
+
+func emptyExercise() -> Exercise {
+    return Exercise(id: UUID(), label: "", duration: 30, enabled: true)
 }
 
-func reIndexRoutines(routines: Routines) -> Routines {
-    return routines.enumerated().map { (offset: Int, ro: Routine) in
-        return Routine(label: ro.label, gap: ro.gap, exercises: ro.exercises, id: offset)
-    }
-}
-
-func emptyExercise(idx: Int) -> Exercise {
-    return Exercise(label: "", duration: 30, enabled: true, id: idx)
-}
-
-func emptyRoutine(idx: Int, gap: Int) -> Routine {
-    let ex = emptyExercise(idx: 0)
-    return  Routine(label: "New Routine", gap: gap, exercises: [ex], id: idx)
+func emptyRoutine(gap: Int) -> Routine {
+    let ex = emptyExercise()
+    return  Routine(id: UUID(), label: "New Routine", gap: gap, exercises: [ex])
 }
 
 
